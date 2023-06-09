@@ -119,7 +119,7 @@ reportError(e)}
 break   
         
 case isCommand5:
-if (!text) throw lenguajeGB.smsMalused2() + `*${usedPrefix + command}* GataBot`
+if (!text) throw lenguajeGB.smsMalused2() + `*${usedPrefix + command}* SharkLite`
 try{
 await conn.reply(m.chat, global.wait, m)
 let results = await yts(text)
