@@ -45,7 +45,7 @@ const options = {
  space: true,
  maxLength: '0',
 }
-cfonts.say('gatabot\nlite\nmd'.trim(), options)
+cfonts.say('chema\nshark\nlite'.trim(), options)
 
 } catch (err) {
 say('Shark\nLite', {
