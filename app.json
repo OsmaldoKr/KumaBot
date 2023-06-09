@@ -1,8 +1,8 @@
 {
-  "name": "GataBotLite-MD", 
-  "description": "Bot ligero para WhatsApp",
-  "repository": "https://github.com/GataNina-Li/GataBotLite-MD",
-  "logo": "https://i.imgur.com/AwlL9kc.jpg",
+  "name": "SharkLite", 
+  "description": "El Mejor Bot De WhatsApp 2023",
+  "repository": "https://github.com/ElChema-Nc/SharkLite",
+  "logo": "https://i.ibb.co/JRB2H3s/Menu1.jpg",
   "keywords": ["java", "bot", "whatsapp-bot", "whatsapp-automation"],
   "buildpacks": [
     {
