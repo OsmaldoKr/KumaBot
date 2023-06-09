@@ -16,7 +16,7 @@
 
 
 [`😛 App Termux`](https://f-droid.org/es/packages/com.termux/)
-### 🤨 INSTALACIÓN AUTOMÁTICA - TERMUX 🤨
+### 🤨 INSTALACIÓN AUTOMÁTICA - TERMUX
 
 ```bash
 termux-setup-storage
@@ -28,7 +28,7 @@ apt update -y && yes | apt upgrade && pkg install -y bash wget && wget -O - http
 - [`Repositorio`](https://github.com/ElChema-Nc/SharkLite/blob/26d815118042760456a4cb2408654ad5d296e146/sharklite.sh#LL153C54-L153C54)
 - [`Nombre del Bot`](https://github.com/ElChema-Nc/SharkLite/blob/26d815118042760456a4cb2408654ad5d296e146/sharklite.sh#L157)
 - Actualizar: `https://raw.githubusercontent.com/ElChema-Nc/SharkLite/master/sharklite.sh`
-### 🌼 INSTALACIÓN MANUAL - TERMUX 🌼
+### 👻 INSTALACIÓN MANUAL - TERMUX
 ```bash
 termux-setup-storage
 apt update
@@ -44,7 +44,7 @@ npm start
 ### 🍁 TERMUX 24/7 🍁 
 > Comandos para realizar una ejecución 24/7
 - INICIAR
-> Use estos comandos dentro de la carpeta GataBotLite-MD
+> Use estos comandos dentro de la carpeta SharkLite
 ```bash
 termux-wake-lock && npm i -g pm2 && pm2 start index.js && pm2 save && pm2 logs 
 ```
@@ -85,7 +85,7 @@ https://github.com/jonathanong/heroku-buildpack-ffmpeg-latest.git
 ```bash
 https://github.com/clhuang/heroku-buildpack-webp-binaries.git
 ```
-## 🌻 INSTALACIÓN PARA WINDOWS/VPS/RDP 🌻
+## 😵‍💫 INSTALACIÓN PARA WINDOWS/VPS/RDP 😵‍💫
 
 * Descargar e instala Git [`Aquí`](https://git-scm.com/downloads)
 * Descargar e instala NodeJS [`Aquí`](https://nodejs.org/en/download)
