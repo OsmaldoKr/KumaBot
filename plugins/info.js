@@ -17,7 +17,7 @@ fkontak = { "key": { "participants":"0@s.whatsapp.net", "remoteJid": "status@bro
 
 const isCommand1 = /^(estado|status|estate|state|stado|stats|botstat(us)?)$/i.test(command)  
 const isCommand2 = /^(cuenta(s)?oficiales?|sharkig|(cuentas|account)s?g?b|(ig)?shark|(cuentasshark))$/i.test(command)  
-const isCommand3 = /^(shark(bot)?groups?|grupos(ofc|desharkbot|gb)|grupogb|groupsgb|sharkgroups?|grupos|group(ofc|sofc))$/i.test(command) 
+const isCommand3 = /^(shark(bot)?groups?|grupos(ofc|desharkbot|sk)|gruposk|groupssk|sharkgroups?|grupos|group(ofc|sofc))$/i.test(command) 
 const isCommand4 = /^(c(ó|o)digo|sc|git|script)$/i.test(command) 
 const isCommand5 = /^(instalar(shark)?bot|proceso(del)?bot|bot(install|proceso)|installbot)$/i.test(command) 
 const isCommand6 = /^(owner|creator|propietario|dueño|dueña|propietaria|dueño|creadora|creador)$/i.test(command) 
@@ -335,7 +335,7 @@ await m.reply(lenguajeGB.smsReportGB5())
 break
 }}
 
-handler.command = /^(estado|status|estate|state|stado|stats|botstat(us)?|cuenta(s)?oficiales?|sharkig|(cuentas|account)s?g?b|(ig)?shark|(cuentasshark))|shark(bot)?groups?|grupos|groupsgb|grupos(ofc|desharkbot|gb)|grupogb|sharkgroups?|group(ofc|sofc)|c(ó|o)digo|sc|git|script|instalar(shark)?bot|proceso(del)?bot|bot(install|proceso)|installbot|owner|creator|propietario|dueño|dueña|propietaria|dueño|creadora|creador|group(s|list|o(lista)?)|list(a)?(de)?grupo(s)?|grupolista|info(shark|bot)|informaci(ón|on)(shark|bot)|contactos?|contacts?|ping|speed|velocidad|rapidez|velocity|dona(te|si)|donar|apoyar|paypal|donating|aportar|report|request|reporte|bugs|bug|reportowner|reportes|reportar$/i
+handler.command = /^(estado|status|estate|state|stado|stats|botstat(us)?|cuenta(s)?oficiales?|sharkig|(cuentas|account)s?s?k|(ig)?shark|(cuentasshark))|shark(bot)?groups?|grupos|groupssk|grupos(ofc|desharkbot|sk)|gruposk|sharkgroups?|group(ofc|sofc)|c(ó|o)digo|sc|git|script|instalar(shark)?bot|proceso(del)?bot|bot(install|proceso)|installbot|owner|creator|propietario|dueño|dueña|propietaria|dueño|creadora|creador|group(s|list|o(lista)?)|list(a)?(de)?grupo(s)?|grupolista|info(shark|bot)|informaci(ón|on)(shark|bot)|contactos?|contacts?|ping|speed|velocidad|rapidez|velocity|dona(te|si)|report|request|reporte|bugs|bug|reportowner|reportes|reportar$/i
 export default handler
 
 function clockString(ms) {
