@@ -11,13 +11,13 @@ import { sizeFormatter } from 'human-readable'
 
 let handler = async (m, { conn, command, usedPrefix, args, text, __dirname, isOwner, isRowner, DevMode }) => {
 let name, _uptime, _muptime, uptime, totalreg, fkontak, rtotalreg, frep, _package, taguser, groups
-const grupo = [nna, nn, nnn, nnnt, nnntt, nnnttt, nnnttt2, nnnttt3, nnnttt4] 
+const grupo = [nna] 
 frep = { contextInfo: { externalAdReply: {title: wm, body: lenguajeGB.smsCreApoyo(), sourceUrl: redesMenu.getRandom(), thumbnail: await(await fetch(sharkMenu.getRandom())).buffer() }}}
 fkontak = { "key": { "participants":"0@s.whatsapp.net", "remoteJid": "status@broadcast", "fromMe": false, "id": "Halo" }, "message": { "contactMessage": { "vcard": `BEGIN:VCARD\nVERSION:3.0\nN:Sy;Bot;;;\nFN:y\nitem1.TEL;waid=${m.sender.split('@')[0]}:${m.sender.split('@')[0]}\nitem1.X-ABLabel:Ponsel\nEND:VCARD` }}, "participant": "0@s.whatsapp.net" }
 
 const isCommand1 = /^(estado|status|estate|state|stado|stats|botstat(us)?)$/i.test(command)  
 const isCommand2 = /^(cuenta(s)?oficiales?|sharkig|(cuentas|account)s?g?b|(ig)?shark|(cuentasshark))$/i.test(command)  
-const isCommand3 = /^(shark(bot)?groups?|grupos(ofc|desharkbot|gb)|grupogb|groupsgb|sharkgroups?|grupos|group(ofc|sofc))$/i.test(command) 
+const isCommand3 = /^(shark(bot)?groups?|grupos(ofc|desharkbot|sk)|gruposk|groupssk|sharkgroups?|grupos|group(ofc|sofc))$/i.test(command) 
 const isCommand4 = /^(c(ó|o)digo|sc|git|script)$/i.test(command) 
 const isCommand5 = /^(instalar(shark)?bot|proceso(del)?bot|bot(install|proceso)|installbot)$/i.test(command) 
 const isCommand6 = /^(owner|creator|propietario|dueño|dueña|propietaria|dueño|creadora|creador)$/i.test(command) 
@@ -25,8 +25,7 @@ const isCommand7 = /^(group(s|list|o(lista)?)|list(a)?(de)?grupo(s)?|grupolista)
 const isCommand8 = /^(info(shark|bot)|informaci(ón|on)(shark|bot))$/i.test(command) 
 const isCommand9 = /^(contactos?|contacts?)$/i.test(command) 
 const isCommand10 = /^(ping|speed|velocidad|rapidez|velocity)$/i.test(command) 
-const isCommand11 = /^(dona(te|si)|donar|apoyar|paypal|donating|aportar)$/i.test(command) 
-const isCommand12 = /^(report|request|reporte|bugs|bug|reportowner|reportes|reportar)$/i.test(command) 
+const isCommand11 = /^(report|request|reporte|bugs|bug|reportowner|reportes|reportar)$/i.test(command) 
 
 async function reportError(e) {
 await m.reply(lenguajeGB['smsMalError3']() + '\n*' + lenguajeGB.smsMensError1() + '*\n*' + usedPrefix + `${lenguajeGB.lenguaje() == 'es' ? 'reporte' : 'report'}` + '* ' + `${lenguajeGB.smsMensError2()} ` + usedPrefix + command)
@@ -72,8 +71,6 @@ let str = `
 *${ig}*\n
 ◎ *YOUTUBE*
 *${yt}*\n
-◎ *FACEBOOK*
-*${fb}*\n
 ${lenguajeGB.smsOfc2()}`.trim() 
 await conn.sendFile(m.chat, media, 'shark.jpg', lenguajeGB.smsOfc1() + '\n\n' + str, fkontak)  
 } catch (e) {
@@ -231,13 +228,13 @@ number = String(contact[0])
 ofc = await conn.getName(number + '@s.whatsapp.net') //String(contact[1])
 let biografia = await conn.fetchStatus(number +'@s.whatsapp.net').catch(_ => 'undefined')
 let bio = biografia.status?.toString() || `${desc2 == '' ? lenguajeGB.smsContacto2() : desc2}`
-nombre = official[0][0] == String(contact[0]) ? official[0][1] : official[1][0] == String(contact[0]) ? official[1][1] : official[2][0] == String(contact[0]) ? official[2][1] : official[3][0] == String(contact[0]) ? official[3][1] : lenguajeGB.smsContacto3() 
-description = official[0][0] == String(contact[0]) ? 'Solo temas de GataBot' : official[1][0] == String(contact[0]) ? lenguajeGB.smsContacto4() : official[2][0] == String(contact[0]) ? lenguajeGB.smsContacto4() : official[3][0] == String(contact[0]) ? lenguajeGB.smsContacto4() : desc === '' ? lenguajeGB.smsContacto5() : desc
-correo = official[0][0] == String(contact[0]) ? 'socialplus.gata@gamil.com' : official[1][0] == String(contact[0]) ? 'thelolibotm@gmail.com' : official[2][0] == String(contact[0]) ? 'alexismaldonado90700@gmail.com' : mail === '' ? lenguajeGB.smsContacto6() : mail
-lugar = official[0][0] == String(contact[0]) ? '🇪🇨 Ecuador' : official[1][0] == String(contact[0]) ? '🇦🇷 Argentina' : official[2][0] == String(contact[0]) ? '🇲🇽 México' : official[3][0] == String(contact[0]) ? '🇧🇷 Brazil' : country === '' ? lenguajeGB.smsContacto7() : country
-enlace = official[0][0] == String(contact[0]) ? 'https://github.com/GataNina-Li' : official[1][0] == String(contact[0]) ? 'https://github.com/elrebelde21' : official[2][0] == String(contact[0]) ? 'https://github.com/Azami19' : official[3][0] == String(contact[0]) ? 'https://github.com/Abiguelreyes75' : md    
-lista.push([number, ofc, nombre, description, official[3][0] == String(contact[0]) ? null : correo, lugar, enlace, bio, official[1][0] == String(contact[0]) ? 'https://www.youtube.com/@TheLoliBot-MD' : null]) }  
-lista.push([conn.user.jid.split('@')[0], await conn.getName(conn.user.jid), packname, lenguajeGB.smsContacto8(), mail === '' ? 'centergatabot@gmail.com' : mail, lenguajeGB.smsContacto7(), md, bioBot, yt, ig, nna])
+nombre = official[0][0] == String(contact[0]) ? official[0][1] : lenguajeGB.smsContacto3() 
+description = official[0][0] == String(contact[0]) ? 'Solo temas del SharkLite' : official[1][0] == String(contact[0]) ? lenguajeGB.smsContacto4() : desc === '' ? lenguajeGB.smsContacto5() : desc
+correo = official[0][0] == String(contact[0]) ? 'ja82783643@gmail.com' : mail === '' ? lenguajeGB.smsContacto6() : mail
+lugar = official[0][0] == String(contact[0]) ? '🇳🇮 Nicaragua' : country === '' ? lenguajeGB.smsContacto7() : country
+enlace = official[0][0] == String(contact[0]) ? 'https://github.com/ElChema-Nc' : md    
+lista.push([number, ofc, nombre, description, official[3][0] == String(contact[0]) ? null : correo, lugar, enlace, bio, official[1][0] == String(contact[0]) ? 'https://www.youtube.com/1alvarez_jose8' : null]) }  
+lista.push([conn.user.jid.split('@')[0], await conn.getName(conn.user.jid), packname, lenguajeGB.smsContacto8(), mail === '' ? 'ja82783643@gmail.com' : mail, lenguajeGB.smsContacto7(), md, bioBot, yt, ig, nna])
 await conn.sendContactArray(m.chat, lista, null, { quoted: fkontak })
 /*function handler(m) {
 const data = global.owner.filter(([id, isCreator]) => id && isCreator) 
@@ -307,16 +304,6 @@ reportError(e)
 break
     
 case isCommand11:
-try { 
-let donar = lenguajeGB.smsMensajeDonar().trim()
-await conn.sendFile(m.chat, img21, 'shark.jpg', lenguajeGB.smsTituloDonar() + '\n\n' + donar + '\n\n' + paypal + '\n' + ig, fkontak) 
-await conn.reply(m.sender, lenguajeGB.smsPrivadoDonar() + '\n\n' + paypal + '\n' + md, m)
-} catch (e) {
-reportError(e)
-}     
-break
-    
-case isCommand12:
 if (!text) throw lenguajeGB.smsReportGB1(usedPrefix, command)
 if (text.length < 8) throw lenguajeGB.smsReportGB2()
 if (text.length > 1000) throw lenguajeGB.smsReportGB3()
@@ -335,7 +322,7 @@ await m.reply(lenguajeGB.smsReportGB5())
 break
 }}
 
-handler.command = /^(estado|status|estate|state|stado|stats|botstat(us)?|cuenta(s)?oficiales?|sharkig|(cuentas|account)s?g?b|(ig)?shark|(cuentasshark))|shark(bot)?groups?|grupos|groupsgb|grupos(ofc|desharkbot|gb)|grupogb|sharkgroups?|group(ofc|sofc)|c(ó|o)digo|sc|git|script|instalar(shark)?bot|proceso(del)?bot|bot(install|proceso)|installbot|owner|creator|propietario|dueño|dueña|propietaria|dueño|creadora|creador|group(s|list|o(lista)?)|list(a)?(de)?grupo(s)?|grupolista|info(shark|bot)|informaci(ón|on)(shark|bot)|contactos?|contacts?|ping|speed|velocidad|rapidez|velocity|dona(te|si)|donar|apoyar|paypal|donating|aportar|report|request|reporte|bugs|bug|reportowner|reportes|reportar$/i
+handler.command = /^(estado|status|estate|state|stado|stats|botstat(us)?|cuenta(s)?oficiales?|sharkig|(cuentas|account)s?g?b|(ig)?shark|(cuentasshark))|shark(bot)?groups?|grupos|groupssk|grupos(ofc|desharkbot|sk)|gruposk|sharkgroups?|group(ofc|sofc)|c(ó|o)digo|sc|git|script|instalar(shark)?bot|proceso(del)?bot|bot(install|proceso)|installbot|owner|creator|propietario|dueño|dueña|propietaria|dueño|creadora|creador|group(s|list|o(lista)?)|list(a)?(de)?grupo(s)?|grupolista|info(shark|bot)|informaci(ón|on)(shark|bot)|contactos?|contacts?|ping|speed|velocidad|rapidez|velocity|report|request|reporte|bugs|bug|reportowner|reportes|reportar$/i
 export default handler
 
 function clockString(ms) {
