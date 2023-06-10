@@ -1,5 +1,3 @@
-//CÓDIGO CREADO Y ADAPTADO POR https://github.com/GataNina-Li
-
 import fs from 'fs'
 import path from 'path'
 import { promisify } from 'util'
