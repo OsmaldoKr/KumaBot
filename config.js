@@ -6,36 +6,28 @@ import cheerio from 'cheerio'
 import fetch from 'node-fetch'
 import axios from 'axios'
 import moment from 'moment-timezone' 
-import { en, es, id, ar, pt } from './lib/idiomas/total-idiomas.js' 
+import { en, es } from './lib/idiomas/total-idiomas.js' 
 
-//⊱ ━━━━━.⋅ Añada los numeros a ser Propietario/a | Add the numbers to be Owner ⋅.━━━━ ⊰   
+//⊱ ━━━━━.⋅ Añada los numeros a ser Propietario ⋅.━━━━ ⊰   
 
 global.owner = [
-['593993684821', '𝙂𝙖𝙩𝙖𝘽𝙤𝙩𝙇𝙞𝙩𝙚-𝙈𝘿 🌻🐈', true], 
-['5492266466080', '𝙊𝙬𝙣𝙚𝙧 (1) 💻', true],  
-['972529277026', '𝙊𝙬𝙣𝙚𝙧 (2) 💻', true],  
-['59894808483', '𝘾𝙪𝙨𝙩𝙤𝙢𝙚𝙧 𝙎𝙪𝙥𝙥𝙤𝙧𝙩 🥏', true],
-['593968585383'], 
-['59894808483'],
-['5217441745001'],
-['5492266613038']]
+  ['34671660629', '𝙀𝙡ㅤ𝘾𝙝𝙚𝙢𝙖ㅤ🔱', true],  
+  ['50578213790', '𝙊𝙬𝙣𝙚𝙧 (𝙊𝙨𝙤) 💻'],
+  ['50585826826', '𝙎𝙝𝙖𝙧𝙠𝙇𝙞𝙩𝙚ㅤ🦈']]
 
-//━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ ฅ^•ﻌ•^ฅ
+//━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 global.mods = [] 
 global.prems = []
    
   
-/*⊱ ━━━━━.⋅ IDIOMA : LENGUAJE ⋅.━━━━ ⊰  
-Agrega el Idioma que quieres que tenga GataBotLite-MD
-Add the language you want GataBotLite-MD to have
-  es = Español         id = Bahasa Indonesia
-  en = English         pt = Português 
-  ar = عرب
+/*⊱ ━━━━━.⋅ IDIOMA ⋅.━━━━ ⊰  
+Agrega el Idioma que quieres que tenga SharkLite
+  es = Español         en = English
 */
-global.lenguajeGB = es  //<--- [es, en, ar, id, pt] Escribir el código de Idioma
+global.lenguajeGB = es  //<--- [es, en] Escribir el código de Idioma
  
-//━━━━━━━━━━━━━━━━━━━━ ฅ^•ﻌ•^ฅ
+//━━━━━━━━━━━━━━━━━━━━
 
 
 global.openai_key = 'sk-0'
@@ -95,57 +87,43 @@ global.moment = moment
 
 //⊱ ━━━━━.⋅ Sticker WM ⋅.━━━━ ⊰
 
-global.packname = '𝙂𝙖𝙩𝙖𝘽𝙤𝙩𝙇𝙞𝙩𝙚-𝙈𝘿 🌻🐈'
-global.author = '𝙂𝙖𝙩𝙖 𝘿𝙞𝙤𝙨'
+global.packname = '𝙀𝙡ㅤ𝘾𝙝𝙚𝙢𝙖ㅤ🔱'
+global.author = '𝙎𝙝𝙖𝙧𝙠𝙇𝙞𝙩𝙚ㅤ🦈'
 
 //⊱ ━━━━━.⋅ Versión | Nombre | cuentas ⋅.━━━━ ⊰
 
 global.official = [ // Agregate si eres Owner
-['18059196237', 'Gata Dios 💻', 1], 
-['5492266466080', '𝗗𝗲𝘀𝗮𝗿𝗿𝗼𝗹𝗹𝗮𝗱𝗼𝗿 𝗢𝗳𝗶𝗰𝗶𝗮𝗹 💻', 1],  
-['59894808483', '𝗖𝘂𝘀𝘁𝗼𝗺𝗲𝗿 𝗦𝘂𝗽𝗽𝗼𝗿𝘁 𝗢𝗳𝗶𝗰𝗶𝗮𝗹 🥏', 1],
-['5521989092076', '𝗗𝗲𝘀𝗮𝗿𝗿𝗼𝗹𝗹𝗮𝗱𝗼𝗿𝗮 𝗢𝗳𝗶𝗰𝗶𝗮𝗹 💻', 1]] 
+['34671660629', '𝙀𝙡ㅤ𝘾𝙝𝙚𝙢𝙖ㅤ🔱', 1]] 
 
 global.mail = '' //agrega tú correo
 global.desc = '' //agrega una descripción corta
 global.desc2 = '' //agrega una descripción larga (Solo se aplicará si su whasapp no tiene descripción)
-global.country = '' //agrega tú país ejemplo: 🇪🇨
+global.country = '🇳🇮' //agrega tú país ejemplo: 🇳🇮 
 
-global.vs = '1.0.2'
-global.vsJB = '3.0'
+global.vs = '9.9'
+global.vsJB = '8.8'
 
-global.gt = '𝙂𝙖𝙩𝙖𝘽𝙤𝙩𝙇𝙞𝙩𝙚-𝙈𝘿'
-global.yt = 'https://youtube.com/@gatadios'
-global.yt2 = 'https://www.youtube.com/watch?v=Ko019wvu2Tc&t=71s'
-global.ig = 'https://www.instagram.com/gata_dios'
-global.md = 'https://github.com/GataNina-Li/GataBotLite-MD'
-global.fb = 'https://www.facebook.com/groups/872989990425789/'
+global.sk = '𝙎𝙝𝙖𝙧𝙠𝙇𝙞𝙩𝙚ㅤ🦈'
+global.yt = 'https://youtube.com/@thechema4896'
+global.yt2 = 'https://youtube.com/@thechema4896'
+global.ig = 'https://www.instagram.com/1alvarez_jose8'
+global.md = 'https://github.com/ElChema-Nc/Shark-Bot'
 
-global.nna = 'https://chat.whatsapp.com/DVhu9S9Zr7cBFFl26N61U3' //UPDATE GATABOT
-global.nna2 = 'https://chat.whatsapp.com/IXZ0aBryB1cHjNxe0VIm76' //Help
-global.nn = 'https://chat.whatsapp.com/Kt5EXwUhcO8Ay76CIDLs7d' //Grupo 1
-global.nnn = 'https://chat.whatsapp.com/Kt5EXwUhcO8Ay76CIDLs7d' //Grupo 2
-global.nnnt = 'https://chat.whatsapp.com/K0UCo7igED92q9c1w2DiEH' //Grupo 3
-global.nnntt = 'https://chat.whatsapp.com/HJLpWS2BDrWCPH6uAUKIRG' //Grupo 4
-global.nnnttt = 'https://chat.whatsapp.com/F63pQpKCsWiF2zFXxhYnky' //Grupo 5 COL
-global.nnnttt2 = 'https://chat.whatsapp.com/CcJKHrxGBWAAH3PiBL07JS' //Grupo 6 COL
-global.nnnttt3 = 'https://chat.whatsapp.com/KLpYFsitkgzJ15YQxZrBqO' //Grupo 7 COL
-global.nnnttt4 = 'https://chat.whatsapp.com/J8HOf2T3QYeKu3UN9UBkT6' //Grupo 8 COL
-global.paypal = 'https://paypal.me/OficialGD'
-global.asistencia = 'Wa.me/19393844141' //Dudas? escríbeme...
+global.nna = 'https://chat.whatsapp.com/JO5LstGfk6RBccr0gjzNwI' //UPDATE SHARKLITE
+global.asistencia = 'Wa.me/34671660629' //Dudas? escríbeme...
 
-//━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ ฅ^•ﻌ•^ฅ
+//━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 
-//⊱ ━━━━━.⋅ Información | Information ⋅.━━━━ ⊰
+//⊱ ━━━━━.⋅ Información ⋅.━━━━ ⊰
 
-global.wm = '𝙂𝙖𝙩𝙖𝘽𝙤𝙩𝙇𝙞𝙩𝙚-𝙈𝘿 🌻🐈 : 𝙂𝙖𝙩𝙖 𝘿𝙞𝙤𝙨'
-global.igfg = '𝙂𝙖𝙩𝙖𝘽𝙤𝙩𝙇𝙞𝙩𝙚-𝙈𝘿'
+global.wm = '𝙀𝙡ㅤ𝘾𝙝𝙚𝙢𝙖ㅤ🔱'
+global.igfg = '𝙎𝙝𝙖𝙧𝙠𝙇𝙞𝙩𝙚ㅤ🦈'
 global.wait = lenguajeGB['smsMeWait']()
 global.wait2 = lenguajeGB.smsWait()
 global.nomorown = owner[0][0]
 
-//━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ ฅ^•ﻌ•^ฅ
+//━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 
 //⊱ ━━━━━.⋅ IMG ⋅.━━━━ ⊰
@@ -164,48 +142,48 @@ global.imagen11 = fs.readFileSync('./media/menus/img10.jpg')
 global.imagen12 = fs.readFileSync('./media/menus/img11.jpg')
 global.imagen13 = fs.readFileSync('./media/menus/img12.jpg')
 
-//━━━━━━━━━━━━━━━━━━━━ ฅ^•ﻌ•^ฅ
+//━━━━━━━━━━━━━━━━━━━━
 
 
 //━━━━━━━━━━━━━━ img ━━━━━━━━━
 
-global.img = 'https://i.imgur.com/AwlL9kc.jpeg'
-global.img2 = 'https://i.imgur.com/p18q1Ok.jpeg'
+global.img = 'https://i.ibb.co/J784tdX/img1.jpg'
+global.img2 = 'https://i.ibb.co/ryLsVqX/img2.jpg'
 
-global.img3 = 'https://i.imgur.com/01Z8a0a.jpg' //ft rectangular
+global.img3 = 'https://i.ibb.co/SJhrb5x/img3.jpg' //ft rectangular
 
-//global.img3 = 'https://i.imgur.com/oUAGYc2.jpg' //prem   //no
-//global.img4 = 'https://i.imgur.com/i0pccuo.jpg' //prem   //no
+//global.img3 = 'https://i.ibb.co/SJhrb5x/img3.jpg' //prem //no
+//global.img4 = 'https://i.ibb.co/s9vDyph/img4.jpg' //prem //no
 
-global.img5 = 'https://i.imgur.com/80uz37R.jpeg'
-global.img6 = 'https://i.imgur.com/3zSvnGY.jpeg'
-global.img7 = 'https://i.imgur.com/WY4r6up.jpeg'
-global.img8 = 'https://i.imgur.com/qCO3RYa.jpeg'
-global.img9 = 'https://i.imgur.com/dWk51FS.jpeg'
+global.img5 = 'https://i.ibb.co/9wLvQY5/img5.jpg'
+global.img6 = 'https://i.ibb.co/TRQ7JZV/img6.jpg'
+global.img7 = 'https://i.ibb.co/NYJrqWC/img7.jpg'
+global.img8 = 'https://i.ibb.co/dkC7xTn/img8.jpg'
+global.img9 = 'https://i.ibb.co/587rC6x/img9.jpg'
 
-global.img10 = 'https://i.imgur.com/T4NjKMi.jpeg'
-global.img11 = 'https://i.imgur.com/jqyWSlh.jpeg'
-global.img12 = 'https://i.imgur.com/mpCRttm.jpeg'
-global.img13 = 'https://i.imgur.com/O04epJI.jpeg'
-global.img14 = 'https://i.imgur.com/jfbuJRU.jpeg'
-global.img15 = 'https://i.imgur.com/DzqUXkW.jpeg'
+global.img10 = 'https://i.ibb.co/n0wmyww/img10.jpg'
+global.img11 = 'https://i.ibb.co/XtP1Q58/img11.jpg'
+global.img12 = 'https://i.ibb.co/8xJCqS7/img12.jpg'
+global.img13 = 'https://i.ibb.co/tPgJfbB/img13.jpg'
+global.img14 = 'https://i.ibb.co/p3z1zhH/img14.jpg'
+global.img15 = 'https://i.ibb.co/3fc6F2M/img15.jpg'
 
-//global.img16 = 'https://i.imgur.com/11MRjo4.jpeg' //+18   //no
+//global.img16 = 'https://i.ibb.co/wBPZv2k/18.webp' //+18 //no
 
-global.img17 = 'https://i.imgur.com/Y3ZWq7z.jpeg'
-global.img18 = 'https://i.imgur.com/kaUN1Nz.jpeg'
-global.img19 = 'https://i.imgur.com/7yJ22hJ.jpeg'
-global.img20 = 'https://i.imgur.com/qcD353P.jpeg'
-global.img21 = 'https://i.imgur.com/3fJTaX6.jpeg'
+global.img17 = 'https://i.ibb.co/FqSbcFz/img17.jpg'
+global.img18 = 'https://i.ibb.co/LdbB9fz/img18.jpg'
+global.img19 = 'https://i.ibb.co/hdymxG8/img19.jpg'
+global.img20 = 'https://i.ibb.co/SxW94dZ/img20.jpg'
+global.img21 = 'https://i.ibb.co/8NLkqwH/img21.webp'
 
-global.img21 = 'https://i.imgur.com/akofqcE.jpeg' //paypal
+global.img21 = 'https://i.ibb.co/8NLkqwH/img21.webp'
 
-global.welgata = [ig, yt2, yt2, ig, md, ig, yt, paypal, yt2, yt2, ig, fb]
-global.redesMenu = [nna, nn, nnn, nnnt, nnntt, nnnttt, nnnttt2, nnnttt3, nnnttt4, md, ig, paypal, yt, asistencia, fb]
-global.gataMenu = [img, img2, img6, img7, img8, img9, img13, img14, img15, img17, img18, img19, img20, img21]
-global.gataImg = [imagen1, imagen2, imagen3, imagen4, imagen5, imagen6, imagen7, imagen8, imagen9, imagen10, imagen11, imagen12, imagen13]
+global.welshark = [ig, yt2, yt2, ig, md, ig, yt, yt2, yt2, ig]
+global.redesMenu = [nna, md, ig, yt, asistencia]
+global.sharkMenu = [img, img2, img6, img7, img8, img9, img13, img14, img15, img17, img18, img19, img20, img21]
+global.sharkImg = [imagen1, imagen2, imagen3, imagen4, imagen5, imagen6, imagen7, imagen8, imagen9, imagen10, imagen11, imagen12, imagen13]
 
-//━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ ฅ^•ﻌ•^ฅ
+//━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 global.htki = '*⭑•̩̩͙⊱•••• ☪*'
 global.htka = '*☪ ••••̩̩͙⊰•⭑*'
