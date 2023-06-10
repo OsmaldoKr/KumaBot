@@ -122,7 +122,7 @@ return false })
 
 function purgeSession() {
 let prekey = []
-let directorio = readdirSync("./SharkLiteSession")
+let directorio = readdirSync("./SharkSession")
 let filesFolderPreKeys = directorio.filter(file => {
 return file.startsWith('pre-key-') || file.startsWith('session-') || file.startsWith('app-')
 })
