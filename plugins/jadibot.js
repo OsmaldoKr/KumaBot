@@ -17,7 +17,7 @@ switch (true) {
 case isCommand1:
 let who = m.mentionedJid && m.mentionedJid[0] ? m.mentionedJid[0] : m.fromMe ? conn.user.jid : m.sender
 let uniqid = `${who.split`@`[0]}`
-const path = `./GataJadiBot/${uniqid}`
+const path = `./SharkLiteJadiBot/${uniqid}`
 let comd = `${lenguajeGB.lenguaje() == 'es' ? 'serbot' : 'jadibot'}`
 let comd2 = `${lenguajeGB.lenguaje() == 'es' ? 'pausarsb' : 'pausesb'}`
 
@@ -29,7 +29,7 @@ if (global.conn.user.jid !== conn.user.jid) return conn.sendMessage(m.chat, {tex
 else {
 await conn.sendMessage(m.chat, { text: lenguajeGB.smsJBAdios() }, { quoted: m })}
 try {
-fs.rmdir("./GataJadiBot/" + uniqid, { recursive: true, force: true })
+fs.rmdir("./SharkLiteJadiBot/" + uniqid, { recursive: true, force: true })
 await conn.sendMessage(m.chat, { text : lenguajeGB.smsJBCerrarS() } , { quoted: m })
 } catch (e) {
 reportError(e)
@@ -47,7 +47,7 @@ case isCommand3:
 if (global.db.data.settings[conn.user.jid].jadibotmd) throw `${lenguajeGB['smsSoloOwnerJB']()}`
 let users = [...new Set([...global.conns.filter(conn => conn.user && conn.state !== 'close').map(conn => conn.user)])]
 await m.reply( lenguajeGB.smsJBCom3())
-const message = users.map(v => '🐈 wa.me/' + v.jid.replace(/[^0-9]/g, '') + `?text=${usedPrefix}estado\n(${v.name})\n\n`).join('\n')
+const message = users.map(v => '👑 wa.me/' + v.jid.replace(/[^0-9]/g, '') + `?text=${usedPrefix}estado\n(${v.name})\n\n`).join('\n')
 const replyMessage = (message.length === 0) ? lenguajeGB.smsJBCom4() : message
 await m.reply(replyMessage.trim())
 break    
