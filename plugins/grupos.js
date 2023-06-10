@@ -83,6 +83,7 @@ reportError(e)
 } 
 break
 
+//FUNCIÓN HECHA POR https://github.com/Azami19
 case isCommand4:
 let [, code] = text.match(/chat\.whatsapp\.com\/(?:invite\/)?([0-9A-Za-z]{20,24})/i) || []
 if (!code) throw lenguajeGB.smsMalused() + usedPrefix + command + ' ' + nna 
@@ -120,7 +121,7 @@ let groupinfo = `
 🌹 ${lenguajeGB.smsInsGC5()}
 → ${data.desc === undefined ? '❌' : data.desc}
 `.trim()
-await conn.sendFile(m.chat, sharkImg.getRandom(), 'error.jpg', groupinfo, m)
+await conn.sendFile(m.chat, gataImg.getRandom(), 'error.jpg', groupinfo, m)
 } catch (e) {
 reportError(e)
 }   
@@ -149,7 +150,7 @@ ${rege.test(conn.getName(m.sender)) == true || rege.test(conn.getName(text.repla
 • ${conn.getName(text.replace('@', '') + '@s.whatsapp.net')} ➜ ${PhoneNumber('+' + text.replace('@', '') + '@s.whatsapp.net'.replace('@s.whatsapp.net', '')).getNumber('international')}`}`.trim()
 body = await sticker(null, cont, action)
 //await conn.sendFile(m.chat, body, null, { mentions: [m.sender, text.replace('@', '') + '@s.whatsapp.net'] }, m) 
-await conn.sendFile(m.chat, body, 'sticker.webp', '', m, true, { contextInfo: { 'forwardingScore': 200, 'isForwarded': false, externalAdReply:{ showAdAttribution: false, title: `• ${conn.getName(m.sender)}`, body: `👋 Saludando a ${conn.getName(text.replace('@', '') + '@s.whatsapp.net')}`, mediaType: 2, sourceUrl: md, thumbnail: sharkImg.getRandom()}}})
+await conn.sendFile(m.chat, body, 'sticker.webp', '', m, true, { contextInfo: { 'forwardingScore': 200, 'isForwarded': false, externalAdReply:{ showAdAttribution: false, title: `• ${conn.getName(m.sender)}`, body: `👋 Saludando a ${conn.getName(text.replace('@', '') + '@s.whatsapp.net')}`, mediaType: 2, sourceUrl: md, thumbnail: gataImg.getRandom()}}})
 break
     
 case cmd == "abrazar":

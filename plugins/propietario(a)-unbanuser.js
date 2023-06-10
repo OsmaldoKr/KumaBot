@@ -1,4 +1,4 @@
-//NO BORRAR O CAMBIAR NOMBRE DEL ARCHIVO, DE LO CONTRAIO NO FUNCIONARÁ   
+//NO BORRAR O CAMBIAR NOMBRE DEL ARCHIVO, DE LO CONTRAIO NO FUNCIONARÁ  
 let handler = async (m, { conn, text, usedPrefix, command}) => {
 let user, number, bot, bant, ownerNumber, aa, users, usr, q, mime, img
 try{
@@ -35,9 +35,6 @@ await conn.reply(m.chat, lenguajeGB.smsPropdesban5(usedPrefix, command, number),
 console.log(e)
 }}
 
-handler.command = /^(desprohibir|unprohibit|desprivar|undeprive)$/i
-handler.group = true
-handler.botAdmin = true 
-handler.register = true
-handler.admin = true
+handler.command = /^((unban|desban)(user|usuario|earuser|earusuario))$/i
+handler.owner = true
 export default handler

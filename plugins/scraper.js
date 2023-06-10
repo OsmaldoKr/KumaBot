@@ -1,3 +1,5 @@
+/* Created by https://github.com/Rlxfly */
+
 import cheerio from 'cheerio'
 import fetch from 'node-fetch'
 
