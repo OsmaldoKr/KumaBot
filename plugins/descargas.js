@@ -33,7 +33,7 @@ console.log(e)
 
 switch (true) {     
 case isCommand1:
-if (!text) throw lenguajeGB.smsMalused2() + `\n*${usedPrefix + command} Gata*`
+if (!text) throw lenguajeGB.smsMalused2() + `\n*${usedPrefix + command} Shark*`
 try{
 const res = await googleImage(text)
 let image = res.getRandom()

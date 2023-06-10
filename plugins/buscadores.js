@@ -113,13 +113,13 @@ ${location || err}
 
 ${lenguajeGB.smsGit13()}
 ${type || err}`
-await conn.sendFile(m.chat, thumb || gataMenu.getRandom(), 'githubstalk.jpg', cont, fkontak) 
+await conn.sendFile(m.chat, thumb || sharkMenu.getRandom(), 'githubstalk.jpg', cont, fkontak) 
 } catch (e) {
 reportError(e)}  
 break   
         
 case isCommand5:
-if (!text) throw lenguajeGB.smsMalused2() + `*${usedPrefix + command}* GataBot`
+if (!text) throw lenguajeGB.smsMalused2() + `*${usedPrefix + command}* SharkBot`
 try{
 await conn.reply(m.chat, global.wait, m)
 let results = await yts(text)
