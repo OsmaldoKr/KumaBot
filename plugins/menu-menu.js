@@ -17,7 +17,7 @@ let fkontak = { "key": { "participants":"0@s.whatsapp.net", "remoteJid": "status
 let menu = `*◈ ${user.registered === true ? user.name : `👉 ${usedPrefix}${lenguajeGB.lenguaje() == 'es' ? 'verificar nombre.edad' : 'verify name.age'}`} ◈*
 *˚₊·˚₊· ͟͟͞͞➳❥ @${m.sender.split("@")[0]}*
 *˚₊·˚₊· ͟͟͞͞➳❥* ${packname}
-*☆═━┈◈ ╰ ${vs} ㎇ ╯ ◈┈━═☆*
+*☆═━┈◈ ╰ ${vs} 👑 ╯ ◈┈━═☆*
 *│* 
 *╰ ㊂ ▸▸ _${lenguajeGB.smsMenuTotal1()}_ ◂◂*
 *│* ┊
@@ -188,9 +188,9 @@ let menu = `*◈ ${user.registered === true ? user.name : `👉 ${usedPrefix}${l
 *│* ╰∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙ ∙ ∙ ∙ ∙
  `.trim()
     
-const vi = ['https://telegra.ph/file/405daebd4bc0d69e5d165.mp4',
+/*const vi = ['https://telegra.ph/file/405daebd4bc0d69e5d165.mp4',
 'https://telegra.ph/file/1d0ad9f79f65f39895b08.mp4',
-'https://telegra.ph/file/c25afc1685b13210ce602.mp4']
+'https://telegra.ph/file/c25afc1685b13210ce602.mp4']*/
 
 try {
 await conn.sendMessage(m.chat, { video: { url: vi.getRandom() }, gifPlayback: true, caption: menu, mentions: [m.sender] }, { quoted: fkontak }) 
