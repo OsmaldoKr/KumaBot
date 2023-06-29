@@ -12,7 +12,7 @@
 </a>
   
 #### DISPONIBLE EN:
-> - [x] TERMUX, REPLIT, WINDOWS, HEROKU, BOXMINE-HOST
+> - [x] TERMUX, REPLIT, WINDOWS, ZIPPONODES, BOXMINE-HOST
 
 
 [`😛 App Termux`](https://f-droid.org/es/packages/com.termux/)
@@ -41,10 +41,10 @@ npm install
 npm start
 ```
 
-### 🍁 TERMUX 24/7 🍁 
+### 👺 TERMUX 24/7 👺
 > Comandos para realizar una ejecución 24/7
 - INICIAR
-> Use estos comandos dentro de la carpeta SharkLite
+> Use estos comandos dentro de la carpeta del SharkLite
 ```bash
 termux-wake-lock && npm i -g pm2 && pm2 start index.js && pm2 save && pm2 logs 
 ```
@@ -70,44 +70,50 @@ pm2 delete all
 ```
 > **Note** Demanda consumo de RAM y CPU, el resultado mejora mientras las especificaciones del dispositivo sean moderadas
 
-### 🗿 INSTALACIÓN EN REPLIT 🗿
-<a target="_blank" href="https://replit.com/github/ElChema-Nc/Shark-Bot"><img alt="Run on Replit" src="https://binbashbanana.github.io/deploy-buttons/buttons/remade/replit.svg"></a>
-
-### 🤨 INSTALACIÓN EN HEROKU 🤨
-[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://replit.com/github/ElChema-Nc/Shark-Bot-Heroku) 
-> 👇 Añada lo siguente al Buildpack: 
+### INSTALACIÓN EN REPLIT 🌹
+<a target="_blank" href="https://replit.com/github/ElChema-Nc/SharkLite"><img alt="Run on Replit" src="https://binbashbanana.github.io/deploy-buttons/buttons/remade/replit.svg"></a>
+> **Note** Agregue estos comandos en Shell para empezar la instalación automática por Replit:
 ```bash
-heroku/nodejs
+npm install -g ffmpeg imagemagick git yarn && npm i && node --no-warnings index.js
 ```
-```bash
-https://github.com/jonathanong/heroku-buildpack-ffmpeg-latest.git
-```
-```bash
-https://github.com/clhuang/heroku-buildpack-webp-binaries.git
-```
-## 😵‍💫 INSTALACIÓN PARA WINDOWS/VPS/RDP 😵‍💫
+##  INSTALACIÓN PARA WINDOWS/VPS/RDP 😵‍💫
 
 * Descargar e instala Git [`Aquí`](https://git-scm.com/downloads)
 * Descargar e instala NodeJS [`Aquí`](https://nodejs.org/en/download)
 * Descargar e instala FFmpeg [`Aquí`](https://ffmpeg.org/download.html) (**No olvide agregar FFmpeg a la variable de entorno PATH**)
 * Descargar e instala ImageMagick [`Aquí`](https://imagemagick.org/script/download.php)
-* Descargar e instala Yarn [`Aquí`](https://classic.yarnpkg.com/en/docs/install#windows-stable)
 ```bash
-git clone https://replit.com/github/ElChema-Nc/Shark-Bot && cd SharkLite && yarn install && npm install && npm update && node .
+git clone https://github.com/ElChema-Nc/SharkLite
+cd SharkLite
+npm install -g yarn
+yarn
+npm install 
+npm start
 ```
 ### Instalación de FFmpeg para Windows 
-* Descarga cualquiera de las versiones de FFmpeg disponibles haciendo clic en [FFmpeg](https://www.gyan.dev/ffmpeg/builds/).
-* Extraer archivos a `C:\` path.
-* Cambie el nombre de la carpeta extraída a `ffmpeg`.
+* Descarga la siguiente versión de FFmpeg [`Aquí`](https://www.gyan.dev/ffmpeg/builds/ffmpeg-git-full.7z).
+* Extraer FFmpeg con [`7-Zip`](https://www.7-zip.org/download.html)
+* Cambie el nombre de la carpeta extraída a `FFmpeg`.
+* Mover archivos a `C:\` path.
+* Agregar la ruta ejemplo: `C:\ffmpeg\bin` al entorno de variable
 * Ejecute el símbolo del sistema como administrador.
 * Ejecute el siguiente comando:
 ```cmd
-> setx /m PATH "C:\ffmpeg\bin;%PATH%"
+setx /m PATH "C:\ffmpeg\bin;%PATH%"
 ```
 Si tiene éxito, le dará un mensaje como: `SUCCESS: specified value was saved`.
 * Ahora que tiene FFmpeg instalado, verifique que funcionó ejecutando este comando para ver la versión:
 ```cmd
 > ffmpeg -version
 ```
+### Error en usar yarn en PowerShell
+* Si usa la consola PowerShell y recibe este mensaje `No se puede cargar el archivo yarn.ps1 o yarn porque la ejecución de scripts está deshabilitada en este sistema.` al intentar usar `yarn` dentro de la carpeta del Bot puede usar estos comandos para cambiar la Política de ejecución de PowerShell en su sistema:
+> Debe de ejecutar la consola como Administrador
+```cmd
+Get-ExecutionPolicy
+Set-ExecutionPolicy RemoteSigned
+```
+> Aparecerá un mensaje de advertencia preguntando si deseas cambiar la Política de ejecución. Confirma con "Y" y presiona Enter. Luego ya puede volver a ejecutar el comando `yarn`
+
 ### 👑 CREADOR
-[![ElChema-Nc](https://github.com/ElChema-Nc.png?size=300)](https://github.com/ElChema-Nc) 
+[![ElChema-Nc](https://github.com/ElChema-Nc.png?size=300)](https://github.com/ElChema-Nc)
