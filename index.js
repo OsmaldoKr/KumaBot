@@ -15,7 +15,7 @@ const rl = createInterface(process.stdin, process.stdout)
 
 try {
 const startColor = chalk.rgb(Math.floor(Math.random() * 256), Math.floor(Math.random() * 256), Math.floor(Math.random() * 256));
-console.log(startColor('❤️ Iniciando...'));
+console.log(startColor('👺 Iniciando...'));
 
 function getRandomColor() {
 const colors = ['system', 'black', 'red', 'green', 'yellow', 'blue', 'magenta', 'cyan', 'white', 'gray', 'redBright', 'greenBright', 'yellowBright', 'blueBright', 'magentaBright', 'cyanBright', 'whiteBright', 'candy'];
@@ -54,7 +54,7 @@ say('Shark\nLite', {
  gradient: ['red', 'magenta']
 })}
 
-say(`Desarrollado por @1alvarez_jose8`.trim(), {
+say(`Desarrollado por @josh_artl`.trim(), {
  font: 'console',
  align: 'center',
  colors: ['candy']
