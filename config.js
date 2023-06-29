@@ -138,7 +138,7 @@ global.img21 = 'https://i.ibb.co/8NLkqwH/img21.webp'
 global.img21 = 'https://i.ibb.co/8NLkqwH/img21.webp' //insignificante
 
 global.welshark = [ig, yt2, yt2, ig, md, ig, yt, yt2, yt2, ig]
-global.redesMenu = [nna, md, ig, paypal, yt, asistencia]
+global.redesMenu = [nna, md, ig, yt, asistencia]
 global.sharkMenu = [img, img2, img6, img7, img8, img9, img13, img14, img15, img17, img18, img19, img20, img21]
 global.sharkImg = [imagen1, imagen2, imagen3, imagen4, imagen5, imagen6, imagen7, imagen8, imagen9, imagen10, imagen11, imagen12, imagen13]
 
