@@ -16,22 +16,16 @@ try {
 if (args[0] == 'es'){
 global.lenguajeGB = es
 await conn.sendButton(m.chat, lenguajeGB['smsAvisoEG']() + idioma.text + '\n' + 'დ ```Español```', wm, null, [[`☘️ 𝗠 𝗘 𝗡 𝗨`, `${usedPrefix}menu`]], fkontak, m)
-  
-}else if (args[0] == 'en'){
-global.lenguajeGB = en
-await conn.sendButton(m.chat, lenguajeGB['smsAvisoEG']() + idioma.text + '\n' + 'დ ```English```', wm, null, [[`☘️ 𝗠 𝗘 𝗡 𝗨`, `${usedPrefix}menu`]], fkontak, m)
 }else{
   
 const sections = [{
 title: '✨ IDIOMAS DISPONIBLES ✨',
 rows: [
-{title: "🌟 Español", rowId: `${usedPrefix + command} es`},
-{title: "🌟 English", rowId: `${usedPrefix + command} en`}]}]
+{title: "🌟 Español", rowId: `${usedPrefix + command} es`}]}]
 
 const listMessage = {
 text: idioma2.text + '\n\n' + idioma3.text,
-footer: `✦ Español = ${usedPrefix + command} es
-✦ English = ${usedPrefix + command} en\n\n` + wm,
+footer: `✦ Español = ${usedPrefix + command} es\n\n` + wm,
 title: `${htki} Idioma 🌎`,
 buttonText: `Seleccionar`,
 sections }
