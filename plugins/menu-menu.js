@@ -189,7 +189,7 @@ let menu = `*◈ ${user.registered === true ? user.name : `👉 ${usedPrefix}${l
 *│* ╰∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙ ∙ ∙ ∙ ∙
  `.trim()
     
-const vi = ['https://telegra.ph/file/405daebd4bc0d69e5d165.mp4',
+const vi = ['https://telegra.ph/Menu-SharkLite-06-29',
 'https://telegra.ph/file/1d0ad9f79f65f39895b08.mp4',
 'https://telegra.ph/file/c25afc1685b13210ce602.mp4']
 
