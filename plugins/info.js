@@ -82,7 +82,7 @@ break
 try{
 let str = `
 ${lenguajeGB.smsGrupoOfc1()}
-_⭔ ${grupo[0]}_`.trim()
+_⭔ ${grupo[1]}_\n`.trim()
 await conn.sendFile(m.chat, sharkImg.getRandom(), 'shark.jpg', str, fkontak)   
 } catch (e) {
 reportError(e)
@@ -219,8 +219,8 @@ number = String(contact[0])
 ofc = await conn.getName(number + '@s.whatsapp.net') //String(contact[1])
 let biografia = await conn.fetchStatus(number +'@s.whatsapp.net').catch(_ => 'undefined')
 let bio = biografia.status?.toString() || `${desc2 == '' ? lenguajeGB.smsContacto2() : desc2}`
-nombre = official[0][0] == String(contact[0]) ? official[0][1] : official[1][0] : lenguajeGB.smsContacto2() 
-description = official[0][0] == String(contact[0]) ? 'Solo temas del SharkLite' : official[1][0] == String(contact[0]) ? lenguajeGB.smsContacto4() : desc
+nombre = official[0][0] == String(contact[0]) ? official[0][1] : lenguajeGB.smsContacto3() 
+description = official[0][0] == String(contact[0]) ? 'Solo temas del SharkLite' : official[1][0] == String(contact[0]) ? lenguajeGB.smsContacto4() : desc === '' ? lenguajeGB.smsContacto5() : desc
 correo = official[0][0] == String(contact[0]) ? 'ja82783643@gmail.com' : mail === '' ? lenguajeGB.smsContacto6() : mail
 lugar = official[0][0] == String(contact[0]) ? '🇳🇮 Nicaragua' : country === '' ? lenguajeGB.smsContacto7() : country
 enlace = official[0][0] == String(contact[0]) ? 'https://github.com/ElChema-Nc' : md    
