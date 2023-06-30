@@ -16,7 +16,7 @@ frep = { contextInfo: { externalAdReply: {title: wm, body: lenguajeGB.smsCreApoy
 fkontak = { "key": { "participants":"0@s.whatsapp.net", "remoteJid": "status@broadcast", "fromMe": false, "id": "Halo" }, "message": { "contactMessage": { "vcard": `BEGIN:VCARD\nVERSION:3.0\nN:Sy;Bot;;;\nFN:y\nitem1.TEL;waid=${m.sender.split('@')[0]}:${m.sender.split('@')[0]}\nitem1.X-ABLabel:Ponsel\nEND:VCARD` }}, "participant": "0@s.whatsapp.net" }
 
 const isCommand1 = /^(estado|status|estate|state|stado|stats|botstat(us)?)$/i.test(command)  
-const isCommand2 = /^(cuenta(s)?oficiales?|sharkig|(cuentas|account)s?g?b|(ig)?shark|(cuentasshark))$/i.test(command)  
+const isCommand2 = /^(cuenta(s)?oficiales?|sharkig|(cuentas|account)s?s?k|(ig)?shark|(cuentasshark))$/i.test(command)  
 const isCommand3 = /^(shark(bot)?groups?|grupos(ofc|desharkbot|sk)|gruposk|groupssk|sharkgroups?|grupos|group(ofc|sofc))$/i.test(command) 
 const isCommand4 = /^(c(ó|o)digo|sc|git|script)$/i.test(command) 
 const isCommand5 = /^(instalar(shark)?bot|proceso(del)?bot|bot(install|proceso)|installbot)$/i.test(command) 
@@ -82,17 +82,7 @@ break
 try{
 let str = `
 ${lenguajeGB.smsGrupoOfc1()}
-_⭔ ${grupo[0]}_\n
-_⭔ ${grupo[1]}_\n
-_⭔ ${grupo[2]}_\n
-_⭔ ${grupo[3]}_\n
-_⭔ ${grupo[4]}_\n
-_⭔ ${grupo[5]}_\n\n
-${lenguajeGB.smsGrupoOfc2()}
-_⭔ ${grupo[6]}_\n
-_⭔ ${grupo[7]}_\n
-_⭔ ${grupo[8]}_\n
-_⭔ ${grupo[9]}_`.trim()
+_⭔ ${grupo[0]}_`.trim()
 await conn.sendFile(m.chat, sharkImg.getRandom(), 'shark.jpg', str, fkontak)   
 } catch (e) {
 reportError(e)
@@ -323,7 +313,7 @@ await m.reply(lenguajeGB.smsReportGB5())
 break
 }}
 
-handler.command = /^(estado|status|estate|state|stado|stats|botstat(us)?|cuenta(s)?oficiales?|sharkig|(cuentas|account)s?g?b|(ig)?shark|(cuentasshark))|shark(bot)?groups?|grupos|groupsgb|grupos(ofc|desharkbot|sk)|gruposk|sharkgroups?|group(ofc|sofc)|c(ó|o)digo|sc|git|script|instalar(shark)?bot|proceso(del)?bot|bot(install|proceso)|installbot|owner|creator|propietario|dueño|dueña|propietaria|dueño|creadora|creador|group(s|list|o(lista)?)|list(a)?(de)?grupo(s)?|grupolista|info(shark|bot)|informaci(ón|on)(shark|bot)|contactos?|contacts?|ping|speed|velocidad|rapidez|velocity|dona(te|si)|report|request|reporte|bugs|bug|reportowner|reportes|reportar$/i
+handler.command = /^(estado|status|estate|state|stado|stats|botstat(us)?|cuenta(s)?oficiales?|sharkig|(cuentas|account)s?g?b|(ig)?shark|(cuentasshark))|shark(bot)?groups?|grupos|groupssk|grupos(ofc|desharkbot|sk)|gruposk|sharkgroups?|group(ofc|sofc)|c(ó|o)digo|sc|git|script|instalar(shark)?bot|proceso(del)?bot|bot(install|proceso)|installbot|owner|creator|propietario|dueño|dueña|propietaria|dueño|creadora|creador|group(s|list|o(lista)?)|list(a)?(de)?grupo(s)?|grupolista|info(shark|bot)|informaci(ón|on)(shark|bot)|contactos?|contacts?|ping|speed|velocidad|rapidez|velocity|dona(te|si)|report|request|reporte|bugs|bug|reportowner|reportes|reportar$/i
 export default handler
 
 function clockString(ms) {
