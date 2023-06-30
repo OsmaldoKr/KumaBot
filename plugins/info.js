@@ -16,7 +16,7 @@ frep = { contextInfo: { externalAdReply: {title: wm, body: lenguajeGB.smsCreApoy
 fkontak = { "key": { "participants":"0@s.whatsapp.net", "remoteJid": "status@broadcast", "fromMe": false, "id": "Halo" }, "message": { "contactMessage": { "vcard": `BEGIN:VCARD\nVERSION:3.0\nN:Sy;Bot;;;\nFN:y\nitem1.TEL;waid=${m.sender.split('@')[0]}:${m.sender.split('@')[0]}\nitem1.X-ABLabel:Ponsel\nEND:VCARD` }}, "participant": "0@s.whatsapp.net" }
 
 const isCommand1 = /^(estado|status|estate|state|stado|stats|botstat(us)?)$/i.test(command)  
-const isCommand2 = /^(cuenta(s)?oficiales?|sharkig|(cuentas|account)s?s?k|(ig)?shark|(cuentasshark))$/i.test(command)  
+const isCommand2 = /^(cuenta(s)?oficiales?|sharkig|(cuentas|account)s?g?b|(ig)?shark|(cuentasshark))$/i.test(command)  
 const isCommand3 = /^(shark(bot)?groups?|grupos(ofc|desharkbot|sk)|gruposk|groupssk|sharkgroups?|grupos|group(ofc|sofc))$/i.test(command) 
 const isCommand4 = /^(c(ó|o)digo|sc|git|script)$/i.test(command) 
 const isCommand5 = /^(instalar(shark)?bot|proceso(del)?bot|bot(install|proceso)|installbot)$/i.test(command) 
@@ -86,12 +86,13 @@ _⭔ ${grupo[0]}_\n
 _⭔ ${grupo[1]}_\n
 _⭔ ${grupo[2]}_\n
 _⭔ ${grupo[3]}_\n
-_⭔ ${grupo[4]}_\n\n
+_⭔ ${grupo[4]}_\n
+_⭔ ${grupo[5]}_\n\n
 ${lenguajeGB.smsGrupoOfc2()}
-_⭔ ${grupo[5]}_\n
 _⭔ ${grupo[6]}_\n
 _⭔ ${grupo[7]}_\n
-_⭔ ${grupo[8]}_`.trim()
+_⭔ ${grupo[8]}_\n
+_⭔ ${grupo[9]}_`.trim()
 await conn.sendFile(m.chat, sharkImg.getRandom(), 'shark.jpg', str, fkontak)   
 } catch (e) {
 reportError(e)
@@ -112,7 +113,7 @@ let codigo = `termux-setup-storage
 apt update
 apt upgrade
 pkg install -y git nodejs ffmpeg imagemagick yarn
-git clone https://github.com/ElChema-Nc/Shark-Bot
+git clone https://github.com/ElChema-Nc/SharkLite
 cd SharkLite
 yarn install
 npm install
@@ -122,15 +123,15 @@ heroku/nodejs\n
 https://github.com/jonathanong/heroku-buildpack-ffmpeg-latest.git\n
 https://github.com/clhuang/heroku-buildpack-webp-binaries.git`
 let codigo3 = `
-git clone https://github.com/ElChema-Nc/Shark-Bot
+git clone https://github.com/ElChema-Nc/Sharklite
 cd SharkLite
 npm install
 npm update
 node .`
 try{	
 let termux = `*◎ T E R M U X*\n\n${codigo}`
-let replit = `*◎ R E P L I T*\n\nhttps://replit.com/github/ElChema-Nc/Shark-Bot`
-let heroku = `*◎ H E R O K U*\n\nhttps://heroku.com/deploy?template=https://github.com/ElChema-Nc/Shark-Bot-Heroku`
+let replit = `*◎ R E P L I T*\n\nhttps://replit.com/github/ElChema-Nc/SharkLite`
+let heroku = `*◎ H E R O K U*\n\nhttps://heroku.com/deploy?template=https://github.com/ElChema-Nc/SharkLite-Heroku`
 let windows = `*◎ W I N D O W S / V P S / R D P*\n
 ⎔ _Git_
 https://git-scm.com/downloads
@@ -228,12 +229,12 @@ number = String(contact[0])
 ofc = await conn.getName(number + '@s.whatsapp.net') //String(contact[1])
 let biografia = await conn.fetchStatus(number +'@s.whatsapp.net').catch(_ => 'undefined')
 let bio = biografia.status?.toString() || `${desc2 == '' ? lenguajeGB.smsContacto2() : desc2}`
-nombre = official[0][0] == String(contact[0]) ? official[0][1] : lenguajeGB.smsContacto3() 
-description = official[0][0] == String(contact[0]) ? 'Solo temas del SharkLite' : official[1][0] == String(contact[0]) ? lenguajeGB.smsContacto4() : desc === '' ? lenguajeGB.smsContacto5() : desc
+nombre = official[0][0] == String(contact[0]) ? official[0][1] : official[1][0] : lenguajeGB.smsContacto2() 
+description = official[0][0] == String(contact[0]) ? 'Solo temas del SharkLite' : official[1][0] == String(contact[0]) ? lenguajeGB.smsContacto4() : desc
 correo = official[0][0] == String(contact[0]) ? 'ja82783643@gmail.com' : mail === '' ? lenguajeGB.smsContacto6() : mail
 lugar = official[0][0] == String(contact[0]) ? '🇳🇮 Nicaragua' : country === '' ? lenguajeGB.smsContacto7() : country
 enlace = official[0][0] == String(contact[0]) ? 'https://github.com/ElChema-Nc' : md    
-lista.push([number, ofc, nombre, description, official[3][0] == String(contact[0]) ? null : correo, lugar, enlace, bio, official[1][0] == String(contact[0]) ? 'https://www.youtube.com/1alvarez_jose8' : null]) }  
+lista.push([number, ofc, nombre, description, official[3][0] == String(contact[0]) ? null : correo, lugar, enlace, bio, official[1][0] == String(contact[0]) ? 'https://youtube.com/@thechema4896' : null]) }  
 lista.push([conn.user.jid.split('@')[0], await conn.getName(conn.user.jid), packname, lenguajeGB.smsContacto8(), mail === '' ? 'ja82783643@gmail.com' : mail, lenguajeGB.smsContacto7(), md, bioBot, yt, ig, nna])
 await conn.sendContactArray(m.chat, lista, null, { quoted: fkontak })
 /*function handler(m) {
@@ -304,9 +305,9 @@ reportError(e)
 break
     
 case isCommand11:
-if (!text) throw lenguajeGB.smsReportGB1(usedPrefix, command)
-if (text.length < 8) throw lenguajeGB.smsReportGB2()
-if (text.length > 1000) throw lenguajeGB.smsReportGB3()
+if (!text) return m.reply(lenguajeGB.smsReportGB1(usedPrefix, command))
+if (text.length < 8) return m.reply(lenguajeGB.smsReportGB2())
+if (text.length > 1000) return m.reply(lenguajeGB.smsReportGB3())
 
 let urs = m.sender.split('@')[0]
 for (let i = 0; i < global.owner.length; i++) {
@@ -322,7 +323,7 @@ await m.reply(lenguajeGB.smsReportGB5())
 break
 }}
 
-handler.command = /^(estado|status|estate|state|stado|stats|botstat(us)?|cuenta(s)?oficiales?|sharkig|(cuentas|account)s?g?b|(ig)?shark|(cuentasshark))|shark(bot)?groups?|grupos|groupssk|grupos(ofc|desharkbot|sk)|gruposk|sharkgroups?|group(ofc|sofc)|c(ó|o)digo|sc|git|script|instalar(shark)?bot|proceso(del)?bot|bot(install|proceso)|installbot|owner|creator|propietario|dueño|dueña|propietaria|dueño|creadora|creador|group(s|list|o(lista)?)|list(a)?(de)?grupo(s)?|grupolista|info(shark|bot)|informaci(ón|on)(shark|bot)|contactos?|contacts?|ping|speed|velocidad|rapidez|velocity|report|request|reporte|bugs|bug|reportowner|reportes|reportar$/i
+handler.command = /^(estado|status|estate|state|stado|stats|botstat(us)?|cuenta(s)?oficiales?|sharkig|(cuentas|account)s?g?b|(ig)?shark|(cuentasshark))|shark(bot)?groups?|grupos|groupsgb|grupos(ofc|desharkbot|sk)|gruposk|sharkgroups?|group(ofc|sofc)|c(ó|o)digo|sc|git|script|instalar(shark)?bot|proceso(del)?bot|bot(install|proceso)|installbot|owner|creator|propietario|dueño|dueña|propietaria|dueño|creadora|creador|group(s|list|o(lista)?)|list(a)?(de)?grupo(s)?|grupolista|info(shark|bot)|informaci(ón|on)(shark|bot)|contactos?|contacts?|ping|speed|velocidad|rapidez|velocity|dona(te|si)|report|request|reporte|bugs|bug|reportowner|reportes|reportar$/i
 export default handler
 
 function clockString(ms) {
