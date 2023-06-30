@@ -4,7 +4,7 @@ import path, { join } from 'path'
 
 let handler = async (m, { conn, command, usedPrefix, args, text, isOwner }) => {
 const isCommand1 = /^(deletesesion|eliminarsesion|borrarsesion|delsesion|delsession|cerrarsesion)$/i.test(command)  
-const isCommand2 = /^(berhenti|pausesb|detenersb|pausarsb)$/i.test(command)  
+const isCommand2 = /^(berhenti|pausesk|detenersb|pausarsk)$/i.test(command)  
 const isCommand3 = /^(listjadibot|bots|subsbots|subbots)$/i.test(command)  
 
 async function reportError(e) {
@@ -19,7 +19,7 @@ let who = m.mentionedJid && m.mentionedJid[0] ? m.mentionedJid[0] : m.fromMe ? c
 let uniqid = `${who.split`@`[0]}`
 const path = `./SharkLiteJadiBot/${uniqid}`
 let comd = `${lenguajeGB.lenguaje() == 'es' ? 'serbot' : 'jadibot'}`
-let comd2 = `${lenguajeGB.lenguaje() == 'es' ? 'pausarsb' : 'pausesb'}`
+let comd2 = `${lenguajeGB.lenguaje() == 'es' ? 'pausarsk' : 'pausesk'}`
 
 if (!await fs.existsSync(path)) {
 await conn.sendMessage(m.chat, { text: lenguajeGB.smsFoldErr(usedPrefix, comd) }, { quoted: m })
@@ -47,7 +47,7 @@ case isCommand3:
 if (global.db.data.settings[conn.user.jid].jadibotmd) throw `${lenguajeGB['smsSoloOwnerJB']()}`
 let users = [...new Set([...global.conns.filter(conn => conn.user && conn.state !== 'close').map(conn => conn.user)])]
 await m.reply( lenguajeGB.smsJBCom3())
-const message = users.map(v => '👑 wa.me/' + v.jid.replace(/[^0-9]/g, '') + `?text=${usedPrefix}estado\n(${v.name})\n\n`).join('\n')
+const message = users.map(v => '😵‍💫 wa.me/' + v.jid.replace(/[^0-9]/g, '') + `?text=${usedPrefix}estado\n(${v.name})\n\n`).join('\n')
 const replyMessage = (message.length === 0) ? lenguajeGB.smsJBCom4() : message
 await m.reply(replyMessage.trim())
 break    
