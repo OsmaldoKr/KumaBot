@@ -438,12 +438,12 @@ if (opts['autoread']) await this.readMessages([m.key])
 if (settingsREAD.autoread2) await this.readMessages([m.key])  
 if (settingsREAD.autoread2 == 'true') await this.readMessages([m.key])    
 	    
-//if (!db.data.chats[m.chat].reaction && m.isGroup) return
-//if (!m.fromMem && m.text.match(/(shark|lite|bot)/gi)) {
-//let emot = pickRandom(["😳", "🥵", "🤯", "😱", "😨", "🤫", "🥴", "🤧", "🤑", "🤠", "🤖", "🤝", "💪", "👑", "😚", "🌝", "🌛", "🌜"])
-//this.sendMessage(m.chat, { react: { text: emot, key: m.key }})}
-//function pickRandom(list) { return list[Math.floor(Math.random() * list.length)]}
-//}}
+if (!db.data.chats[m.chat].reaction && m.isGroup) return
+if (!m.fromMem && m.text.match(/(shark|lite|bot)/gi)) {
+let emot = pickRandom(["😳", "🥵", "🤯", "😱", "😨", "🤫", "🥴", "🤧", "🤑", "🤠", "🤖", "🤝", "💪", "👑", "😚", "🌝", "🌛", "🌜"])
+this.sendMessage(m.chat, { react: { text: emot, key: m.key }})}
+function pickRandom(list) { return list[Math.floor(Math.random() * list.length)]}
+}}
 
 /**
  * Handle groups participants update
