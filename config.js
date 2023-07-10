@@ -91,7 +91,7 @@ global.sk = '𝙎𝙝𝙖𝙧𝙠𝙇𝙞𝙩𝙚ㅤ🦈'
 global.yt = 'https://youtube.com/@thechema4896'
 global.yt2 = 'https://youtube.com/@thechema4896'
 global.ig = 'https://www.instagram.com/josh_artl'
-global.md = 'https://github.com/ElChema-Nc/Shark-Bot'
+global.md = 'https://github.com/ElChema-Nc/SharkLite'
 
 global.nna = 'https://chat.whatsapp.com/JO5LstGfk6RBccr0gjzNwI' //UPDATE SHARKLITE
 global.asistencia = 'Wa.me/34623289459' //Dudas? escríbeme...
