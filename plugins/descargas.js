@@ -1,4 +1,4 @@
-import { youtubedl, youtubedlv2, youtubedlv3, tiktokdl, tiktokdlv2, tiktokdlv3 } from '@bochilteam/scraper'  
+import { youtubedl, youtubeSearch, youtubedlv2, youtubedlv3, tiktokdl, tiktokdlv2, tiktokdlv3 } from '@bochilteam/scraper'  
 import { facebook } from "@xct007/frieren-scraper"
 import { googleImage } from '@bochilteam/scraper'
 import fetch from "node-fetch"
@@ -8,27 +8,31 @@ import axios from 'axios'
 let handler = async (m, { conn, text, usedPrefix, command, args }) => {
 let q, v, yt, dl_url, ttl, size, lolhuman, lolh, n, n2, n3, n4, cap, qu, currentQuality
 const isCommand1 = /^(gimage|imagen?)$/i.test(command)
-const isCommand2 = /^(play2?)$/i.test(command)
-const isCommand3 = /^(fgmp3|dlmp3|getaud|yt(a|mp3)?)$/i.test(command)
-const isCommand4 = /^(ytmp3doc|ytadoc)$/i.test(command)
-const isCommand5 = /^(fgmp4|dlmp4|getvid|yt(v|mp4)?)$/i.test(command)
-const isCommand6 = /^(ytmp4doc|ytvdoc)$/i.test(command)
-const isCommand7 = /^(facebook|fb|facebookdl|fbdl)$/i.test(command)
-const isCommand8 = /^(mediafire(dl)?|dlmediafire)$/i.test(command)
-const isCommand9 = /^(ytmax)$/i.test(command)
-const isCommand10 = /^(tkdl|tiktok)$/i.test(command)
-const isCommand11 = /^(ytmaxdoc)$/i.test(command)
-const isCommand12 = /^(dalle|openiamage|aiimage|aiimg|aimage|iaimagen|openaimage|openaiimage)$/i.test(command)
-const isCommand13 = /^(openjourney|journey|midjourney)$/i.test(command)
-const isCommand14 = /^(spotify|music)$/i.test(command)
-const isCommand15 = /^(spot(ify)?search)$/i.test(command)
-const isCommand16 = /^(i(nsta)?g(ram)?(dl)?|igimage|igdownload)$/i.test(command)
+const isCommand2 = /^(play?)$/i.test(command)
+const isCommand3 = /^(play2?)$/i.test(command)
+const isCommand4 = /^(fgmp3|dlmp3|getaud|yt(a|mp3)?)$/i.test(command)
+const isCommand5 = /^(ytmp3doc|ytadoc)$/i.test(command)
+const isCommand6 = /^(fgmp4|dlmp4|getvid|yt(v|mp4)?)$/i.test(command)
+const isCommand7 = /^(ytmp4doc|ytvdoc)$/i.test(command)
+const isCommand8 = /^(facebook|fb|facebookdl|fbdl)$/i.test(command)
+const isCommand9 = /^(mediafire(dl)?|dlmediafire)$/i.test(command)
+const isCommand10 = /^(ytmax)$/i.test(command)
+const isCommand11 = /^(tkdl|tiktok)$/i.test(command)
+const isCommand12 = /^(ytmaxdoc)$/i.test(command)
+const isCommand13 = /^(dalle|openiamage|aiimage|aiimg|aimage|iaimagen|openaimage|openaiimage)$/i.test(command)
+const isCommand14 = /^(openjourney|journey|midjourney)$/i.test(command)
+const isCommand15 = /^(spotify|music)$/i.test(command)
+const isCommand16 = /^(spot(ify)?search)$/i.test(command)
+const isCommand17 = /^(i(nsta)?g(ram)?(dl)?|igimage|igdownload)$/i.test(command)
 
 
 async function reportError(e) {
-await m.reply(lenguajeGB['smsMalError3']() + '\n*' + lenguajeGB.smsMensError1() + '*\n*' + usedPrefix + `${lenguajeGB.lenguaje() == 'es' ? 'reporte' : 'report'}` + '* ' + `${lenguajeGB.smsMensError2()} ` + usedPrefix + command)
-console.log(`❗❗ ${lenguajeGB['smsMensError2']()} ${usedPrefix + command} ❗❗`)
-console.log(e)
+let errb = await m.reply(lenguajeGB['smsMalError3']() + '\n*' + lenguajeGB.smsMensError1() + '*\n*' + usedPrefix + `${lenguajeGB.lenguaje() == 'es' ? 'reporte' : 'report'}` + '* ' + `${lenguajeGB.smsMensError2()} ` + usedPrefix + command)
+await console.log(`❗❗ ${lenguajeGB['smsMensError2']()} ${usedPrefix + command} ❗❗`)
+await console.log(e)
+let faultkey = await conn.sendMessage(m.chat, { react: { text: fault, key: errb.key }})
+await m.react(notsent)
+//setTimeout(() => { faultkey, m.react(notsent) }, 1000)
 }
 
 switch (true) {     
@@ -66,20 +70,70 @@ ${views}
 *◎ URL*
 ${url}
 *◜⋯ ⋯ ⋯ ⬇️ A U D I O ⬇️ ⋯ ⋯ ⋯◞*`.trim()
-await conn.sendFile(m.chat, thumbnail, 'error.jpg', video, m)    
+url = 'https://www.youtube.com/watch?v=' + videoId
+let link_web = `https://yt.btch.bz/downloadAudio?URL=${url}&videoName=video`     
+
+let message = await conn.sendMessage(m.chat, { text: video, contextInfo: { externalAdReply: { title: wm, body: wait2.replace(/\*/g, ''), thumbnailUrl: thumbnail, sourceUrl: md, mediaType: 1, showAdAttribution: false, renderLargerThumbnail: true }}})
+await m.react(sending)
+await message.react(waitemot)
+setTimeout(() => { message.react(waitemot2) }, 1000)
+if (!title || !description || !url || !thumbnail || !timestamp || !views) {
+setTimeout(() => { message.react(alert) }, 2000)}
+    
 q = '128kbps'
 v = url
 yt = await youtubedl(v).catch(async () => await youtubedlv2(v)).catch(async () => await youtubedlv3(v))
 dl_url = await yt.audio[q].download()
 title = await yt.title
-size = await yt.audio[q].fileSizeH
-await conn.sendFile(m.chat, dl_url, title + '.mp3', null, m, false, { mimetype: 'audio/mp4' })
+size = await yt.audio[q].fileSizeH  
+await conn.sendMessage(m.chat, { audio: { url: link_web }, mimetype: 'audio/mpeg' }, { quoted: m })
+await m.react(sent)    
+await message.react(correct)
 } catch (e) {
 reportError(e)
 }    
 break
-        
+
 case isCommand3:
+if (!text) return m.reply(lenguajeGB.smsMalused2() + `*${usedPrefix + command} Billie Eilish - Bellyache*`)
+let vi =  (await youtubeSearch(text)).video[0]
+if (!vi) return m.reply(lenguajeGB.smsMalError2() + `_${lenguajeGB.smsYT6()}_`)
+try{
+let { title, description, url, thumbnail, videoId, timestamp, views, published } = vid
+let video = `*◜⋯ ⋯ ⋯ Y O U T U B E ⋯ ⋯ ⋯◞*
+*◎ ${lenguajeGB.smsYT1()}*
+${title}
+
+*◎ ${lenguajeGB.smsYT2()}*
+${description}
+
+*◎ ${lenguajeGB.smsYT3()}*
+${timestamp}
+
+*◎ ${lenguajeGB.smsYT4()}*
+${views}
+
+*◎ URL*
+${url}
+*◜⋯ ⋯ ⋯ ⬇️ V I D E O ⬇️ ⋯ ⋯ ⋯◞*`.trim()
+url = 'https://www.youtube.com/watch?v=' + videoId
+  let vide = `https://yt.btch.bz/download?URL=${url}&videoName=video`
+
+let message = await conn.sendMessage(m.chat, { text: video, contextInfo: { externalAdReply: { title: wm, body: wait2.replace(/\*/g, ''), thumbnailUrl: thumbnail, sourceUrl: md, mediaType: 1, showAdAttribution: false, renderLargerThumbnail: true }}})
+await m.react(sending)
+await message.react(waitemot)
+setTimeout(() => { message.react(waitemot2) }, 1000)
+if (!title || !description || !url || !thumbnail || !timestamp || !views) {
+setTimeout(() => { message.react(alert) }, 2000)}
+await conn.sendFile(m.chat, vide, 'error.mp4', `${wm}`, m)    
+await m.react(sent)    
+await message.react(correct)
+} catch (e) {
+reportError(e)
+}    
+break
+            
+case isCommand4:
 if (!args[0]) return m.reply(lenguajeGB.smsMalused2() + `*${usedPrefix + command} https://youtu.be/ejemplo*\n*${usedPrefix + command} https://www.youtube.com/ejemplo*`)
 await conn.reply(m.chat, lenguajeGB.smsAvisoEG() + '*' + lenguajeGB.smsYTA1() + '*', m)
 try {
@@ -101,7 +155,7 @@ reportError(e)
 }}       
 break
         
-case isCommand4:
+case isCommand5:
 if (!args[0]) return m.reply(lenguajeGB.smsMalused2() + `*${usedPrefix + command} https://youtu.be/ejemplo*\n*${usedPrefix + command} https://www.youtube.com/ejemplo*`)
 await conn.reply(m.chat, lenguajeGB.smsAvisoEG() + '*' + lenguajeGB.smsYTA2() + '*', m)
 try {
@@ -127,7 +181,7 @@ reportError(e)
 }}         
 break
         
-case isCommand5:
+case isCommand6:
 if (!args[0]) return m.reply(lenguajeGB.smsMalused2() + `*${usedPrefix + command} https://youtu.be/ejemplo*\n*${usedPrefix + command} https://www.youtube.com/ejemplo*`)
 await conn.reply(m.chat, lenguajeGB.smsAvisoEG() + '*' + lenguajeGB.smsYTV1() + '*', m)
 try {
@@ -152,7 +206,7 @@ await conn.sendMessage(m.chat, { video: { url: n2 }, fileName: `${n}.mp4`, mimet
 reportError(e)}}     
 break
 
-case isCommand6:
+case isCommand7:
 if (!args[0]) return m.reply(lenguajeGB.smsMalused2() + `*${usedPrefix + command} https://youtu.be/ejemplo*\n*${usedPrefix + command} https://www.youtube.com/ejemplo*`)
 await conn.reply(m.chat, lenguajeGB.smsAvisoEG() + '*' + lenguajeGB.smsYTV2() + '*', m)
 try {
@@ -180,7 +234,7 @@ reportError(e)
 }
 break
         
-case isCommand7:
+case isCommand8:
 if (!text) return m.reply(lenguajeGB.smsMalused2() + `\n*${usedPrefix}${command}* https://fb.watch/kAOXy3wf2L/?mibextid=Nif5oz\n\n*${usedPrefix}${command}* https://www.facebook.com/reel/1662783117489590?s=yWDuG2&fs=e&mibextid=Nif5oz`)
 if (!args[0].match(/www.facebook.com|fb.watch|web.facebook.com|business.facebook.com|video.fb.com/g)) throw lenguajeGB.smsAvisoFG() + lenguajeGB.smsyFBvid1()
 await m.reply(wait)
@@ -227,7 +281,7 @@ reportError(e)}
 }}    
 break
         
-case isCommand8:
+case isCommand9:
 if (!args[0]) return m.reply(lenguajeGB.smsMalused2() + `*${usedPrefix + command} https://www.mediafire.com/file/04kaaqx9oe3tb8b/DOOM_v13_CLONE%255BCOM.FM%255D.apk/file*`)
 try {  
 let res = await mediafireDl(args[0])
@@ -259,7 +313,7 @@ return { name, size, date, mime, link }
 }
 break 
         
-case isCommand9:
+case isCommand10:
 if (!args[0]) return m.reply(lenguajeGB.smsMalused2() + `*${usedPrefix + command} https://youtu.be/ejemplo*\n*${usedPrefix + command} https://www.youtube.com/ejemplo*`)
 await conn.reply(m.chat, lenguajeGB.smsAvisoEG() + '*' + lenguajeGB.smsYTV1() + '*', m)
 try {
@@ -286,7 +340,7 @@ reportError(e)
 break
 
 //codigo adaptado por https://github.com/elrebelde21
-case isCommand10:
+case isCommand11:
 if (!text) return conn.reply(m.chat, `${lenguajeGB['smsMalused2']()}\n*${usedPrefix + command} https://vm.tiktok.com/ZM2e66NBM/?t=1*`, m)
 if (!/(?:https:?\/{2})?(?:w{3}|vm|vt|t)?\.?tiktok.com\/([^\s&]+)/gi.test(text)) return conn.reply(m.chat, `${lenguajeGB['smsAvisoFG']()}*${lenguajeGB['smsYT6']()}*`, m)  
 try {
@@ -303,7 +357,7 @@ reportError(e)
 }         
 break
    
-case isCommand11:
+case isCommand12:
 if (!args[0]) return m.reply(lenguajeGB.smsMalused2() + `*${usedPrefix + command} https://youtu.be/ejemplo*\n*${usedPrefix + command} https://www.youtube.com/ejemplo*`)
 await conn.reply(m.chat, lenguajeGB.smsAvisoEG() + '*' + lenguajeGB.smsYTV2() + '*', m)
 try {
@@ -327,7 +381,7 @@ reportError(e)
 }        
 break
         
-case isCommand12:
+case isCommand13:
 if (args.length >= 1) {
 text = args.slice(0).join(" ")
 } else if (m.quoted && m.quoted.text) {
@@ -347,7 +401,7 @@ reportError(e)}
 }        
 break
         
-case isCommand13:
+case isCommand14:
 if (args.length >= 1) {
 text = args.slice(0).join(" ")
 } else if (m.quoted && m.quoted.text) {
@@ -362,7 +416,7 @@ conn.sendFile(m.chat, img, 'image.jpg', lenguajeGB.smsIAimage3() + `\n\n_${text}
 reportError(e)}        
 break
         
-case isCommand14:
+case isCommand15:
 if (!text) return m.reply(lenguajeGB.smsMalused2() + `*${usedPrefix + command} Runaway*\n\n*${usedPrefix + command} https://open.spotify.com/track/23rdcrD0Eky4vYn2TZidxJ*\n\n${lenguajeGB.smsSP0(usedPrefix)}`)
 let link
 if (text.startsWith('https://open.spotify.com/track/')) {
@@ -399,7 +453,7 @@ if (!aa) return conn.sendFile(m.chat, json2.result.link, 'error.mp3', null, m, f
 reportError(e)}              
 break
         
-case isCommand15:
+case isCommand16:
 if (!text) return m.reply(lenguajeGB.smsMalused2() + `*${usedPrefix + command} Bellyache*`)
 let res = await fetch(`https://api.lolhuman.xyz/api/spotifysearch?apikey=${lolkeysapi}&query=${encodeURIComponent(text)}`)
 let json = await res.json()
@@ -421,7 +475,7 @@ await m.reply(ini_txt)
 reportError(e)} 
 break
         
-case isCommand16:
+case isCommand17:
 if (!args[0]) return m.reply(lenguajeGB.smsMalused2() + `*${usedPrefix + command}* ` + 'https://www.instagram.com/reel/CrWooCiKGKP/?utm_source=ig_web_copy_link&igshid=MzRlODBiNWFlZA==')
 try{
 let human = await fetch(`https://api.lolhuman.xyz/api/instagram?apikey=${lolkeysapi}&url=${args[0]}`)
@@ -439,9 +493,16 @@ reportError(e)}
 break
 }}
 
-handler.command = /^(gimage|imagen?|play2?|fgmp3|dlmp3|getaud|yt(a|mp3)?|ytmp3doc|ytadoc|fgmp4|dlmp4|getvid|yt(v|mp4)?|ytmp4doc|ytvdoc|facebook|fb|facebookdl|fbdl|mediafire(dl)?|dlmediafire|ytmax|ytmaxdoc|tiktok|tkdl|dalle|openiamage|aiimage|aiimg|aimage|iaimagen|openaimage|openaiimage|openjourney|journey|midjourney|spotify|music|spot(ify)?search|i(nsta)?g(ram)?(dl)?|igimage|igdownload)$/i
+handler.command = /^(gimage|imagen?|play?|play2?|fgmp3|dlmp3|getaud|yt(a|mp3)?|ytmp3doc|ytadoc|fgmp4|dlmp4|getvid|yt(v|mp4)?|ytmp4doc|ytvdoc|facebook|fb|facebookdl|fbdl|mediafire(dl)?|dlmediafire|ytmax|ytmaxdoc|tiktok|tkdl|dalle|openiamage|aiimage|aiimg|aimage|iaimagen|openaimage|openaiimage|openjourney|journey|midjourney|spotify|music|spot(ify)?search|i(nsta)?g(ram)?(dl)?|igimage|igdownload)$/i
 handler.register = true
 export default handler
+
+async function cut(url) {
+  url = encodeURIComponent(url)
+  let res = await fetch(`https://api.botcahx.live/api/linkshort/bitly?link=${url}&apikey=${btc}`)
+  if (!res.ok) throw false
+  return await res.text()
+}
 
 async function Draw(propmt) {
 const Blobs = await fetch(
@@ -492,4 +553,3 @@ return `${minutes}:${seconds} min`
 } else {
 return "--"
 }}
-

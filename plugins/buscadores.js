@@ -2,7 +2,9 @@ import { googleIt } from '@bochilteam/scraper'
 import fetch from 'node-fetch'
 import axios from 'axios'
 import yts from 'yt-search'
-import fs from 'fs'
+import cheerio from 'cheerio'
+import gpt from 'api-dylux'
+import fs from 'fs' 
 
 let handler = async (m, { conn, command, usedPrefix, args, text }) => {
 const isCommand1 = /^(googlef?)$/i.test(command)
@@ -41,9 +43,13 @@ text = args.slice(0).join(" ")
 text = m.quoted.text
 } else return conn.reply(m.chat, lenguajeGB.smsOpenai1() + `\n*${usedPrefix + command}* ${lenguajeGB.smsOpenai2()}\n\n*${usedPrefix + command}* ${lenguajeGB.smsOpenai3()}` , m)
 try {
-let ia1 = await fetch(`https://api.amosayomide05.cf/gpt/?question=${text}&string_id=${m.sender}`)  
+await conn.sendPresenceUpdate('composing', m.chat)
+        let syms = `Actuaras como un Bot de WhatsApp el cual fue creado por El Chema, tu seras SharkLite`
+        let res = await gpt.ChatGpt(text, syms)
+         await m.reply(res.text)
+/*let ia1 = await fetch(`https://api.amosayomide05.cf/gpt/?question=${text}&string_id=${m.sender}`)  
 let resu1 = await ia1.json()
-m.reply(`${resu1.response}`.trim())    
+m.reply(`${resu1.response}`.trim())    */
 } catch {
 try {   
 let ia2 = await fetch(`https://api.amosayomide05.cf/gpt/?question=${text}&string_id=${m.sender}`) //fetch(`https://api.ibeng.tech/api/info/openai?text=${text}&apikey=tamvan`)

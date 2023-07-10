@@ -39,8 +39,8 @@ await conn.sendMessage(m.chat, { text: admingp, mentions: [`${m.sender}`,`${m.me
 await conn.sendMessage(m.chat, { text: noadmingp, mentions: [`${m.sender}`,`${m.messageStubParameters[0]}`] }, { quoted: fkontak })  
 
 } else {
-console.log({ messageStubType: m.messageStubType,
-messageStubParameters: m.messageStubParameters,
-type: WAMessageStubType[m.messageStubType], 
-})
+//console.log({ messageStubType: m.messageStubType,
+//messageStubParameters: m.messageStubParameters,
+//type: WAMessageStubType[m.messageStubType], 
+//})
 }}
