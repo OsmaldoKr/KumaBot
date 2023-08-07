@@ -1,8 +1,9 @@
 import fetch from 'node-fetch'
-import * as baileys from '@adiwajshing/baileys'
+//import * as baileys from '@adiwajshing/baileys'
+let baileys = (await import(global.baileys)).default
 import PhoneNumber from 'awesome-phonenumber'
 import { sticker } from '../lib/sticker.js'
-
+ 
 let handler = async (m, { conn, command, usedPrefix, args, participants, groupMetadata, text }) => {
 let pp, groupAdmins, listAdmin, owner
 const isCommand1 = /^(infogrupo|gro?upinfo|info(gro?up|gc))$/i.test(command)
@@ -83,7 +84,6 @@ reportError(e)
 } 
 break
 
-//FUNCIÓN HECHA POR https://github.com/Azami19
 case isCommand4:
 let [, code] = text.match(/chat\.whatsapp\.com\/(?:invite\/)?([0-9A-Za-z]{20,24})/i) || []
 if (!code) return m.reply(lenguajeGB.smsMalused() + usedPrefix + command + ' ' + nna)

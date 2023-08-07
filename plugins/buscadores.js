@@ -1,4 +1,6 @@
-import { googleIt } from '@bochilteam/scraper'  
+//import { googleIt } from '@bochilteam/scraper'
+import translate from '@vitalets/google-translate-api'
+import googleIt from 'google-it'
 import fetch from 'node-fetch'
 import axios from 'axios'
 import yts from 'yt-search'
@@ -22,19 +24,36 @@ console.log(e)
 
 switch (true) {     
 case isCommand1:
-if (!text) return conn.reply(m.chat, lenguajeGB.smsAvisoMG() + lenguajeGB.smsMalused2() + `\n*${usedPrefix + command} Qué es Matemáticas?*` , m)
-try{
-const fetch = (await import('node-fetch')).default
-let full = /f$/i.test(command)
-let text = args.join` `
+//const fetch = (await import('node-fetch')).default
+let img = 'https://wpbr.mx/blog/wp-content/uploads/2015/09/Nuevo-logo-de-google.jpg' || sharkMenu.getRandom()
 let url = 'https://google.com/search?q=' + encodeURIComponent(text)
-let search = await googleIt(text, { limit: 30 });
-let msg = search.articles.map(({ title, url, description }) => { return `*${title}*\n_${url}_\n_${description}_` }).join('\n\n')
-m.reply(msg)
+if (args.length >= 1) {
+text = args.slice(0).join(" ")
+} else if (m.quoted && m.quoted.text) {
+text = m.quoted.text
+} else return conn.reply(m.chat, lenguajeGB.smsMalused3() + `\n*${usedPrefix + command} Qué es Matemáticas?*`, m)
+try {
+let search = await googleIt({ query: text })
+let msg = search.map(({ title, link, snippet}) => {
+return `*• ${title}*\n_${snippet}_\n_${link}_`
+}).join`\n\n`
+await conn.sendFile(m.chat, img, '', url + '\n\n' + msg, m) 
+} catch { 
+try {
+let apiUrl = `https://api.lolhuman.xyz/api/gsearch?apikey=${lolkeysapi}&query=` + encodeURIComponent(text)
+let response = await fetch(apiUrl)
+let data = await response.json() 
+let translatedResults = await Promise.all(data.result.map(async ({ title, link, desc }) => {
+let translatedTitle = await translate(title, { to: lenguajeGB.lenguaje() || 'en', autoCorrect: true })
+let translatedDesc = await translate(desc, { to: lenguajeGB.lenguaje() || 'en', autoCorrect: true })
+return `*• ${translatedTitle.text}*\n_${translatedDesc.text}_\n_${link}_`
+}))
+let msg = translatedResults.join('\n\n')
+await conn.sendFile(m.chat, img, '', url + '\n\n' + msg, m)
 } catch (e) {
 reportError(e)
-}    
-break 
+}}
+break
     
 case isCommand2:
 if (args.length >= 1) {
@@ -42,28 +61,24 @@ text = args.slice(0).join(" ")
 } else if (m.quoted && m.quoted.text) {
 text = m.quoted.text
 } else return conn.reply(m.chat, lenguajeGB.smsOpenai1() + `\n*${usedPrefix + command}* ${lenguajeGB.smsOpenai2()}\n\n*${usedPrefix + command}* ${lenguajeGB.smsOpenai3()}` , m)
-try {
 await conn.sendPresenceUpdate('composing', m.chat)
-        let syms = `Actuaras como un Bot de WhatsApp el cual fue creado por El Chema, tu seras SharkLite`
-        let res = await gpt.ChatGpt(text, syms)
-         await m.reply(res.text)
-/*let ia1 = await fetch(`https://api.amosayomide05.cf/gpt/?question=${text}&string_id=${m.sender}`)  
-let resu1 = await ia1.json()
-m.reply(`${resu1.response}`.trim())    */
+try {
+let syms = `Actuaras como un Bot de WhatsApp el cual fue creado por el Chema, tu seras SharkLite`
+let res = await gpt.ChatGpt(text, syms)
+await m.reply(res.text)
 } catch {
 try {   
 let ia2 = await fetch(`https://api.amosayomide05.cf/gpt/?question=${text}&string_id=${m.sender}`) //fetch(`https://api.ibeng.tech/api/info/openai?text=${text}&apikey=tamvan`)
 let resu2 = await ia2.json()
 m.reply(resu2.response.trim())    
-//m.reply(resu2.data.data.trim())    
-} catch {      
+} catch {        
 try {    
-let ia3 = await fetch(`https://api.lolhuman.xyz/api/openai?apikey=${lolkeysapi}&text=${text}&user=${m.sender}`)
-let resu3 = await ia3.json()
-m.reply(`${resu3.result}`.trim())   
+let tioress = await fetch(`https://api.lolhuman.xyz/api/openai-turbo?apikey=${lolkeysapi}&text=${text}`)
+let hasill = await tioress.json()
+m.reply(`${hasill.result}`.trim())   
 } catch (e) {
 reportError(e)
-}}} 
+}}}
 break
     
 case isCommand3:
@@ -158,7 +173,7 @@ break
 
 handler.command = /^(googlef?|openai|chatgpt|ia|ai|bot|simi|simsimi|alexa|bixby|cortana|siri|okgoogle|githubstalk|usuariogithub|usergithub|(yt(s|search)))$/i
 handler.register = true
-export default handler
+export default handler 
 
 async function githubstalk(user) {
 return new Promise((resolve, reject) => {
