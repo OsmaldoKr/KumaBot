@@ -15,8 +15,8 @@ global.owner = [
 
 global.mods = [] 
 global.prems = []
-   
-//  es = Español 
+
+//  es = Español   
 global.lenguajeGB = es  //<-- Predeterminado en idioma Español 
 
 // ES ➜ Consigue Apikey en https://platform.openai.com/account/api-keys
@@ -31,8 +31,9 @@ global.keysxteammm = ['29d4b59a4aa687ca', '5LTV57azwaid7dXfz5fzJu', 'cb15ed422c7
 global.keysxteam = keysxteammm[Math.floor(keysxteammm.length * Math.random())]
 global.keysneoxrrr = ['5VC9rvNx', 'cfALv5']
 global.keysneoxr = keysneoxrrr[Math.floor(keysneoxrrr.length * Math.random())]
-global.lolkeysapi = '6fbee8ec83e7b2677026ffae' //'SGWN'
+global.lolkeysapi = 'GataDios'
 global.itsrose = ['4b146102c4d500809da9d1ff']
+global.baileys = '@whiskeysockets/baileys'
 
 global.APIs = { 
   xteam: 'https://api.xteam.xyz',
@@ -52,7 +53,7 @@ global.APIs = {
 },
 global.APIKeys = { 
   'https://api.xteam.xyz': `${keysxteam}`,
-  'https://api.lolhuman.xyz': '85faf717d0545d14074659ad',
+  'https://api.lolhuman.xyz': `${lolkeysapi}`,
   'https://api.neoxr.my.id': `${keysneoxr}`,	
   'https://violetics.pw': 'beta',
   'https://api.zahwazein.xyz': `${keysxxx}`,
@@ -75,17 +76,17 @@ global.author = '𝙎𝙝𝙖𝙧𝙠𝙇𝙞𝙩𝙚ㅤ🦈'
 
 // ES ➜ Está parte es para mostrar el contacto de alguien al usar #contacto
 global.official = [ 
-['34623289459', '𝙀𝙡ㅤ𝘾𝙝𝙚𝙢𝙖ㅤ🔱', 1], 
-['50578213790', '𝙊𝙬𝙣𝙚𝙧 (𝙊𝙨𝙤) 💻', 1],  
-['50585826826', '𝙎𝙝𝙖𝙧𝙠𝙇𝙞𝙩𝙚ㅤ🦈', 1]] 
+['34623289459', '𝙀𝙡ㅤ𝘾𝙝𝙚𝙢𝙖ㅤ🔱', 1],  
+['50578213790', '𝙊𝙬𝙣𝙚𝙧 (𝙊𝙨𝙤) 💻', 1],
+['50585826826', '𝙎𝙝𝙖𝙧𝙠𝙇𝙞𝙩𝙚ㅤ🦈', 1]]
 
 global.mail = '' //agrega tú correo
 global.desc = '' //agrega una descripción corta
 global.desc2 = '' //agrega una descripción larga (Solo se aplicará si su whasapp no tiene descripción)
-global.country = '🇳🇮' //agrega tú país ejemplo: 🇳🇮
+global.country = '' //agrega tú país ejemplo: 🇳🇮
 
 global.vs = '9.9.9'
-global.vsJB = '8.8'
+global.vsJB = '4.0'
 
 global.sk = '𝙎𝙝𝙖𝙧𝙠𝙇𝙞𝙩𝙚ㅤ🦈'
 global.yt = 'https://youtube.com/@thechema4896'
@@ -96,7 +97,7 @@ global.md = 'https://github.com/ElChema-Nc/SharkLite'
 global.nna = 'https://chat.whatsapp.com/JO5LstGfk6RBccr0gjzNwI' //UPDATE SHARKLITE
 global.asistencia = 'Wa.me/34623289459' //Dudas? escríbeme...
 
-global.wm = '𝙀𝙡ㅤ𝘾𝙝𝙚𝙢𝙖ㅤ🔱'
+global.wm = '𝙎𝙝𝙖𝙧𝙠𝙇𝙞𝙩𝙚ㅤ🦈 : 𝙀𝙡ㅤ𝘾𝙝𝙚𝙢𝙖ㅤ🔱'
 global.igfg = '𝙎𝙝𝙖𝙧𝙠𝙇𝙞𝙩𝙚ㅤ🦈'
 global.wait = lenguajeGB['smsMeWait']()
 global.wait2 = lenguajeGB.smsWait()
@@ -145,6 +146,14 @@ global.sharkImg = [imagen1, imagen2, imagen3, imagen4, imagen5, imagen6, imagen7
 global.htki = '*⭑•̩̩͙⊱•••• ☪*'
 global.htka = '*☪ ••••̩̩͙⊰•⭑*'
 global.htjava = '⫹⫺'
+global.correct = '✅'
+global.fault = '💔'
+global.alert = '⚠️'
+global.sending = '📋'
+global.sent = '❇️'
+global.notsent = '❗'
+global.waitemot = '⌛'
+global.waitemot2 = '⏳'
 
 global.multiplier = 60 // Cuanto más alto, más difícil subir de nivel 
 
