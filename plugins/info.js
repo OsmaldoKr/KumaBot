@@ -18,15 +18,14 @@ fkontak = { "key": { "participants":"0@s.whatsapp.net", "remoteJid": "status@bro
 
 const isCommand1 = /^(estado|status|estate|state|stado|stats|botstat(us)?)$/i.test(command)  
 const isCommand2 = /^(cuenta(s)?oficiales?|sharkig|(cuentas|account)s?s?k|(ig)?shark|(cuentasshark))$/i.test(command)  
-const isCommand3 = /^(shark(bot)?groups?|grupos(ofc|desharkbot|sk)|gruposk|groupssk|sharkgroups?|grupos|group(ofc|sofc))$/i.test(command) 
-const isCommand4 = /^(c(ó|o)digo|sc|git|script)$/i.test(command) 
-const isCommand5 = /^(instalar(shark)?bot|proceso(del)?bot|bot(install|proceso)|installbot)$/i.test(command) 
-const isCommand6 = /^(owner|creator|propietario|dueño|dueña|propietaria|dueño|creadora|creador)$/i.test(command) 
-const isCommand7 = /^(group(s|list|o(lista)?)|list(a)?(de)?grupo(s)?|grupolista)$/i.test(command) 
-const isCommand8 = /^(info(shark|bot)|informaci(ón|on)(shark|bot))$/i.test(command) 
-const isCommand9 = /^(contactos?|contacts?)$/i.test(command) 
-const isCommand10 = /^(ping|speed|velocidad|rapidez|velocity)$/i.test(command) 
-const isCommand11 = /^(report|request|reporte|bugs|bug|reportowner|reportes|reportar)$/i.test(command) 
+const isCommand3 = /^(shark(bot)?groups?|grupos(ofc|desharkbot|sk)|gruposk|groupssk|sharkgroups?|grupos|group(ofc|sofc))$/i.test(command)  
+const isCommand4 = /^(instalar(shark)?bot|proceso(del)?bot|bot(install|proceso)|installbot)$/i.test(command) 
+const isCommand5 = /^(owner|creator|propietario|dueño|dueña|propietaria|dueño|creadora|creador)$/i.test(command) 
+const isCommand6 = /^(group(s|list|o(lista)?)|list(a)?(de)?grupo(s)?|grupolista)$/i.test(command) 
+const isCommand7 = /^(info(shark|bot)|informaci(ón|on)(shark|bot))$/i.test(command) 
+const isCommand8 = /^(contactos?|contacts?)$/i.test(command) 
+const isCommand9 = /^(ping|speed|velocidad|rapidez|velocity)$/i.test(command) 
+const isCommand10 = /^(report|request|reporte|bugs|bug|reportowner|reportes|reportar)$/i.test(command) 
 
 async function reportError(e) {
 await m.reply(lenguajeGB['smsMalError3']() + '\n*' + lenguajeGB.smsMensError1() + '*\n*' + usedPrefix + `${lenguajeGB.lenguaje() == 'es' ? 'reporte' : 'report'}` + '* ' + `${lenguajeGB.smsMensError2()} ` + usedPrefix + command)
@@ -91,15 +90,6 @@ reportError(e)
 break
     
 case isCommand4:
-try{ 
-_package = JSON.parse(await promises.readFile(join(__dirname, '../package.json')).catch(_ => ({}))) || {}
-await conn.sendFile(m.chat, sharkImg.getRandom(), 'shark.jpg', `*_${_package.homepage}_*\n\n` + lenguajeGB.smsPrivadoDonar(), fkontak)    
-} catch (e) {
-reportError(e)
-}    
-break
-    
-case isCommand5:
 let codigo = `termux-setup-storage
 apt update
 apt upgrade
@@ -140,7 +130,7 @@ reportError(e)
 }    
 break
     
-case isCommand6:
+case isCommand5:
 try{   
 taguser = conn.getName(m.sender)
 _package = JSON.parse(await promises.readFile(join(__dirname, '../package.json')).catch(_ => ({}))) || {}
@@ -153,7 +143,7 @@ reportError(e)
 }    
 break
     
-case isCommand7:
+case isCommand6:
 try{
 let txt
 groups = Object.values(await conn.groupFetchAllParticipating())
@@ -172,7 +162,7 @@ reportError(e)
 }     
 break
     
-case isCommand8:
+case isCommand7:
 try{
 _uptime = process.uptime() * 1000
 uptime = clockString(_uptime) 
@@ -207,7 +197,7 @@ reportError(e)
 }     
 break
 
-case isCommand9:
+case isCommand8:
 try{
 let contact, number, ofc, nombre, description, correo, lugar, enlace, biog
 let biografiaBot = await conn.fetchStatus(conn.user.jid.split('@')[0] + '@s.whatsapp.net').catch(_ => 'undefined')
@@ -237,7 +227,7 @@ reportError(e)
 } 
 break
     
-case isCommand10:
+case isCommand9:
 try {
 let format = sizeFormatter({
 std: 'JEDEC', // 'SI' (default) | 'IEC' | 'JEDEC'
@@ -295,7 +285,7 @@ reportError(e)
 }   
 break
     
-case isCommand11:
+case isCommand10:
 if (!text) return m.reply(lenguajeGB.smsReportGB1(usedPrefix, command))
 if (text.length < 8) return m.reply(lenguajeGB.smsReportGB2())
 if (text.length > 1000) return m.reply(lenguajeGB.smsReportGB3())
@@ -314,7 +304,7 @@ await m.reply(lenguajeGB.smsReportGB5())
 break
 }}
 
-handler.command = /^(estado|status|estate|state|stado|stats|botstat(us)?|cuenta(s)?oficiales?|sharkig|(cuentas|account)s?s?k|(ig)?shark|(cuentasshark))|shark(bot)?groups?|grupos|groupssk|grupos(ofc|desharkbot|sk)|gruposk|sharkgroups?|group(ofc|sofc)|c(ó|o)digo|sc|git|script|instalar(shark)?bot|proceso(del)?bot|bot(install|proceso)|installbot|owner|creator|propietario|dueño|dueña|propietaria|dueño|creadora|creador|group(s|list|o(lista)?)|list(a)?(de)?grupo(s)?|grupolista|info(shark|bot)|informaci(ón|on)(shark|bot)|contactos?|contacts?|ping|speed|velocidad|rapidez|velocity|dona(te|si)|report|request|reporte|bugs|bug|reportowner|reportes|reportar$/i
+handler.command = /^(estado|status|estate|state|stado|stats|botstat(us)?|cuenta(s)?oficiales?|sharkig|(cuentas|account)s?s?k|(ig)?shark|(cuentasshark))|shark(bot)?groups?|grupos|groupssk|grupos(ofc|desharkbot|sk)|gruposk|sharkgroups?|group(ofc|sofc)|instalar(shark)?bot|proceso(del)?bot|bot(install|proceso)|installbot|owner|creator|propietario|dueño|dueña|propietaria|dueño|creadora|creador|group(s|list|o(lista)?)|list(a)?(de)?grupo(s)?|grupolista|info(shark|bot)|informaci(ón|on)(shark|bot)|contactos?|contacts?|ping|speed|velocidad|rapidez|velocity|dona(te|si)|report|request|reporte|bugs|bug|reportowner|reportes|reportar$/i
 export default handler
 
 function clockString(ms) {
