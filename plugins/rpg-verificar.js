@@ -16,7 +16,7 @@ age = parseInt(age)
 if (age > 50) return m.reply(lenguajeGB.smsVerify4())
 if (age < 10) return m.reply(lenguajeGB.smsVerify5())
 if (name.length >= 30) return m.reply(lenguajeGB.smsVerify6())
-user.name = name + 'ͧͧͧͦꙶͣͤ✓ᚲᴳᴮ'.trim()
+user.name = name + 'ͧͧͧͦ🆂🅺🅻'.trim()
 user.age = age
 user.regTime = + new Date
 user.registered = true
