@@ -1,5 +1,6 @@
-<a href="https://www.youtube.com/@thechema4896">
-<img src="https://img.shields.io/badge/YouTube-FF0000?style=for-the-badge&logo=youtube&logoColor=white" alt="YouTube">
+<a href="https://www.youtube.com/channel/UCPkAneZ18bEo-uYCjbr7MpA">
+<img src="https://img.shields.io/youtube/channel/subscribers/:channelId
+" alt="YouTube">
 </a>
 <a href="https://instagram.com/josh_artl">
 <img src="https://img.shields.io/badge/Instagram-E4405F?style=for-the-badge&logo=instagram&logoColor=white">
@@ -116,4 +117,4 @@ Set-ExecutionPolicy RemoteSigned
 > Aparecerá un mensaje de advertencia preguntando si deseas cambiar la Política de ejecución. Confirma con "Y" y presiona Enter. Luego ya puede volver a ejecutar el comando `yarn`
 
 ### 👑 CREADOR
-[![OsmaldoKr](https://avatars.githubusercontent.com/u/128516128?v=4)](https://github.com/ElChema-Nc)
+[![OsmaldoKr](https://avatars.githubusercontent.com/u/128516128?v=4)](https://github.com/OsmaldoKr)
