@@ -116,4 +116,4 @@ Set-ExecutionPolicy RemoteSigned
 > Aparecerá un mensaje de advertencia preguntando si deseas cambiar la Política de ejecución. Confirma con "Y" y presiona Enter. Luego ya puede volver a ejecutar el comando `yarn`
 
 ### 👑 CREADOR
-[![ElChema-Nc](https://github.com/ElChema-Nc.png?size=300)](https://github.com/ElChema-Nc)
+[![OsmaldoKr](https://avatars.githubusercontent.com/u/128516128?v=4)](https://github.com/ElChema-Nc)
