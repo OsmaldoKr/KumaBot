@@ -1,8 +1,7 @@
 <a href="https://www.youtube.com/channel/UCPkAneZ18bEo-uYCjbr7MpA">
-<img src="https://img.shields.io/youtube/channel/subscribers/:channelId
-" alt="YouTube">
+<img src="https://img.shields.io/badge/YouTube-FF0000?style=for-the-badge&logo=youtube&logoColor=white" alt="YouTube">
 </a>
-<a href="https://instagram.com/josh_artl">
+<a href="https://instagram.com/osmaldokr.16">
 <img src="https://img.shields.io/badge/Instagram-E4405F?style=for-the-badge&logo=instagram&logoColor=white">
 </a>
 </div>
