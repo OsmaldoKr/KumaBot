@@ -15,7 +15,7 @@
 > - [x] TERMUX, REPLIT, WINDOWS, ZIPPONODES, BOXMINE-HOST
 
 
-[`😛 App Termux`](https://f-droid.org/es/packages/com.termux/)
+[`😛 App Termux`](https://f-droid.org/repo/com.termux_118.apk)
 ### 🤨 INSTALACIÓN AUTOMÁTICA - TERMUX
 
 ```bash
