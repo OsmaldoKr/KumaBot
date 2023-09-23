@@ -94,7 +94,7 @@ global.ig = 'https://www.instagram.com/josh_artl'
 global.md = 'https://github.com/ElChema-Nc/SharkLite'
 
 global.nna = 'https://chat.whatsapp.com/JO5LstGfk6RBccr0gjzNwI' //UPDATE SHARKLITE
-global.asistencia = 'Wa.me/34623289459' //Dudas? escríbeme...
+global.asistencia = 'Wa.me/50578213790' //Dudas? escríbeme...
 
 global.wm = '𝙎𝙝𝙖𝙧𝙠𝙇𝙞𝙩𝙚ㅤ🦈 : 𝙀𝙡ㅤ𝘾𝙝𝙚𝙢𝙖ㅤ🔱'
 global.igfg = '𝙎𝙝𝙖𝙧𝙠𝙇𝙞𝙩𝙚ㅤ🦈'
