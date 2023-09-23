@@ -70,14 +70,14 @@ global.fetch = fetch
 global.axios = axios
 global.moment = moment	
 
-global.packname = '𝙀𝙡ㅤ𝘾𝙝𝙚𝙢𝙖ㅤ🔱'
-global.author = '𝙎𝙝𝙖𝙧𝙠𝙇𝙞𝙩𝙚ㅤ🦈'
+global.packname = 'Osmaldo KRㅤ🔱'
+global.author = 'Kuma Botㅤ🦈'
 
 // ES ➜ Está parte es para mostrar el contacto de alguien al usar #contacto
 global.official = [ 
-['34623289459', '𝙀𝙡ㅤ𝘾𝙝𝙚𝙢𝙖ㅤ🔱', 1], 
-['50578213790', '𝙊𝙬𝙣𝙚𝙧 (𝙊𝙨𝙤) 💻', 1],
-['50585826826', '𝙎𝙝𝙖𝙧𝙠𝙇𝙞𝙩𝙚ㅤ🦈', 1]]
+['50578213790', 'Osmaldo KR', 1], 
+['34623289459', '𝙀𝙡ㅤ𝘾𝙝𝙚𝙢𝙖ㅤ🔱', 1],
+['50578000739', 'Kuma Botㅤ🦈', 1]]
 
 global.mail = '' //agrega tú correo
 global.desc = '' //agrega una descripción corta
