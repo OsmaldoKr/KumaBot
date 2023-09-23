@@ -9,9 +9,8 @@ import moment from 'moment-timezone'
 import { es } from './lib/idiomas/total-idiomas.js' 
 
 global.owner = [
-  ['34623289459', '𝙀𝙡ㅤ𝘾𝙝𝙚𝙢𝙖ㅤ🔱', true],  
-  ['50578213790', '𝙊𝙬𝙣𝙚𝙧 (𝙊𝙨𝙤) 💻'],
-  ['50585826826', '𝙎𝙝𝙖𝙧𝙠𝙇𝙞𝙩𝙚ㅤ🦈']]
+  ['50578213790', 'Osmaldo Krㅤ🔱', true],  
+  ['50578000739', 'KumaBotㅤ🦈']]
 
 global.mods = [] 
 global.prems = []
