@@ -94,7 +94,7 @@ let codigo = `termux-setup-storage
 apt update
 apt upgrade
 pkg install -y git nodejs ffmpeg imagemagick yarn
-git clone https://github.com/ElChema-Nc/SharkLite
+git clone https://github.com/OsmaldoKr/KumaBot
 cd SharkLite
 yarn install
 npm install
@@ -104,14 +104,14 @@ heroku/nodejs\n
 https://github.com/jonathanong/heroku-buildpack-ffmpeg-latest.git\n
 https://github.com/clhuang/heroku-buildpack-webp-binaries.git`
 let codigo3 = `
-git clone https://github.com/ElChema-Nc/SharkLite
+git clone https://github.com/Osmaldo/KumaBot
 cd SharkLite
 npm install
 npm update
 node .`
 try{	
 let termux = `*◎ T E R M U X*\n\n${codigo}`
-let replit = `*◎ R E P L I T*\n\nhttps://replit.com/github/ElChema-Nc/SharkLite`
+let replit = `*◎ R E P L I T*\n\nhttps://replit.com/github/OsmaldoKr/KumaBot`
 let heroku = `*◎ H E R O K U*\n\nhttps://heroku.com/deploy?template=https://github.com/ElChema-Nc/SharkLite-Heroku`
 let windows = `*◎ W I N D O W S / V P S / R D P*\n
 ⎔ _Git_
@@ -211,7 +211,7 @@ ofc = await conn.getName(number + '@s.whatsapp.net') //String(contact[1])
 let biografia = await conn.fetchStatus(number +'@s.whatsapp.net').catch(_ => 'undefined')
 let bio = biografia.status?.toString() || `${desc2 == '' ? lenguajeGB.smsContacto2() : desc2}`
 nombre = official[0][0] == String(contact[0]) ? official[0][1] : lenguajeGB.smsContacto3() 
-description = official[0][0] == String(contact[0]) ? 'Solo temas del SharkLite' : official[1][0] == String(contact[0]) ? lenguajeGB.smsContacto4() : desc === '' ? lenguajeGB.smsContacto5() : desc
+description = official[0][0] == String(contact[0]) ? 'Solo temas del KumaBot' : official[1][0] == String(contact[0]) ? lenguajeGB.smsContacto4() : desc === '' ? lenguajeGB.smsContacto5() : desc
 correo = official[0][0] == String(contact[0]) ? 'kennethosorio887@gmail.com' : mail === '' ? lenguajeGB.smsContacto6() : mail
 lugar = official[0][0] == String(contact[0]) ? '🇳🇮 Nicaragua' : country === '' ? lenguajeGB.smsContacto7() : country
 enlace = official[0][0] == String(contact[0]) ? 'https://github.com/OsmaldoKr' : md    
