@@ -8,7 +8,7 @@
 
 ### ✅ KUMA_BOT OFICIAL
 
-<a href="http://wa.me/50585826826?text=.menu" target="blank"><img src="https://img.shields.io/badge/1️⃣_𝙎𝙝𝙖𝙧𝙠𝙇𝙞𝙩𝙚-25D366?style=for-the-badge&logo=whatsapp&logoColor=white" />
+<a href="http://wa.me/50578000739?text=.menu" target="blank"><img src="https://img.shields.io/badge/1️⃣_𝙎𝙝𝙖𝙧𝙠𝙇𝙞𝙩𝙚-25D366?style=for-the-badge&logo=whatsapp&logoColor=white" />
 </a>
   
 #### DISPONIBLE EN:
