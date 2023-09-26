@@ -45,16 +45,16 @@ const options = {
  space: true,
  maxLength: '0',
 }
-cfonts.say('chema\nshark\nlite'.trim(), options)
+cfonts.say('Osmaldo\nKR\nBeta'.trim(), options)
 
 } catch (err) {
-say('Shark\nLite', {
+say('Kuma\nBot', {
  font: 'chrome',
  align: 'center',
  gradient: ['red', 'magenta']
 })}
 
-say(`Desarrollado por @josh_artl`.trim(), {
+say(`Desarrollado por @OsmaldoKr`.trim(), {
  font: 'console',
  align: 'center',
  colors: ['candy']

@@ -50,6 +50,7 @@ global.APIs = {
   popcat : 'https://api.popcat.xyz',
   xcoders : 'https://api-xcoders.site'
 },
+
 global.APIKeys = { 
   'https://api.xteam.xyz': `${keysxteam}`,
   'https://api.lolhuman.xyz': `${lolkeysapi}`,
@@ -87,7 +88,7 @@ global.country = '' //agrega tú país ejemplo: 🇳🇮
 global.vs = '9.9.9'
 global.vsJB = '4.0'
 
-global.sk = '𝙎𝙝𝙖𝙧𝙠𝙇𝙞𝙩𝙚ㅤ🦈'
+global.sk = 'KumaBot'
 global.yt = 'https://youtube.com/@thechema4896'
 global.yt2 = 'https://youtube.com/@thechema4896'
 global.ig = 'https://www.instagram.com/osmaldokr.16'

@@ -63,7 +63,7 @@ text = m.quoted.text
 } else return conn.reply(m.chat, lenguajeGB.smsOpenai1() + `\n*${usedPrefix + command}* ${lenguajeGB.smsOpenai2()}\n\n*${usedPrefix + command}* ${lenguajeGB.smsOpenai3()}` , m)
 await conn.sendPresenceUpdate('composing', m.chat)
 try {
-let syms = `Actuaras como un Bot de WhatsApp el cual fue creado por el Chema, tu seras SharkLite`
+let syms = `Actuaras como un Bot de WhatsApp el cual fue creado por el OsmaldoKr, tu seras KumaBot`
 let res = await gpt.ChatGpt(text, syms)
 await m.reply(res.text)
 } catch {
@@ -100,7 +100,7 @@ await m.reply(lenguajeGB.smsGit2())
 try{
 let err = lenguajeGB.smsGit14()
 let request = await githubstalk(text) 
-let { username, following, followers, type, bio, company, blog, location, email, public_repo, public_gists, profile_pic } = request
+let { username, following, followers, type, bio, company, blog, location, email, public_repo, public_gists, profile_pic } = requestindex.js
 let thumb = await profile_pic
 let cont = `*╭•  •  •  •  • G I T H U B •  •  •  •  •╮*\n
 ${lenguajeGB.smsGit3()}
