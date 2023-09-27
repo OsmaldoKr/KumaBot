@@ -80,10 +80,10 @@ global.official = [
 ['34623289459', '𝙀𝙡ㅤ𝘾𝙝𝙚𝙢𝙖ㅤ🔱', 1],
 ['50578000739', 'Kuma Botㅤ🦈', 1]]
 
-global.mail = '' //agrega tú correo
-global.desc = '' //agrega una descripción corta
+global.mail = 'Kennethosorio887@gmail.com' //agrega tú correo
+global.desc = 'Ocupado trabajando' //agrega una descripción corta
 global.desc2 = '' //agrega una descripción larga (Solo se aplicará si su whasapp no tiene descripción)
-global.country = '' //agrega tú país ejemplo: 🇳🇮
+global.country = '🇳🇮' //agrega tú país ejemplo: 🇳🇮
 
 global.vs = '9.9.9'
 global.vsJB = '4.0'
@@ -94,7 +94,7 @@ global.yt2 = 'https://youtube.com/@thechema4896'
 global.ig = 'https://www.instagram.com/osmaldokr.16'
 global.md = 'https://github.com/OsmaldoKr/KumaBot'
 
-global.nna = 'https://chat.whatsapp.com/JO5LstGfk6RBccr0gjzNwI' //UPDATE SHARKLITE
+global.nna = 'https://chat.whatsapp.com/JO5LstGfk6RBccr0gjzNwI' //UPDATE KUMABOT
 global.asistencia = 'Wa.me/50578213790' //Dudas? escríbeme...
 
 global.wm = 'KumaBotㅤ🦈 : OsmaldoKRㅤ🔱'

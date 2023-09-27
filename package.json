@@ -1,6 +1,6 @@
 { 
 "name": "KumaBot",
-"version": "9.9.9", 
+"version": "0.0.1", 
 "description": "El Mejor Bot De WhatsApp",
 "main": "index.js",
 "type": "module",
