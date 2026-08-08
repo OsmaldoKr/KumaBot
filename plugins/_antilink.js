@@ -1,29 +1,100 @@
-let linkRegex = /chat.whatsapp.com\/([0-9A-Za-z]{20,24})/i 
-export async function before(m, { isAdmin, isBotAdmin }) {
-if (m.isBaileys && m.fromMe)
-return !0
-if (!m.isGroup) return !1
-let chat = global.db.data.chats[m.chat]
-let delet = m.key.participant
-let bang = m.key.id
-let toUser = `${m.sender.split("@")[0]}`
-let aa = toUser + '@s.whatsapp.net'
-let bot = global.db.data.settings[this.user.jid] || {}
-const isGroupLink = linkRegex.exec(m.text)
-const grupo = `https://chat.whatsapp.com`
-if (isAdmin && chat.antiLink && m.text.includes(grupo)) return m.reply(`${lenguajeGB['smsAdwa']()}`)
-if (chat.antiLink && isGroupLink && !isAdmin) {
-if (isBotAdmin) {
-const linkThisGroup = `https://chat.whatsapp.com/${await this.groupInviteCode(m.chat)}`
-if (m.text.includes(linkThisGroup)) return m.reply(lenguajeGB['smsWaMismoEnlace']())  
-}    
-if (!isBotAdmin) return m.reply(`${lenguajeGB['smsAvisoFG']()} ${lenguajeGB['smsAllAdmin']()}`)
-if (isBotAdmin) {
-await conn.reply(m.chat, `${lenguajeGB['smsEnlaceWat']()} *@${toUser}*`, null, { mentions: [aa] })
-await conn.sendMessage(m.chat, { delete: { remoteJid: m.chat, fromMe: false, id: bang, participant: delet }})
-let responseb = await conn.groupParticipantsUpdate(m.chat, [m.sender], 'remove')
-if (responseb[0].status === "404") return   
-} else if (!bot.restrict) return m.reply(`${lenguajeGB['smsAvisoAG']()}${lenguajeGB['smsSoloOwner']()}`)
+const groupLinkRegex = /(?:https?:\/\/)?chat\.whatsapp\.com\/([0-9A-Za-z]{20,24})/i
+
+function languageText(key, fallback) {
+  try {
+    return global.lenguajeGB?.[key]?.() || fallback
+  } catch {
+    return fallback
+  }
 }
-return !0
+
+export async function before(
+  m,
+  {
+    conn,
+    isAdmin,
+    isBotAdmin,
+    isOwner,
+    isROwner
+  }
+) {
+  if (!m.isGroup || m.fromMe || m.isBaileys) return false
+
+  const chat = global.db.data.chats[m.chat] || {}
+  const botSettings = global.db.data.settings[this.user.jid] || {}
+  const messageText = m.text || ''
+
+  if (!chat.antiLink) return false
+
+  const groupLink = messageText.match(groupLinkRegex)
+
+  if (!groupLink) return false
+
+  // Dueños y administradores pueden compartir enlaces.
+  if (isOwner || isROwner || isAdmin) return false
+
+  if (!isBotAdmin) {
+    await m.reply(
+      `${languageText('smsAvisoFG', '⚠️')} Necesito ser administrador para moderar enlaces de grupos.`
+    )
+
+    return true
+  }
+
+  if (!botSettings.restrict) {
+    await m.reply(
+      `${languageText('smsAvisoAG', '⚠️')} La moderación automática está desactivada por el propietario.`
+    )
+
+    return true
+  }
+
+  try {
+    const currentGroupCode = await conn.groupInviteCode(m.chat)
+    const currentGroupLink = `https://chat.whatsapp.com/${currentGroupCode}`
+
+    // No sanciona a alguien que comparte el enlace del mismo grupo.
+    if (messageText.includes(currentGroupLink)) {
+      return m.reply(
+        languageText(
+          'smsWaMismoEnlace',
+          'Ese es el enlace de este mismo grupo.'
+        )
+      )
+    }
+  } catch (error) {
+    console.error('No se pudo verificar el enlace del grupo:', error.message)
+  }
+
+  const userNumber = m.sender.split('@')[0]
+  const mention = `@${userNumber}`
+
+  await conn.sendMessage(
+    m.chat,
+    {
+      text: `${languageText('smsEnlaceWat', 'Los enlaces de otros grupos no están permitidos.')} ${mention}`,
+      mentions: [m.sender]
+    },
+    { quoted: m }
+  )
+
+  try {
+    await conn.sendMessage(m.chat, {
+      delete: m.key
+    })
+  } catch (error) {
+    console.error('No se pudo eliminar el mensaje:', error.message)
+  }
+
+  try {
+    await conn.groupParticipantsUpdate(
+      m.chat,
+      [m.sender],
+      'remove'
+    )
+  } catch (error) {
+    console.error('No se pudo expulsar al usuario:', error.message)
+  }
+
+  return true
 }

@@ -1,35 +1,89 @@
-/*import { sticker } from '../lib/sticker.js'
-let handler = m => m
+import { sticker } from '../lib/sticker.js'
+
+const MAX_VIDEO_SECONDS = 7
+
+function getFirstUrl(text = '') {
+  const match = text.match(
+    /https?:\/\/[^\s]+\.(?:jpg|jpeg|png|webp|gif|mp4)(?:\?[^\s]*)?/i
+  )
+
+  return match?.[0] || null
+}
+
+const handler = (m) => m
 
 handler.all = async function (m) {
-let chat = db.data.chats[m.chat]
-let user = db.data.users[m.sender]
+  const chat = global.db.data.chats[m.chat] || {}
 
-if (chat.autosticker && m.isGroup) {
-let q = m
-let stiker = false
-let mime = (q.msg || q).mimetype || q.mediaType || ''
-if (/webp/g.test(mime)) return
-if (/image/g.test(mime)) {
-let img = await q.download?.()
-if (!img) return
-stiker = await sticker(img, false, packname, author)
-} else if (/video/g.test(mime)) {
-if (/video/g.test(mime)) if ((q.msg || q).seconds > 8) return m.reply(`*EL VÍDEO NO DEBE DE DURAR MÁS DE 7 SEGUNDOS*`)
-let img = await q.download()
-if (!img) return
-stiker = await sticker(img, false, packname, author)
-} else if (m.text.split(/\n| /i)[0]) {
-if (isUrl(m.text)) stiker = await sticker(false, m.text.split(/\n| /i)[0], packname, author)
-else return 
-}}
-if (stiker) {
-await this.sendFile(m.chat, stiker, null, { asSticker: true })
+  if (!chat.autosticker || !m.isGroup) return false
+
+  const message = m.msg || m
+  const mime = message.mimetype || m.mediaType || ''
+  let stickerBuffer = null
+
+  try {
+    // Evita convertir nuevamente un sticker ya existente.
+    if (/webp/i.test(mime)) return false
+
+    if (/image/i.test(mime)) {
+      const image = await m.download?.()
+
+      if (!image) return false
+
+      stickerBuffer = await sticker(
+        image,
+        false,
+        global.packname,
+        global.author
+      )
+    } else if (/video/i.test(mime)) {
+      const duration = Number(message.seconds || 0)
+
+      if (duration > MAX_VIDEO_SECONDS) {
+        return m.reply(
+          `⚠️ El video no debe durar más de ${MAX_VIDEO_SECONDS} segundos.`
+        )
+      }
+
+      const video = await m.download?.()
+
+      if (!video) return false
+
+      stickerBuffer = await sticker(
+        video,
+        false,
+        global.packname,
+        global.author
+      )
+    } else {
+      const url = getFirstUrl(m.text)
+
+      if (!url) return false
+
+      stickerBuffer = await sticker(
+        false,
+        url,
+        global.packname,
+        global.author
+      )
+    }
+
+    if (stickerBuffer) {
+      await this.sendFile(
+        m.chat,
+        stickerBuffer,
+        'kumabot-sticker.webp',
+        '',
+        m,
+        true,
+        { asSticker: true }
+      )
+    }
+  } catch (error) {
+    console.error('Error en autosticker:', error.message)
+  }
+
+  return false
 }
-return !0
-}
+
 export default handler
-
-const isUrl = (text) => {
-return text.match(new RegExp(/^https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&/=]*)(jpe?g|gif|png|mp4)/, 'gi'))}
-*/

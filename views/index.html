@@ -1,29 +1,204 @@
-<html>
+<!doctype html>
+<html lang="es">
 <head>
-  <title>Web</title>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <!-- Latest compiled and minified CSS -->
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1"
+  >
 
-  <!-- jQuery library -->
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <title>KumaBot · Conexión WhatsApp</title>
 
-  <!-- Popper JS -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <style>
+    :root {
+      color-scheme: dark;
+      --background: #0f172a;
+      --surface: #172033;
+      --primary: #8b5cf6;
+      --text: #f8fafc;
+      --muted: #a8b3c7;
+      --success: #34d399;
+      --warning: #fbbf24;
+    }
 
-  <!-- Latest compiled JavaScript -->
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-  
-  <script src="index.js"></script>
-  <link rel="stylesheet" href="style.css">
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      min-height: 100vh;
+      margin: 0;
+      display: grid;
+      place-items: center;
+      padding: 24px;
+      font-family: Arial, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at top, #30205c, transparent 45%),
+        var(--background);
+    }
+
+    main {
+      width: min(100%, 440px);
+      padding: 32px;
+      text-align: center;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 24px;
+      background: rgba(23, 32, 51, 0.92);
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.35);
+    }
+
+    .logo {
+      width: 72px;
+      height: 72px;
+      display: grid;
+      place-items: center;
+      margin: 0 auto 16px;
+      border-radius: 20px;
+      font-size: 36px;
+      background: linear-gradient(135deg, #8b5cf6, #4f46e5);
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 28px;
+    }
+
+    .subtitle {
+      margin: 10px 0 24px;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    .status {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 9px 14px;
+      margin-bottom: 22px;
+      border-radius: 999px;
+      color: var(--warning);
+      background: rgba(251, 191, 36, 0.1);
+      font-size: 14px;
+      font-weight: bold;
+    }
+
+    .status::before {
+      width: 9px;
+      height: 9px;
+      content: "";
+      border-radius: 50%;
+      background: currentColor;
+    }
+
+    .qr-box {
+      display: grid;
+      place-items: center;
+      min-height: 300px;
+      padding: 16px;
+      border-radius: 18px;
+      background: white;
+    }
+
+    #qr {
+      display: none;
+      width: min(100%, 280px);
+      aspect-ratio: 1;
+      object-fit: contain;
+    }
+
+    .loading {
+      color: #475569;
+      font-weight: bold;
+    }
+
+    .instructions {
+      margin: 24px 0 0;
+      color: var(--muted);
+      text-align: left;
+      line-height: 1.6;
+    }
+
+    .instructions strong {
+      color: var(--text);
+    }
+
+    footer {
+      margin-top: 28px;
+      color: #7f8ba1;
+      font-size: 13px;
+    }
+  </style>
 </head>
+
 <body>
+  <main>
+    <div class="logo">👺</div>
 
-<div class="container-fluid pt-3">
-  <nav class="navbar navbar-expand-sm bg-dark navbar-dark fixed-top"></nav>
-  <div class="spinner-border text-primary"></div>
-</div>
+    <h1>KumaBot</h1>
 
+    <p class="subtitle">
+      Vincula una cuenta de WhatsApp para iniciar el bot.
+    </p>
+
+    <div class="status" id="status">
+      Generando código QR
+    </div>
+
+    <section class="qr-box">
+      <span class="loading" id="loading">Cargando QR...</span>
+
+      <img
+        id="qr"
+        alt="Código QR para vincular KumaBot con WhatsApp"
+      >
+    </section>
+
+    <p class="instructions">
+      <strong>Cómo conectar:</strong><br>
+      Abre WhatsApp → Dispositivos vinculados → Vincular un dispositivo.
+      Luego escanea este código.
+    </p>
+
+    <footer>
+      KumaBot · Desarrollado por OsmaldoKr
+    </footer>
+  </main>
+
+  <script>
+    const qr = document.getElementById('qr')
+    const loading = document.getElementById('loading')
+    const status = document.getElementById('status')
+
+    async function updateBotStatus() {
+      try {
+        const response = await fetch('/health')
+        const data = await response.json()
+
+        if (data.whatsapp === 'connected') {
+          status.textContent = 'WhatsApp conectado'
+          status.style.color = '#34d399'
+          loading.textContent = 'El bot ya está conectado.'
+          qr.style.display = 'none'
+          return
+        }
+
+        if (data.qrAvailable) {
+          status.textContent = 'Escanea el código QR'
+          qr.src = `/qr?time=${Date.now()}`
+          qr.style.display = 'block'
+          loading.style.display = 'none'
+          return
+        }
+
+        status.textContent = 'Esperando código QR'
+      } catch {
+        status.textContent = 'Servidor no disponible'
+      }
+    }
+
+    updateBotStatus()
+    setInterval(updateBotStatus, 5000)
+  </script>
 </body>
 </html>

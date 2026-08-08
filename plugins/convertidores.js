@@ -1,176 +1,367 @@
-import { webp2mp4, webp2png  } from '../lib/webp2mp4.js'  
-import { ffmpeg, toPTT } from '../lib/converter.js'
+import { webp2mp4, webp2png } from '../lib/webp2mp4.js'
+import { toPTT } from '../lib/converter.js'
 import uploadFile from '../lib/uploadFile.js'
 import uploadImage from '../lib/uploadImage.js'
 import fetch from 'node-fetch'
 import gtts from 'node-gtts'
-import { readFileSync, unlinkSync } from 'fs'
-import { join } from 'path'
+import {
+  existsSync,
+  readFileSync,
+  unlinkSync
+} from 'node:fs'
+import { join } from 'node:path'
 
-let handler = async (m, { conn, command, usedPrefix, args }) => {
-let q, mime, media, out, caption
-
-const isCommand1 = /^(to(img|image)?|img|jpe?g|png)\b$/i.test(command)
-const isCommand2 = /^(tourl|url|upload)\b$/i.test(command)
-const isCommand3 = /^(to(video|mp4)?|mp4)\b$/i.test(command)
-const isCommand4 = /^(to(gif|gifau)?|gif|gifau)\b$/i.test(command)
-const isCommand5 = /^(to(vn|ptt|audio|mp3)?|mp3)\b$/i.test(command)
-const isCommand6 = /^(to(voice|tts)?|tts)\b$/i.test(command)
-
-switch (true) {     
-case isCommand1:
-const notStickerMessage = lenguajeGB.smsToimg()
-if (!m.quoted) return m.reply(notStickerMessage)
-try{  
-q = m.quoted || m
-mime = q.mediaType || ''
-if (!/sticker/.test(mime)) return m.reply(notStickerMessage)
-media = await q.download()
-out = await webp2png(media).catch(_ => null) || Buffer.alloc(0)
-await conn.sendFile(m.chat, out, 'error.png', null, m)
-} catch (e) {
-await m.reply(lenguajeGB['smsMalError3']() + '\n*' + lenguajeGB.smsMensError1() + '*\n*' + usedPrefix + `${lenguajeGB.lenguaje() == 'es' ? 'reporte' : 'report'}` + '* ' + `${lenguajeGB.smsMensError2()} ` + usedPrefix + command)
-console.log(`❗❗ ${lenguajeGB['smsMensError2']()} ${usedPrefix + command} ❗❗`)
-console.log(e)} 
-break  
-
-case isCommand2:    
-q = m.quoted ? m.quoted : m
-mime = (q.msg || q).mimetype || ''
-if (!mime) return m.reply(lenguajeGB.smsConURL())
-try{ 
-media = await q.download()
-const urlRegex = /(https?:\/\/.*\.(?:png|jpe?g|webp))/i
-let isTele = /image\/(png|jpe?g|gif)|video\/mp4/.test(mime)
-let link = await (isTele ? uploadImage : uploadFile)(media) 
-//Resultado en MG o KB
-const bytes = media.length;
-let result
-const kilobytes = bytes / 1024;
-if (kilobytes < 1) {
-result = kilobytes.toFixed(2) + ' KB';
-} else {
-const megabytes = bytes / (1024 * 1024);
-if (Math.floor(megabytes) >= 1) {
-result = megabytes.toFixed(2) + ' MB';
-} else {
-result = kilobytes.toFixed(2) + ' KB';
-}} 
-caption = `
-${lenguajeGB.smsConURL1()}
-» ${link}\n
-${lenguajeGB.smsConURL2()}
-» ${result}\n
-${lenguajeGB.smsConURL3()}
-» ${isTele ? lenguajeGB.smsConURLERR1() : lenguajeGB.smsConURLERR2()}\n
-${lenguajeGB.smsConURL4()}
-» ${await shortUrl(link)}`.trim()
-m.reply(caption) 
-} catch (e) {
-await m.reply(lenguajeGB['smsMalError3']() + '\n*' + lenguajeGB.smsMensError1() + '*\n*' + usedPrefix + `${lenguajeGB.lenguaje() == 'es' ? 'reporte' : 'report'}` + '* ' + `${lenguajeGB.smsMensError2()} ` + usedPrefix + command)
-console.log(`❗❗ ${lenguajeGB['smsMensError2']()} ${usedPrefix + command} ❗❗`)
-console.log(e)}
-async function shortUrl(url) {
-let res = await fetch(`https://tinyurl.com/api-create.php?url=${url}`)
-return await res.text()}    
-break 
-
-case isCommand3:       
-if (!m.quoted) return m.reply(lenguajeGB.smsConVIDEO())
-mime = m.quoted.mimetype || ''
-if (!/webp|gif/.test(mime)) return m.reply(lenguajeGB.smsConVIDEO2()) 
-try{ 
-media = await m.quoted.download()
-out = Buffer.alloc(0)
-if (/webp|gif/.test(mime)) {
-out = await webp2mp4(media)
-} else if (/audio/.test(mime)) {
-out = await ffmpeg(media, [
-'-filter_complex', 'color',
-'-pix_fmt', 'yuv420p',
-'-crf', '51',
-'-c:a', 'copy',
-'-shortest'
-], 'mp3', 'mp4')}
-await conn.sendFile(m.chat, out, 'error.mp4', lenguajeGB.smsConVIDEO3(), m, 0, { thumbnail: out }) 
-} catch (e) {
-await m.reply(lenguajeGB['smsMalError3']() + '\n*' + lenguajeGB.smsMensError1() + '*\n*' + usedPrefix + `${lenguajeGB.lenguaje() == 'es' ? 'reporte' : 'report'}` + '* ' + `${lenguajeGB.smsMensError2()} ` + usedPrefix + command)
-console.log(`❗❗ ${lenguajeGB['smsMensError2']()} ${usedPrefix + command} ❗❗`)
-console.log(e)}
-break 
-
-case isCommand4:       
-if (!m.quoted) return m.reply(lenguajeGB.smsConGIF())
-q = m.quoted || m
-mime = (q.msg || q).mimetype || ''
-if (!/(mp4)/.test(mime)) return m.reply(lenguajeGB.smsConGIF2() + mime)
-try{ 
-m.reply(global.wait)
-media = await q.download()
-conn.sendMessage(m.chat, { video: media, gifPlayback: true, caption: lenguajeGB.smsConGIF3() }, { quoted: m })
-} catch (e) {
-await m.reply(lenguajeGB['smsMalError3']() + '\n*' + lenguajeGB.smsMensError1() + '*\n*' + usedPrefix + `${lenguajeGB.lenguaje() == 'es' ? 'reporte' : 'report'}` + '* ' + `${lenguajeGB.smsMensError2()} ` + usedPrefix + command)
-console.log(`❗❗ ${lenguajeGB['smsMensError2']()} ${usedPrefix + command} ❗❗`)
-console.log(e)}
-break
-    
-case isCommand5:       
-q = m.quoted ? m.quoted : m
-mime = (m.quoted ? m.quoted : m.msg).mimetype || ''
-if (!/video|audio/.test(mime)) return m.reply(lenguajeGB.smsConVN())
-media = await q.download?.()
-if (!media && !/video/.test(mime)) return m.reply(lenguajeGB.smsConVN1())
-if (!media && !/audio/.test(mime)) return m.reply(lenguajeGB.smsConVN2())
-let audio = await toPTT(media, 'mp4')
-if (!audio.data && !/audio/.test(mime)) return m.reply(lenguajeGB.smsConVN3())
-if (!audio.data && !/video/.test(mime)) return m.reply(lenguajeGB.smsConVN4())
-try{
-let aa = conn.sendFile(m.chat, audio.data, 'error.mp3', '', m, true, { mimetype: 'audio/mp4' })
-if (!aa) return conn.sendMessage(m.chat, { audio: { url: media }, fileName: 'error.mp3', mimetype: 'audio/mp4', ptt: true }, { quoted: m }) 
-} catch (e) {
-await m.reply(lenguajeGB['smsMalError3']() + '\n*' + lenguajeGB.smsMensError1() + '*\n*' + usedPrefix + `${lenguajeGB.lenguaje() == 'es' ? 'reporte' : 'report'}` + '* ' + `${lenguajeGB.smsMensError2()} ` + usedPrefix + command)
-console.log(`❗❗ ${lenguajeGB['smsMensError2']()} ${usedPrefix + command} ❗❗`)
-console.log(e)}
-break
-        
-case isCommand6: 
-let defaultLang = lenguajeGB.lenguaje()
-let lang = args[0]
-let text = args.slice(1).join(' ')
-if ((args[0] || '').length !== 2) { 
-lang = defaultLang 
-text = args.join(' ')
+function languageText(key, fallback) {
+  try {
+    return global.lenguajeGB?.[key]?.() || fallback
+  } catch {
+    return fallback
+  }
 }
-if (!text && m.quoted?.text) text = m.quoted.text
-let res
-try { res = await tts(text, lang) }
-catch (e) {
-//m.reply(e + '')
-text = args.join(' ')
-if (!text) return m.reply(lenguajeGB.smsTradc1() + usedPrefix + command + lenguajeGB.smsTradc2() + usedPrefix + command + ' ' + lenguajeGB.smsTradc3() + lenguajeGB.smsTradc4())
-res = await tts(text, defaultLang)
-} finally {
-try{
-if (res) conn.sendFile(m.chat, res, 'tts.opus', null, m, true)
-} catch (e) {
-await m.reply(lenguajeGB['smsMalError3']() + '\n*' + lenguajeGB.smsMensError1() + '*\n*' + usedPrefix + `${lenguajeGB.lenguaje() == 'es' ? 'reporte' : 'report'}` + '* ' + `${lenguajeGB.smsMensError2()} ` + usedPrefix + command)
-console.log(`❗❗ ${lenguajeGB['smsMensError2']()} ${usedPrefix + command} ❗❗`)
-console.log(e)}        
-}    
-function tts(text, lang = lenguajeGB.lenguaje()) {
-console.log(lang, text)
-return new Promise((resolve, reject) => {
-try {
-let tts = gtts(lang)
-let filePath = join(global.__dirname(import.meta.url), '../tmp', (1 * new Date) + '.wav')
-tts.save(filePath, text, () => {
-resolve(readFileSync(filePath))
-unlinkSync(filePath)
-})
-} catch (e) { reject(e) }
-})}
-break        
-}}
 
-handler.command = /^(to(img|image)?|img|jpe?g|png|tourl|url|upload|to(video|mp4)?|mp4|to(gif|gifau)?|gif|gifau|to(vn|ptt|audio|mp3)?|mp3|to(voice|tts)?|tts)\b$/i
+function formatBytes(bytes) {
+  if (!bytes) return 'No disponible'
+
+  const units = ['B', 'KB', 'MB', 'GB']
+  const index = Math.floor(Math.log(bytes) / Math.log(1024))
+  const value = bytes / (1024 ** index)
+
+  return `${value.toFixed(2)} ${units[index]}`
+}
+
+async function shortUrl(url) {
+  try {
+    const response = await fetch(
+      `https://tinyurl.com/api-create.php?url=${encodeURIComponent(url)}`
+    )
+
+    return await response.text()
+  } catch {
+    return url
+  }
+}
+
+async function reportError(m, error, usedPrefix, command) {
+  console.error(`Error en ${command}:`, error)
+
+  return m.reply(
+    [
+      languageText(
+        'smsMalError3',
+        'Ocurrió un error al procesar el archivo.'
+      ),
+      '',
+      `Puedes reportarlo con: ${usedPrefix}reporte ${command}`
+    ].join('\n')
+  )
+}
+
+function createTTS(text, language = 'es') {
+  return new Promise((resolve, reject) => {
+    const fileName = `tts-${Date.now()}.wav`
+    const filePath = join(
+      global.__dirname(import.meta.url),
+      '../tmp',
+      fileName
+    )
+
+    try {
+      const tts = gtts(language)
+
+      tts.save(filePath, text, () => {
+        try {
+          const buffer = readFileSync(filePath)
+
+          if (existsSync(filePath)) {
+            unlinkSync(filePath)
+          }
+
+          resolve(buffer)
+        } catch (error) {
+          reject(error)
+        }
+      })
+    } catch (error) {
+      reject(error)
+    }
+  })
+}
+
+const handler = async (
+  m,
+  {
+    conn,
+    command,
+    usedPrefix,
+    args
+  }
+) => {
+  const normalizedCommand = command.toLowerCase()
+
+  const isToImage = /^(toimg|toimage|img|jpg|jpeg|png)$/i.test(
+    normalizedCommand
+  )
+
+  const isToUrl = /^(tourl|url|upload)$/i.test(
+    normalizedCommand
+  )
+
+  const isToVideo = /^(tovideo|tomp4|mp4)$/i.test(
+    normalizedCommand
+  )
+
+  const isToGif = /^(togif|togifau|gif|gifau)$/i.test(
+    normalizedCommand
+  )
+
+  const isToAudio = /^(tovn|toptt|toaudio|tomp3|mp3)$/i.test(
+    normalizedCommand
+  )
+
+  const isTTS = /^(tovoice|totts|tts)$/i.test(
+    normalizedCommand
+  )
+
+  try {
+    if (isToImage) {
+      const quoted = m.quoted
+
+      if (!quoted) {
+        return m.reply(
+          languageText(
+            'smsToimg',
+            'Responde a un sticker para convertirlo en imagen.'
+          )
+        )
+      }
+
+      const mime = quoted.mimetype || quoted.mediaType || ''
+
+      if (!/webp/i.test(mime)) {
+        return m.reply(
+          'Responde a un sticker para convertirlo en imagen PNG.'
+        )
+      }
+
+      await m.reply(global.wait || 'Convirtiendo sticker a imagen...')
+
+      const media = await quoted.download()
+      const output = await webp2png(media)
+
+      return conn.sendFile(
+        m.chat,
+        output,
+        'kumabot-imagen.png',
+        '✅ Sticker convertido a PNG.',
+        m
+      )
+    }
+
+    if (isToUrl) {
+      const quoted = m.quoted || m
+      const mime = quoted.mimetype || quoted.mediaType || quoted.msg?.mimetype || ''
+
+      if (!mime) {
+        return m.reply(
+          languageText(
+            'smsConURL',
+            'Responde a un archivo multimedia para subirlo.'
+          )
+        )
+      }
+
+      await m.reply(global.wait || 'Subiendo archivo...')
+
+      const media = await quoted.download()
+
+      const isImageOrVideo = /image|video/i.test(mime)
+
+      const link = await (
+        isImageOrVideo
+          ? uploadImage(media)
+          : uploadFile(media)
+      )
+
+      const shortLink = await shortUrl(link)
+
+      const caption = [
+        languageText('smsConURL1', 'Enlace:'),
+        `» ${link}`,
+        '',
+        languageText('smsConURL2', 'Tamaño:'),
+        `» ${formatBytes(media.length)}`,
+        '',
+        languageText('smsConURL3', 'Tipo:'),
+        `» ${isImageOrVideo ? 'Imagen o video' : 'Archivo'}`,
+        '',
+        languageText('smsConURL4', 'Enlace corto:'),
+        `» ${shortLink}`
+      ].join('\n')
+
+      return m.reply(caption)
+    }
+
+    if (isToVideo) {
+      const quoted = m.quoted
+
+      if (!quoted) {
+        return m.reply(
+          languageText(
+            'smsConVIDEO',
+            'Responde a un sticker o GIF para convertirlo en video.'
+          )
+        )
+      }
+
+      const mime = quoted.mimetype || quoted.mediaType || ''
+
+      if (!/webp|gif/i.test(mime)) {
+        return m.reply(
+          languageText(
+            'smsConVIDEO2',
+            'Solo se pueden convertir stickers o GIF.'
+          )
+        )
+      }
+
+      await m.reply(global.wait || 'Convirtiendo a video...')
+
+      const media = await quoted.download()
+      const output = await webp2mp4(media)
+
+      return conn.sendFile(
+        m.chat,
+        output,
+        'kumabot-video.mp4',
+        languageText(
+          'smsConVIDEO3',
+          '✅ Conversión a video completada.'
+        ),
+        m
+      )
+    }
+
+    if (isToGif) {
+      const quoted = m.quoted
+
+      if (!quoted) {
+        return m.reply(
+          languageText(
+            'smsConGIF',
+            'Responde a un video para convertirlo en GIF.'
+          )
+        )
+      }
+
+      const mime = quoted.mimetype || quoted.mediaType || ''
+
+      if (!/video\/mp4/i.test(mime)) {
+        return m.reply(
+          languageText(
+            'smsConGIF2',
+            'Solo se pueden convertir videos MP4.'
+          )
+        )
+      }
+
+      await m.reply(global.wait || 'Convirtiendo video a GIF...')
+
+      const media = await quoted.download()
+
+      return conn.sendMessage(
+        m.chat,
+        {
+          video: media,
+          gifPlayback: true,
+          caption: languageText(
+            'smsConGIF3',
+            '✅ Video convertido a GIF.'
+          )
+        },
+        { quoted: m }
+      )
+    }
+
+    if (isToAudio) {
+      const quoted = m.quoted || m
+      const mime =
+        quoted.mimetype ||
+        quoted.mediaType ||
+        quoted.msg?.mimetype ||
+        ''
+
+      if (!/audio|video/i.test(mime)) {
+        return m.reply(
+          languageText(
+            'smsConVN',
+            'Responde a un audio o video para convertirlo en nota de voz.'
+          )
+        )
+      }
+
+      await m.reply(global.wait || 'Convirtiendo a nota de voz...')
+
+      const media = await quoted.download()
+      const audio = await toPTT(media, 'mp4')
+
+      if (!audio?.data) {
+        throw new Error('No se pudo convertir el archivo a audio.')
+      }
+
+      return conn.sendMessage(
+        m.chat,
+        {
+          audio: audio.data,
+          mimetype: 'audio/ogg; codecs=opus',
+          ptt: true
+        },
+        { quoted: m }
+      )
+    }
+
+    if (isTTS) {
+      const defaultLanguage = global.lenguajeGB?.lenguaje?.() || 'es'
+
+      let language = args[0]
+      let text = args.slice(1).join(' ')
+
+      if (!language || language.length !== 2) {
+        language = defaultLanguage
+        text = args.join(' ')
+      }
+
+      if (!text && m.quoted?.text) {
+        text = m.quoted.text
+      }
+
+      if (!text) {
+        return m.reply(
+          `Uso: ${usedPrefix}${command} es Hola, soy KumaBot`
+        )
+      }
+
+      await m.reply(global.wait || 'Generando audio...')
+
+      const audio = await createTTS(
+        text.slice(0, 500),
+        language
+      )
+
+      return conn.sendMessage(
+        m.chat,
+        {
+          audio,
+          mimetype: 'audio/ogg; codecs=opus',
+          ptt: true
+        },
+        { quoted: m }
+      )
+    }
+  } catch (error) {
+    return reportError(m, error, usedPrefix, command)
+  }
+}
+
+handler.command = /^(toimg|toimage|img|jpe?g|png|tourl|url|upload|tovideo|tomp4|mp4|togif|togifau|gif|gifau|tovn|toptt|toaudio|tomp3|mp3|tovoice|totts|tts)$/i
+
 export default handler

@@ -1,19 +1,37 @@
-FROM node:lts-buster
+FROM node:20-bookworm-slim
 
-RUN apt-get update && \
-  apt-get install -y \
-  ffmpeg \
-  imagemagick \
-  webp && \
-  apt-get upgrade -y && \
-  rm -rf /var/lib/apt/lists/*
+WORKDIR /app
 
-COPY package.json .
+ENV NODE_ENV=production
+ENV PORT=3000
 
-RUN npm install && npm install qrcode-terminal
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends \
+        ffmpeg \
+        imagemagick \
+        webp \
+        dumb-init \
+    && rm -rf /var/lib/apt/lists/*
 
-COPY . .
+COPY package*.json ./
 
-EXPOSE 5000
+RUN if [ -f package-lock.json ]; then \
+      npm ci --omit=dev; \
+    else \
+      npm install --omit=dev; \
+    fi
 
-CMD ["node", "index.js", "--server"]
+COPY --chown=node:node . .
+
+RUN mkdir -p KumaSession tmp db \
+    && chown -R node:node /app
+
+USER node
+
+EXPOSE 3000
+
+VOLUME ["/app/KumaSession", "/app/database.json"]
+
+ENTRYPOINT ["dumb-init", "--"]
+
+CMD ["node", "--no-warnings", "index.js", "--server"]

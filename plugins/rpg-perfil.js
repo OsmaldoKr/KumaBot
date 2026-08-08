@@ -1,32 +1,78 @@
-import { createHash } from 'crypto'
+import { createHash } from 'node:crypto'
 import PhoneNumber from 'awesome-phonenumber'
-import fetch from 'node-fetch'
-let handler = async (m, { conn, usedPrefix, command, text }) => {
-let who = m.mentionedJid && m.mentionedJid[0] ? m.mentionedJid[0] : m.fromMe ? conn.user.jid : m.sender
-let pp = await conn.profilePictureUrl(who, 'image').catch(_ => sharkImg.getRandom())
-let { name, limit, lastclaim, registered, regTime, age } = global.db.data.users[who]
-let user = global.db.data.users[m.sender]
-let tag = `${m.sender.split("@")[0]}`
-let aa = tag + '@s.whatsapp.net'
-let sn = createHash('md5').update(m.sender).digest('hex').slice(0, 6)	
-let str = `${lenguajeGB.smsPerfil0()}
 
-*⎔ ${lenguajeGB.smsPerfil1()}* 
-• @${tag}
-
-*⎔ ${lenguajeGB.smsPerfil2()}* 
-• ${name}
-
-*⎔ ${lenguajeGB.smsPerfil3()}*
-• ${age}
-
-*⎔ ${lenguajeGB.smsPerfil4()}*
-• ${PhoneNumber('+' + who.replace('@s.whatsapp.net', '')).getNumber('international')}
-
-*⎔ ${lenguajeGB.smsPerfil5()}*
-• \`\`\`${sn}\`\`\``.trim()
-await conn.sendFile(m.chat, pp, 'shark.jpg', str, m, false, { mentions: [aa] }) 
+function getSerial(jid) {
+  return createHash('sha256')
+    .update(jid)
+    .digest('hex')
+    .slice(0, 8)
+    .toUpperCase()
 }
-handler.command = /^perfil|profile?$/i
+
+function getInternationalNumber(jid) {
+  const number = jid.split('@')[0]
+
+  try {
+    return PhoneNumber(`+${number}`).getNumber('international') || `+${number}`
+  } catch {
+    return `+${number}`
+  }
+}
+
+const handler = async (m, { conn }) => {
+  const target =
+    m.mentionedJid?.[0] ||
+    m.quoted?.sender ||
+    m.sender
+
+  const user = global.db.data.users[target]
+
+  if (!user) {
+    return m.reply(
+      'Ese usuario todavía no está registrado en KumaBot.'
+    )
+  }
+
+  const profilePicture = await conn
+    .profilePictureUrl(target, 'image')
+    .catch(() => global.sharkImg?.getRandom?.() || global.imagen1)
+
+  const number = target.split('@')[0]
+  const displayName = user.name || await conn.getName(target)
+
+  const profile = [
+    lenguajeGB.smsPerfil0?.() || '👤 *PERFIL DE USUARIO*',
+    '',
+    `*⎔ ${lenguajeGB.smsPerfil1?.() || 'Usuario'}*`,
+    `• @${number}`,
+    '',
+    `*⎔ ${lenguajeGB.smsPerfil2?.() || 'Nombre'}*`,
+    `• ${displayName}`,
+    '',
+    `*⎔ ${lenguajeGB.smsPerfil3?.() || 'Edad'}*`,
+    `• ${user.age || 'No registrada'}`,
+    '',
+    `*⎔ ${lenguajeGB.smsPerfil4?.() || 'Número'}*`,
+    `• ${getInternationalNumber(target)}`,
+    '',
+    `*⎔ ${lenguajeGB.smsPerfil5?.() || 'ID de registro'}*`,
+    `• \`${getSerial(target)}\``
+  ].join('\n')
+
+  await conn.sendFile(
+    m.chat,
+    profilePicture,
+    'kumabot-perfil.jpg',
+    profile,
+    m,
+    false,
+    {
+      mentions: [target]
+    }
+  )
+}
+
+handler.command = /^(perfil|profile)$/i
 handler.register = true
+
 export default handler

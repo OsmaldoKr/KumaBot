@@ -1,14 +1,23 @@
-/*let handler = async (m, { conn, usedPrefix, command, args, usedPrefix: _p, __dirname, isOwner, text, isAdmin, isROwner }) => {
-try{  
-let Terminos = `
-*PRÓXIMAMENTE*
-`.trim()
-await m.reply(Terminos)
-} catch (e) {
-await m.reply(lenguajeGB['smsMalError3']() + '\n*' + lenguajeGB.smsMensError1() + '*\n*' + usedPrefix + `${lenguajeGB.lenguaje() == 'es' ? 'reporte' : 'report'}` + '* ' + `${lenguajeGB.smsMensError2()} ` + usedPrefix + command)
-console.log(`❗❗ ${lenguajeGB['smsMensError2']()} ${usedPrefix + command} ❗❗`)
-console.log(e)}}
+const handler = async (m, { usedPrefix, command }) => {
+  const terms = [
+    '╭─〔 *TÉRMINOS DE KUMABOT* 〕',
+    '│',
+    '├ 1. Usa el bot con respeto.',
+    '├ 2. No uses comandos para acosar, spam o molestar a otros.',
+    '├ 3. Los administradores del grupo son responsables de su configuración.',
+    '├ 4. No compartas la carpeta KumaSession ni claves de API.',
+    '├ 5. KumaBot no almacena mensajes fuera de la base de datos necesaria para funcionar.',
+    '├ 6. El uso de comandos de descarga debe respetar las normas y derechos de cada plataforma.',
+    '├ 7. El propietario puede actualizar o desactivar funciones en cualquier momento.',
+    '│',
+    `├ Más ayuda: ${usedPrefix}menu`,
+    '╰──────────────'
+  ].join('\n')
 
-handler.customPrefix = /terminos|términos|terms|condiciones|privacidad/i
-handler.command = new RegExp
-export default handler*/
+  await m.reply(terms)
+}
+
+handler.command = /^(terminos|términos|terms|condiciones|privacidad)$/i
+handler.register = true
+
+export default handler

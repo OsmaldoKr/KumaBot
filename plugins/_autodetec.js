@@ -1,46 +1,154 @@
-let WAMessageStubType = (await import(global.baileys)).default
+function languageText(key, fallback, ...args) {
+  try {
+    return global.lenguajeGB?.[key]?.(...args) || fallback
+  } catch {
+    return fallback
+  }
+}
 
-export async function before(m, { conn, participants, groupMetadata }) {
-if (!m.messageStubType || !m.isGroup) return
-const fkontak = { "key": { "participants":"0@s.whatsapp.net", "remoteJid": "status@broadcast", "fromMe": false, "id": "Halo" }, "message": { "contactMessage": { "vcard": `BEGIN:VCARD\nVERSION:3.0\nN:Sy;Bot;;;\nFN:y\nitem1.TEL;waid=${m.sender.split('@')[0]}:${m.sender.split('@')[0]}\nitem1.X-ABLabel:Ponsel\nEND:VCARD` }}, "participant": "0@s.whatsapp.net"}  
-let chat = global.db.data.chats[m.chat]
-let usuario = `@${m.sender.split`@`[0]}`
-let inf = lenguajeGB['smsAvisoIIG']()
-let pp = await conn.profilePictureUrl(m.chat, 'image').catch(_ => null) || './src/grupos.jpg'  
+export async function before(m, { conn, groupMetadata }) {
+  if (!m.isGroup || !m.messageStubType) return false
 
-let nombre, foto, edit, newlink, status, admingp, noadmingp
-nombre = lenguajeGB.smsAutodetec1(inf, usuario, m)
-foto = lenguajeGB.smsAutodetec2(inf, usuario, groupMetadata)
-edit = lenguajeGB.smsAutodetec3(inf, usuario, m, groupMetadata)
-newlink = lenguajeGB.smsAutodetec4(inf, groupMetadata, usuario)
-status = lenguajeGB.smsAutodetec5(inf, groupMetadata, m, usuario)
-admingp = lenguajeGB.smsAutodetec6(inf, m, groupMetadata, usuario)
-noadmingp = lenguajeGB.smsAutodetec7(inf, m, groupMetadata, usuario)
+  const chat = global.db.data.chats[m.chat] || {}
 
-if (chat.detect && m.messageStubType == 21) {
-await conn.sendMessage(m.chat, { text: nombre, mentions: [m.sender] }, { quoted: fkontak })   
-  
-} else if (chat.detect && m.messageStubType == 22) {
-await conn.sendMessage(m.chat, { image: { url: pp }, caption: foto, mentions: [m.sender] }, { quoted: fkontak })
+  if (!chat.detect) return false
 
-} else if (chat.detect && m.messageStubType == 23) {
-await conn.sendMessage(m.chat, { text: newlink, mentions: [m.sender] }, { quoted: fkontak })    
+  const sender = m.sender
+  const mention = `@${sender.split('@')[0]}`
+  const parameters = m.messageStubParameters || []
 
-} else if (chat.detect && m.messageStubType == 25) {
-await conn.sendMessage(m.chat, { text: edit, mentions: [m.sender] }, { quoted: fkontak })  
-	
-} else if (chat.detect && m.messageStubType == 26) {
-await conn.sendMessage(m.chat, { text: status, mentions: [m.sender] }, { quoted: fkontak })  
+  const notice = languageText(
+    'smsAvisoIIG',
+    'ℹ️ *Aviso del grupo*'
+  )
 
-} else if (chat.detect && m.messageStubType == 29) {
-await conn.sendMessage(m.chat, { text: admingp, mentions: [`${m.sender}`,`${m.messageStubParameters[0]}`] }, { quoted: fkontak })  
+  const groupImage = await conn
+    .profilePictureUrl(m.chat, 'image')
+    .catch(() => null)
 
-} else if (chat.detect && m.messageStubType == 30) {
-await conn.sendMessage(m.chat, { text: noadmingp, mentions: [`${m.sender}`,`${m.messageStubParameters[0]}`] }, { quoted: fkontak })  
+  let message = null
+  let mentions = [sender]
+  let image = null
 
-} else {
-//console.log({ messageStubType: m.messageStubType,
-//messageStubParameters: m.messageStubParameters,
-//type: WAMessageStubType[m.messageStubType], 
-//})
-}}
+  switch (m.messageStubType) {
+    case 21:
+      // Cambió el nombre del grupo.
+      message = languageText(
+        'smsAutodetec1',
+        `${notice}\n${mention} cambió el nombre del grupo.`,
+        notice,
+        mention,
+        m
+      )
+      break
+
+    case 22:
+      // Cambió la foto del grupo.
+      message = languageText(
+        'smsAutodetec2',
+        `${notice}\n${mention} cambió la imagen del grupo.`,
+        notice,
+        mention,
+        groupMetadata
+      )
+
+      image = groupImage
+      break
+
+    case 23:
+      // Se renovó el enlace de invitación.
+      message = languageText(
+        'smsAutodetec4',
+        `${notice}\n${mention} renovó el enlace del grupo.`,
+        notice,
+        groupMetadata,
+        mention
+      )
+      break
+
+    case 25:
+      // Cambió la descripción del grupo.
+      message = languageText(
+        'smsAutodetec3',
+        `${notice}\n${mention} cambió la descripción del grupo.`,
+        notice,
+        mention,
+        m,
+        groupMetadata
+      )
+      break
+
+    case 26:
+      // Cambió la configuración de mensajes del grupo.
+      message = languageText(
+        'smsAutodetec5',
+        `${notice}\n${mention} cambió la configuración del grupo.`,
+        notice,
+        groupMetadata,
+        m,
+        mention
+      )
+      break
+
+    case 29:
+      // Un usuario fue ascendido a administrador.
+      message = languageText(
+        'smsAutodetec6',
+        `${notice}\n${mention} ascendió a un participante como administrador.`,
+        notice,
+        m,
+        groupMetadata,
+        mention
+      )
+
+      mentions = [sender, ...parameters]
+      break
+
+    case 30:
+      // Un administrador perdió sus permisos.
+      message = languageText(
+        'smsAutodetec7',
+        `${notice}\n${mention} quitó permisos de administrador a un participante.`,
+        notice,
+        m,
+        groupMetadata,
+        mention
+      )
+
+      mentions = [sender, ...parameters]
+      break
+
+    default:
+      return false
+  }
+
+  try {
+    if (image) {
+      await conn.sendMessage(
+        m.chat,
+        {
+          image: { url: image },
+          caption: message,
+          mentions
+        },
+        { quoted: m }
+      )
+    } else {
+      await conn.sendMessage(
+        m.chat,
+        {
+          text: message,
+          mentions
+        },
+        { quoted: m }
+      )
+    }
+  } catch (error) {
+    console.error(
+      'No se pudo enviar el aviso de cambios del grupo:',
+      error.message
+    )
+  }
+
+  return false
+}

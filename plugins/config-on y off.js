@@ -1,262 +1,275 @@
-let handler = async (m, { conn, usedPrefix, command, args, isOwner, isAdmin, isROwner }) => {
-let isEnable = /true|enable|(turn)?on|1/i.test(command)
-let chat = global.db.data.chats[m.chat]
-let user = global.db.data.users[m.sender]
-let bot = global.db.data.settings[conn.user.jid] || {}
-let setting = global.db.data.settings
-let type = (args[0] || '').toLowerCase()
-let isAll = false
-let isUser = false
-switch (type) {
-		
-case 'restrict': case 'restringir':
-isAll = true
-if (!isOwner) {
-global.dfail('owner', m, conn)
-throw false
-}
-bot.restrict = isEnable
-break
-		
-case 'welcome': case 'bienvenida':
-if (!m.isGroup) {
-if (!isOwner) {
-global.dfail('group', m, conn)
-throw false
-}} else if (!(isAdmin || isOwner)) {
-global.dfail('admin', m, conn)
-throw false
-}
-chat.welcome = isEnable
-break
-		
-case 'detect': case 'avisos': case 'autodetectar':
-if (!m.isGroup) {
-if (!isOwner) {
-global.dfail('group', m, conn)
-throw false
-}
-} else if (!isAdmin) {
-global.dfail('admin', m, conn)
-throw false
-}
-chat.detect = isEnable
-break
-		
-case 'antiver': case 'modover': case 'modoobservar': case 'modobservar': case 'antiviewonce':
-if (m.isGroup) {
-if (!(isAdmin || isOwner)) {
-global.dfail('admin', m, conn)
-throw false
-}}
-chat.antiver = isEnable 
-break
-		
-case 'antilink': case 'antienlace':
-if (m.isGroup) {
-if (!(isAdmin || isOwner)) {
-global.dfail('admin', m, conn)
-throw false
-}}
-chat.antiLink = isEnable
-break
+const ENABLE_COMMANDS = /^(on|enable|enabled|true|1)$/i
 
-case 'antilink2': case 'antienlace2':
-if (m.isGroup) {
-if (!(isAdmin || isOwner)) {
-global.dfail('admin', m, conn)
-throw false
-}}
-chat.antiLink2 = isEnable 
-break
+const groupSettings = {
+  welcome: {
+    property: 'welcome',
+    aliases: ['welcome', 'bienvenida']
+  },
+  detect: {
+    property: 'detect',
+    aliases: ['detect', 'avisos', 'autodetectar']
+  },
+  antiver: {
+    property: 'antiver',
+    aliases: [
+      'antiver',
+      'modover',
+      'modoobservar',
+      'modobservar',
+      'antiviewonce'
+    ]
+  },
+  antilink: {
+    property: 'antiLink',
+    aliases: ['antilink', 'antienlace']
+  },
+  antilink2: {
+    property: 'antiLink2',
+    aliases: ['antilink2', 'antienlace2']
+  },
+  antitiktok: {
+    property: 'antiTiktok',
+    aliases: ['antitiktok', 'antitk', 'antitik']
+  },
+  antiyoutube: {
+    property: 'antiYoutube',
+    aliases: ['antiyoutube', 'antiyt']
+  },
+  antitelegram: {
+    property: 'antiTelegram',
+    aliases: ['antitelegram', 'antitl', 'antitele', 'antitg', 'antitel']
+  },
+  antifacebook: {
+    property: 'antiFacebook',
+    aliases: ['antifacebook', 'antifb', 'antifbook']
+  },
+  antiinstagram: {
+    property: 'antiInstagram',
+    aliases: [
+      'antiinstagram',
+      'antinstagram',
+      'antiig',
+      'antig',
+      'antiinsta',
+      'antinsta'
+    ]
+  },
+  antitwitter: {
+    property: 'antiTwitter',
+    aliases: [
+      'antitwitter',
+      'antitw',
+      'antitwit',
+      'antitwter',
+      'antitwiter'
+    ]
+  },
+  antifake: {
+    property: 'antifake',
+    aliases: [
+      'antiinternacional',
+      'antinternacional',
+      'antinternational',
+      'antifake',
+      'antifalsos',
+      'antivirtuales',
+      'antiextranjeros'
+    ]
+  },
+  modoadmin: {
+    property: 'modoadmin',
+    aliases: ['modoadmin', 'modeadmin']
+  },
+  reaction: {
+    property: 'reaction',
+    aliases: [
+      'reaction',
+      'reaccion',
+      'reacciones',
+      'reaciones',
+      'emojis',
+      'antiemojis'
+    ]
+  }
+}
 
-case 'antitiktok': case 'antitk': case 'antitik':
-if (m.isGroup) {
-if (!(isAdmin || isOwner)) {
-global.dfail('admin', m, conn)
-throw false
-}}
-chat.antiTiktok = isEnable 
-break
-		
-case 'antiyoutube': case 'antiyt':
-if (m.isGroup) {
-if (!(isAdmin || isOwner)) {
-global.dfail('admin', m, conn)
-throw false
-}}
-chat.antiYoutube = isEnable 
-break
-		
-case 'antitelegram': case 'antitl': case 'antitele': case 'antitg': case 'antitel':
-if (m.isGroup) {
-if (!(isAdmin || isOwner)) {
-global.dfail('admin', m, conn)
-throw false
-}}
-chat.antiTelegram = isEnable 
-break
-		
-case 'antifacebook': case 'antifb': case 'antifbook':
-if (m.isGroup) {
-if (!(isAdmin || isOwner)) {
-global.dfail('admin', m, conn)
-throw false
-}}
-chat.antiFacebook = isEnable 
-break
-		
-case 'antiinstagram': case 'antinstagram': case 'antiig': case 'antig': case 'antiinsta': case 'antinsta':
-if (m.isGroup) {
-if (!(isAdmin || isOwner)) {
-global.dfail('admin', m, conn)
-throw false
-}}
-chat.antiInstagram = isEnable 
-break
-		
-case 'antitwitter': case 'antitw': case 'antitwit': case 'antitwter': case 'antitwiter': case 'antiTwr':
-if (m.isGroup) {
-if (!(isAdmin || isOwner)) {
-global.dfail('admin', m, conn)
-throw false
-}}
-chat.antiTwitter = isEnable 
-break
+const ownerSettings = {
+  restrict: {
+    property: 'restrict',
+    aliases: ['restrict', 'restringir']
+  },
+  public: {
+    property: 'public',
+    aliases: ['public', 'publico']
+  },
+  jadibotmd: {
+    property: 'jadibotmd',
+    aliases: ['jadibotmd', 'modejadibot', 'serbotmd', 'modoserbot']
+  },
+  autoread: {
+    property: 'autoread',
+    aliases: ['autoread', 'autovisto']
+  },
+  anticall: {
+    property: 'antiCall',
+    aliases: ['anticall', 'antillamar', 'antillamada']
+  },
+  antiprivate: {
+    property: 'antiPrivate',
+    aliases: ['antiprivado', 'antiprivate', 'privado']
+  }
+}
 
-case 'antiinternacional': case 'antinternacional': case 'antinternational': case 'antifake': case 'antifalsos': case 'antivirtuales': case 'antiextranjeros':		
-if (m.isGroup) {
-if (!(isAdmin || isOwner)) {
-global.dfail('admin', m, conn)
-throw false
-}}
-chat.antifake = isEnable          
-break
+function findSetting(settings, type) {
+  return Object.values(settings).find((setting) =>
+    setting.aliases.includes(type)
+  )
+}
 
-case 'public': case 'publico':
-isAll = true
-if (!isROwner) {
-global.dfail('rowner', m, conn)
-throw false
+function state(enabled) {
+  return enabled ? '✅ Activado' : '❌ Desactivado'
 }
-global.opts['self'] = !isEnable
-break
-		
-case 'jadibotmd': case 'modejadibot': case 'serbotmd': case 'modoserbot': 
-isAll = true
-if (!isROwner) {
-global.dfail('rowner', m, conn)
-throw false
-}
-bot.jadibotmd = !isEnable
-break 
-		
-case 'autoread': case 'autovisto':
-isAll = true
-if (!isROwner) {
-global.dfail('rowner', m, conn)
-throw false
-}
-bot.autoread2 = isEnable    
-global.opts['autoread'] = isEnable  
-break
-		
-case 'anticall': case 'antillamar': case 'antillamada':
-isAll = true
-if (!isROwner) {
-global.dfail('rowner', m, conn)
-throw false
-}
-bot.antiCall = isEnable
-break
-		
-case 'modoadmin': case 'modeadmin':
-if (m.isGroup) {
-if (!(isAdmin || isOwner)) {
-global.dfail('admin', m, conn)
-throw false
-}}
-chat.modoadmin = isEnable          
-break    
-		
-case 'antidelete': case 'antieliminar': case 'delete':
-if (m.isGroup) {
-if (!(isAdmin || isOwner)) {
-global.dfail('admin', m, conn)
-throw false
-}}
-chat.delete = !isEnable
-break
 
-case 'antiprivado':
-case 'privado':
-isAll = true
-if (!isROwner) {
-global.dfail('rowner', m, conn)
-throw false
+async function deny(type, m, conn) {
+  await global.dfail(type, m, conn)
+  return false
 }
-bot.antiPrivate = isEnable
-break
-		
-case 'reaction': case 'reaccion': case 'emojis': case 'antiemojis': case 'reacciones': case 'reaciones':
-if (m.isGroup) {
-if (!(isAdmin || isOwner)) {
-global.dfail('admin', m, conn)
-throw false
-}}
-chat.reaction = isEnable          
-break
-		
-default:
-if (!/[01]/.test(command)) return m.reply(`
-${lenguajeGB.smsConfi1bot()}\n
-${lenguajeGB.smsParaAdmins() + ' ' + `${m.isGroup ? chat.detect ? '✅' : '❌' : lenguajeGB.smsNoGg()}`}
-🌼 \`\`\`${usedPrefix}on/off\`\`\` *${lenguajeGB.lenguaje() == 'es' ? 'avisos' : 'detect'}*\n
-${lenguajeGB.smsParaAdmins() + ' ' + `${m.isGroup ? chat.welcome ? '✅' : '❌' : lenguajeGB.smsNoGg()}`}
-🌸 \`\`\`${usedPrefix}on/off\`\`\` *${lenguajeGB.lenguaje() == 'es' ? 'bienvenida' : 'welcome'}*\n
-${lenguajeGB.smsParaAdmins() + ' ' + `${m.isGroup ? chat.antiLink ? '✅' : '❌' : lenguajeGB.smsNoGg()}`}
-🌼 \`\`\`${usedPrefix}on/off\`\`\` *${lenguajeGB.lenguaje() == 'es' ? 'antienlace' : 'antilink'}*\n
-${lenguajeGB.smsParaAdmins() + ' ' + `${m.isGroup ? chat.antiLink2 ? '✅' : '❌' : lenguajeGB.smsNoGg()}`}
-🌸 \`\`\`${usedPrefix}on/off\`\`\` *${lenguajeGB.lenguaje() == 'es' ? 'antienlace2' : 'antilink2'}*\n
-${lenguajeGB.smsParaAdmins() + ' ' + `${m.isGroup ? chat.antiTiktok ? '✅' : '❌' : lenguajeGB.smsNoGg()}`}
-🌼 \`\`\`${usedPrefix}on/off\`\`\` *antitiktok*\n
-${lenguajeGB.smsParaAdmins() + ' ' + `${m.isGroup ? chat.antiYoutube ? '✅' : '❌' : lenguajeGB.smsNoGg()}`}
-🌸 \`\`\`${usedPrefix}on/off\`\`\` *antiyoutube*\n
-${lenguajeGB.smsParaAdmins() + ' ' + `${m.isGroup ? chat.antiTelegram ? '✅' : '❌' : lenguajeGB.smsNoGg()}`}
-🌼 \`\`\`${usedPrefix}on/off\`\`\` *antitelegram*\n
-${lenguajeGB.smsParaAdmins() + ' ' + `${m.isGroup ? chat.antiFacebook ? '✅' : '❌' : lenguajeGB.smsNoGg()}`}
-🌸 \`\`\`${usedPrefix}on/off\`\`\` *antifacebook*\n
-${lenguajeGB.smsParaAdmins() + ' ' + `${m.isGroup ? chat.antiInstagram ? '✅' : '❌' : lenguajeGB.smsNoGg()}`}
-🌼 \`\`\`${usedPrefix}on/off\`\`\` *antinstagram*\n
-${lenguajeGB.smsParaAdmins() + ' ' + `${m.isGroup ? chat.antiTwitter ? '✅' : '❌' : lenguajeGB.smsNoGg()}`}
-🌸 \`\`\`${usedPrefix}on/off\`\`\` *antitwitter*\n
-${lenguajeGB.smsParaAdmins() + ' ' + `${m.isGroup ? chat.antifake ? '✅' : '❌' : lenguajeGB.smsNoGg()}`}
-🌼 \`\`\`${usedPrefix}on/off\`\`\` *${lenguajeGB.lenguaje() == 'es' ? 'antinternacional' : 'antifake'}*\n
-${lenguajeGB.smsParaOw() + ' ' + `${bot.restrict ? '✅' : '❌'}`}
-🌸 \`\`\`${usedPrefix}on/off\`\`\` *${lenguajeGB.lenguaje() == 'es' ? 'restringir' : 'restrict'}*\n
-${lenguajeGB.smsParaOw() + ' ' + `${global.opts['self'] ? '❌' : '✅'}`}
-🌼 \`\`\`${usedPrefix}on/off\`\`\` *${lenguajeGB.lenguaje() == 'es' ? 'publico' : 'public'}*\n
-${lenguajeGB.smsParaOw() + ' ' + `${bot.jadibotmd ? '✅' : '❌'}`}
-🌸 \`\`\`${usedPrefix}on/off\`\`\` *${lenguajeGB.lenguaje() == 'es' ? 'modoserbot' : 'modejadibot'}*\n
-${lenguajeGB.smsParaOw() + ' ' + `${bot.antiprivado ? '✅' : '❌'}`}
-🌼 \`\`\`${usedPrefix}on/off\`\`\` *${lenguajeGB.lenguaje() == 'es' ? 'antiprivado' : 'antiprivate'}*\n
-${lenguajeGB.smsParaOw() + ' ' + `${bot.antiCall ? '✅' : '❌'}`}
-🌸 \`\`\`${usedPrefix}on/off\`\`\` *${lenguajeGB.lenguaje() == 'es' ? 'antillamar' : 'anticall'}*\n
-${lenguajeGB.smsParaOw() + ' ' + `${global.opts['autoread'] ? '✅' : '❌'}`}
-🌼 \`\`\`${usedPrefix}on/off\`\`\` *${lenguajeGB.lenguaje() == 'es' ? 'autovisto' : 'autoread'}*\n
-${lenguajeGB.smsParaAdmins() + ' ' + `${m.isGroup ? chat.modoadmin ? '✅' : '❌' : lenguajeGB.smsNoGg()}`}
-🌸 \`\`\`${usedPrefix}on/off\`\`\` *${lenguajeGB.lenguaje() == 'es' ? 'modoadmin' : 'modeadmin'}*\n
-${lenguajeGB.smsParaAdYOw() + ' ' + `${m.isGroup ? chat.delete ? '❌' : '✅' : '🌻'}`}
-🌼 \`\`\`${usedPrefix}on/off\`\`\` *${lenguajeGB.lenguaje() == 'es' ? 'antieliminar' : 'antidelete'}*\n
-${lenguajeGB.smsParaAdYOw() + ' ' + `${m.isGroup ? chat.antiver ? '✅' : '❌' : '🌻'}`}
-🌸 \`\`\`${usedPrefix}on/off\`\`\` *${lenguajeGB.lenguaje() == 'es' ? 'antiver' : 'antiviewonce'}*\n
-${lenguajeGB.smsParaAdYOw() + ' ' + `${m.isGroup ? chat.reaction ? '✅' : '❌' : '🌻'}`}
-🌼 \`\`\`${usedPrefix}on/off\`\`\` *${lenguajeGB.lenguaje() == 'es' ? 'reaccion' : 'reaction'}*`.trim())
-return false
+
+function createMenu(prefix, chat, bot, isGroup) {
+  const groupValue = (property) =>
+    isGroup
+      ? state(Boolean(chat[property]))
+      : '🌻 Solo grupos'
+
+  return [
+    '╭─〔 *CONFIGURACIÓN DE KUMABOT* 〕',
+    '│',
+    '├─ *Opciones para administradores*',
+    `├ ${groupValue('detect')}  ${prefix}on/off avisos`,
+    `├ ${groupValue('welcome')}  ${prefix}on/off bienvenida`,
+    `├ ${groupValue('antiLink')}  ${prefix}on/off antienlace`,
+    `├ ${groupValue('antiLink2')}  ${prefix}on/off antienlace2`,
+    `├ ${groupValue('antiTiktok')}  ${prefix}on/off antitiktok`,
+    `├ ${groupValue('antiYoutube')}  ${prefix}on/off antiyoutube`,
+    `├ ${groupValue('antiTelegram')}  ${prefix}on/off antitelegram`,
+    `├ ${groupValue('antiFacebook')}  ${prefix}on/off antifacebook`,
+    `├ ${groupValue('antiInstagram')}  ${prefix}on/off antiinstagram`,
+    `├ ${groupValue('antiTwitter')}  ${prefix}on/off antitwitter`,
+    `├ ${groupValue('antifake')}  ${prefix}on/off antifake`,
+    `├ ${groupValue('modoadmin')}  ${prefix}on/off modoadmin`,
+    `├ ${groupValue('reaction')}  ${prefix}on/off reaccion`,
+    `├ ${groupValue('antiver')}  ${prefix}on/off antiver`,
+    `├ ${state(!chat.delete)}  ${prefix}on/off antieliminar`,
+    '│',
+    '├─ *Opciones exclusivas del dueño principal*',
+    `├ ${state(bot.restrict)}  ${prefix}on/off restringir`,
+    `├ ${state(!global.opts.self)}  ${prefix}on/off publico`,
+    `├ ${state(bot.jadibotmd)}  ${prefix}on/off modoserbot`,
+    `├ ${state(bot.antiPrivate)}  ${prefix}on/off antiprivado`,
+    `├ ${state(bot.antiCall)}  ${prefix}on/off antillamar`,
+    `├ ${state(global.opts.autoread)}  ${prefix}on/off autovisto`,
+    '╰──────────────'
+  ].join('\n')
 }
-m.reply(`${lenguajeGB['smsAvisoEG']()}*⭔ ${lenguajeGB.smsConfi2bot()}:* _${type}_
-*⭔ ${lenguajeGB.smsConfi3bot()}:* _${isEnable ? lenguajeGB.smsConfi5bot() : lenguajeGB.smsConfi6bot()}_
-*⭔ ${lenguajeGB.smsConfi4bot()}:* ${isAll ? packname : isUser ? '' : '_' + lenguajeGB.smsConfi7bot() + '_'}`)
+
+const handler = async (
+  m,
+  {
+    conn,
+    usedPrefix,
+    command,
+    args,
+    isOwner,
+    isAdmin,
+    isROwner
+  }
+) => {
+  const enabled = ENABLE_COMMANDS.test(command)
+  const type = (args[0] || '').toLowerCase()
+
+  const chat = global.db.data.chats[m.chat] || {}
+  const botJid = conn.user.jid
+
+  global.db.data.settings[botJid] ||= {}
+
+  const bot = global.db.data.settings[botJid]
+
+  if (!type) {
+    return m.reply(
+      createMenu(usedPrefix, chat, bot, m.isGroup)
+    )
+  }
+
+  // Anti-eliminar conserva la lógica inversa usada por handler.js.
+  if (
+    ['antidelete', 'antieliminar', 'delete'].includes(type)
+  ) {
+    if (!m.isGroup) {
+      return m.reply('Esta opción solo puede configurarse en grupos.')
+    }
+
+    if (!(isAdmin || isOwner || isROwner)) {
+      return deny('admin', m, conn)
+    }
+
+    chat.delete = !enabled
+
+    return m.reply(
+      `✅ Anti-eliminar ${enabled ? 'activado' : 'desactivado'} para este grupo.`
+    )
+  }
+
+  const groupSetting = findSetting(groupSettings, type)
+
+  if (groupSetting) {
+    if (!m.isGroup) {
+      return m.reply('Esta opción solo puede configurarse en grupos.')
+    }
+
+    if (!(isAdmin || isOwner || isROwner)) {
+      return deny('admin', m, conn)
+    }
+
+    chat[groupSetting.property] = enabled
+
+    return m.reply(
+      `✅ *${type}* fue ${enabled ? 'activado' : 'desactivado'} para este grupo.`
+    )
+  }
+
+  const ownerSetting = findSetting(ownerSettings, type)
+
+  if (ownerSetting) {
+    if (!isROwner) {
+      return deny('rowner', m, conn)
+    }
+
+    switch (ownerSetting.property) {
+      case 'public':
+        global.opts.self = !enabled
+        break
+
+      case 'autoread':
+        bot.autoread2 = enabled
+        global.opts.autoread = enabled
+        break
+
+      default:
+        bot[ownerSetting.property] = enabled
+        break
+    }
+
+    return m.reply(
+      `✅ *${type}* fue ${enabled ? 'activado' : 'desactivado'} globalmente.`
+    )
+  }
+
+  return m.reply(
+    `⚠️ No reconozco la opción *${type}*.\n\n` +
+    createMenu(usedPrefix, chat, bot, m.isGroup)
+  )
 }
-handler.command = /^((en|dis)able|(tru|fals)e|(turn)?o(n|ff)|[01])$/i
+
+handler.command = /^(on|off|enable|disable|enabled|disabled|true|false|1|0)$/i
+
 export default handler

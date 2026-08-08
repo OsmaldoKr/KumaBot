@@ -1,317 +1,461 @@
-//let { MessageType } = (await import('@adiwajshing/baileys')).default 
-let MessageType = (await import(global.baileys)).default
-import { promises } from 'fs'
-import { join } from 'path'
-import fs from 'fs'
-import os, { cpus as _cpus, totalmem, freemem } from 'os'; 
-import util from 'util'
-import { performance } from 'perf_hooks'
-import fetch from 'node-fetch'
-import osu from 'node-os-utils'
-import { sizeFormatter } from 'human-readable'
+import os from 'node:os'
+import { performance } from 'node:perf_hooks'
+import { readFile } from 'node:fs/promises'
+import { join } from 'node:path'
 
-let handler = async (m, { conn, command, usedPrefix, args, text, __dirname, isOwner, isRowner, DevMode }) => {
-let name, _uptime, _muptime, uptime, totalreg, fkontak, rtotalreg, frep, _package, taguser, groups
-const grupo = [nna] 
-frep = { contextInfo: { externalAdReply: {title: wm, body: lenguajeGB.smsCreApoyo(), sourceUrl: redesMenu.getRandom(), thumbnail: await(await fetch(sharkMenu.getRandom())).buffer() }}}
-fkontak = { "key": { "participants":"0@s.whatsapp.net", "remoteJid": "status@broadcast", "fromMe": false, "id": "Halo" }, "message": { "contactMessage": { "vcard": `BEGIN:VCARD\nVERSION:3.0\nN:Sy;Bot;;;\nFN:y\nitem1.TEL;waid=${m.sender.split('@')[0]}:${m.sender.split('@')[0]}\nitem1.X-ABLabel:Ponsel\nEND:VCARD` }}, "participant": "0@s.whatsapp.net" }
-
-const isCommand1 = /^(estado|status|estate|state|stado|stats|botstat(us)?)$/i.test(command)  
-const isCommand2 = /^(cuenta(s)?oficiales?|sharkig|(cuentas|account)s?s?k|(ig)?shark|(cuentasshark))$/i.test(command)  
-const isCommand3 = /^(shark(bot)?groups?|grupos(ofc|desharkbot|sk)|gruposk|groupssk|sharkgroups?|grupos|group(ofc|sofc))$/i.test(command)  
-const isCommand4 = /^(instalar(shark)?bot|proceso(del)?bot|bot(install|proceso)|installbot)$/i.test(command) 
-const isCommand5 = /^(owner|creator|propietario|dueño|dueña|propietaria|dueño|creadora|creador)$/i.test(command) 
-const isCommand6 = /^(group(s|list|o(lista)?)|list(a)?(de)?grupo(s)?|grupolista)$/i.test(command) 
-const isCommand7 = /^(info(shark|bot)|informaci(ón|on)(shark|bot))$/i.test(command) 
-const isCommand8 = /^(contactos?|contacts?)$/i.test(command) 
-const isCommand9 = /^(ping|speed|velocidad|rapidez|velocity)$/i.test(command) 
-const isCommand10 = /^(report|request|reporte|bugs|bug|reportowner|reportes|reportar)$/i.test(command) 
-
-async function reportError(e) {
-await m.reply(lenguajeGB['smsMalError3']() + '\n*' + lenguajeGB.smsMensError1() + '*\n*' + usedPrefix + `${lenguajeGB.lenguaje() == 'es' ? 'reporte' : 'report'}` + '* ' + `${lenguajeGB.smsMensError2()} ` + usedPrefix + command)
-console.log(`❗❗ ${lenguajeGB['smsMensError2']()} ${usedPrefix + command} ❗❗`)
-console.log(e)
+function languageText(key, fallback, ...args) {
+  try {
+    return global.lenguajeGB?.[key]?.(...args) || fallback
+  } catch {
+    return fallback
+  }
 }
-  
-switch (true) {     
-case isCommand1:
-name = await conn.getName(m.sender)
-_uptime = process.uptime() * 1000
-if (process.send) { process.send('uptime')
-_muptime = await new Promise(resolve => { process.once('message', resolve) 
-setTimeout(resolve, 1000) }) * 1000}
-uptime = clockString(_uptime)
-totalreg = Object.keys(global.db.data.users).length
-rtotalreg = Object.values(global.db.data.users).filter(user => user.registered == true).length
-try{
-let estado = `*╭𝄗𝄗✦ --${lenguajeGB.smsEstado1()}-- ✦𝄗𝄗⬣*
- ⎸ *⍟ ${lenguajeGB.smsEstado2()}*
- ⎸ ❉ ➺ ${vs}
- ⎸ ┈┈┈┈┈┈┈┈┈┈┈
- ⎸ ❉ *${lenguajeGB.smsEstado3()}* ➺ *_${Object.keys(global.db.data.users).length}_*
- ⎸ ❉ *${lenguajeGB.smsEstado4()}* ➺ *_${rtotalreg}/${totalreg}_*
- ⎸ ❉ *${lenguajeGB.smsEstado5()}* ➺ *_${Object.entries(global.db.data.chats).filter(chat => chat[1].isBanned).length}_* 
- ⎸ ❉ *${lenguajeGB.smsEstado6()}* ➺ *_${Object.entries(global.db.data.users).filter(user => user[1].banned).length}_* 
- ⎸ ┈┈┈┈┈┈┈┈┈┈┈
- ⎸ ❉ *${lenguajeGB.smsEstado7()}* ➺ *_${uptime}_*
-*╰𝄗𝄗𝄗𝄗𝄗⬣*`.trim()
-await conn.sendFile(m.chat, sharkImg.getRandom(), 'shark.jpg', estado, fkontak)
-} catch (e) {
-reportError(e)
-}   
-break
-    
-case isCommand2:
-try{
-let media = './media/menus/Menu2.jpg'
-let str = `
-◎ *GITHUB*
-*${md}*\n
-◎ *INSTAGRAM*
-*${ig}*\n
-◎ *YOUTUBE*
-*${yt}*\n
-${lenguajeGB.smsOfc2()}`.trim() 
-await conn.sendFile(m.chat, media, 'shark.jpg', lenguajeGB.smsOfc1() + '\n\n' + str, fkontak)  
-} catch (e) {
-reportError(e)
-}    
-break
-    
-  case isCommand3:
-try{
-let str = `
-${lenguajeGB.smsGrupoOfc1()}
-_⭔ ${grupo[1]}_\n`.trim()
-await conn.sendFile(m.chat, sharkImg.getRandom(), 'shark.jpg', str, fkontak)   
-} catch (e) {
-reportError(e)
-}    
-break
-    
-case isCommand4:
-let codigo = `termux-setup-storage
-apt update
-apt upgrade
-pkg install -y git nodejs ffmpeg imagemagick yarn
-git clone https://github.com/OsmaldoKr/KumaBot
-cd SharkLite
-yarn install
-npm install
-npm start`
-let codigo2 = `
-heroku/nodejs\n
-https://github.com/jonathanong/heroku-buildpack-ffmpeg-latest.git\n
-https://github.com/clhuang/heroku-buildpack-webp-binaries.git`
-let codigo3 = `
-git clone https://github.com/Osmaldo/KumaBot
-cd SharkLite
-npm install
-npm update
-node .`
-try{	
-let termux = `*◎ T E R M U X*\n\n${codigo}`
-let replit = `*◎ R E P L I T*\n\nhttps://replit.com/github/OsmaldoKr/KumaBot`
-let heroku = `*◎ H E R O K U*\n\nhttps://heroku.com/deploy?template=https://github.com/ElChema-Nc/SharkLite-Heroku`
-let windows = `*◎ W I N D O W S / V P S / R D P*\n
-⎔ _Git_
-https://git-scm.com/downloads
-⎔ _NodeJS_
-https://nodejs.org/en/download
-⎔ _FFmpeg_
-https://ffmpeg.org/download.html
-⎔ _ImageMagick_
-https://imagemagick.org/script/download.php
-⎔ _Yarn_
-https://classic.yarnpkg.com/en/docs/install#windows-stable`
-await conn.reply(m.chat, termux + '\n\n' + replit + '\n\n' + heroku + '\n\n' + windows, fkontak)
-} catch (e) {
-reportError(e)
-}    
-break
-    
-case isCommand5:
-try{   
-taguser = conn.getName(m.sender)
-_package = JSON.parse(await promises.readFile(join(__dirname, '../package.json')).catch(_ => ({}))) || {}
-let pp = await conn.profilePictureUrl(`${global.conn.user.jid.split`@`[0]}` + '@s.whatsapp.net', 'image').catch(_ => sharkImg.getRandom())
-let aa = `*_🍄 ${lenguajeGB.smsCreA()} ${taguser}, ${lenguajeGB.smsCreB()} ${_package.name} ${lenguajeGB.smsCreC()}_*\n\n` 
-let bb = `${packname}\n*◎ Wa.me/${owner[0][0]}*\n\n`
-await conn.sendFile(m.chat, pp, 'shark.jpg', aa + bb + ig, fkontak) 
-} catch (e) {
-reportError(e)
-}    
-break
-    
-case isCommand6:
-try{
-let txt
-groups = Object.values(await conn.groupFetchAllParticipating())
-txt = `${packname} ${lenguajeGB.smsLisA()}
-${lenguajeGB.smsLisB()} ${groups.length}\n`
 
-for (let i = 0; i < groups.length; i++) {
-txt += ` 
-${lenguajeGB.smsLisC()} ${groups[i].subject}
-${lenguajeGB.smsLisD()} ${groups[i].id}
-${isOwner ? `${lenguajeGB.smsLisE()} ${groups[i].participants.length}` : ''}\n`
+function formatBytes(bytes = 0) {
+  const units = ['B', 'KB', 'MB', 'GB', 'TB']
+
+  if (!bytes) return '0 B'
+
+  const index = Math.floor(Math.log(bytes) / Math.log(1024))
+  const value = bytes / (1024 ** index)
+
+  return `${value.toFixed(2)} ${units[index]}`
 }
-m.reply(txt.trim())
-} catch (e) {
-reportError(e)
-}     
-break
-    
-case isCommand7:
-try{
-_uptime = process.uptime() * 1000
-uptime = clockString(_uptime) 
-totalreg = Object.keys(global.db.data.users).length
-rtotalreg = Object.values(global.db.data.users).filter(user => user.registered == true).length
-let totaljadibot = [...new Set([...global.conns.filter(conn => conn.user && conn.state !== 'close').map(conn => conn.user)])] 
-const chats = Object.entries(conn.chats).filter(([id, data]) => id && data.isChats)
-//const groupsIn = chats.filter(([id]) => id.endsWith('@g.us'))
-groups = chats.filter(([id]) => id.endsWith('@g.us'))
-let old = performance.now()
-let neww = performance.now()
-let speed = neww - old
-//let pp = './media/menus/Menu1.jpg'
 
-let info = `
-*${lenguajeGB.smsCreInfo().slice(0, -1)}*
-🌺꙰᠁❥ *◜${lenguajeGB.smsBT1()}◞* ⇢ ${author}
-🌼꙰᠁❥ *◜${lenguajeGB.smsBT2()}◞* ⇢ ${vs}
-🌺꙰᠁❥ *◜${lenguajeGB.smsBT3()}◞* ⇢ ( ${usedPrefix} )
-🌻꙰᠁❥ *◜${lenguajeGB.smsBT4()}◞* ⇢ ${chats.length - groups.length}
-🌼꙰᠁❥ *◜${lenguajeGB.smsBT5()}◞* ⇢ ${groups.length}
-🌺꙰᠁❥ *◜${lenguajeGB.smsBT6()}◞* ⇢ ${chats.length}
-🌻꙰᠁❥ *◜${lenguajeGB.smsBT7()}◞* ⇢ ${uptime}
-🌼꙰᠁❥ *◜${lenguajeGB.smsBT8()}◞* ⇢ ${totalreg}
-🌺꙰᠁❥ *◜${lenguajeGB.smsEstado4().toUpperCase()}◞* ⇢ ${rtotalreg}/${totalreg}
-🌻꙰᠁❥ *◜${lenguajeGB.smsVl1()}◞* ⇢ ${(speed * 1000).toFixed(0) / 1000}
-🌼꙰᠁❥ *◜${lenguajeGB.smsBT9()}◞* ⇢ ${totaljadibot.length}`.trim()
+function formatUptime(seconds = process.uptime()) {
+  const total = Math.floor(seconds)
 
-await conn.sendFile(m.chat, sharkImg.getRandom(), 'shark.jpg', info, fkontak) 
-} catch (e) {
-reportError(e)
-}     
-break
+  const days = Math.floor(total / 86400)
+  const hours = Math.floor((total % 86400) / 3600)
+  const minutes = Math.floor((total % 3600) / 60)
+  const remainingSeconds = total % 60
 
-case isCommand8:
-try{
-let contact, number, ofc, nombre, description, correo, lugar, enlace, biog
-let biografiaBot = await conn.fetchStatus(conn.user.jid.split('@')[0] + '@s.whatsapp.net').catch(_ => 'undefined')
-let bioBot = biografiaBot.status?.toString() || `${desc2 == '' ? lenguajeGB.smsContacto1() : desc2}`
-let contacts = global.official.filter(c => c[2] === 1)
-let lista = []
-for (let i = 0; i < contacts.length; i++) {
-contact = contacts[i]
-number = String(contact[0])
-ofc = await conn.getName(number + '@s.whatsapp.net') //String(contact[1])
-let biografia = await conn.fetchStatus(number +'@s.whatsapp.net').catch(_ => 'undefined')
-let bio = biografia.status?.toString() || `${desc2 == '' ? lenguajeGB.smsContacto2() : desc2}`
-nombre = official[0][0] == String(contact[0]) ? official[0][1] : lenguajeGB.smsContacto3() 
-description = official[0][0] == String(contact[0]) ? 'Solo temas del KumaBot' : official[1][0] == String(contact[0]) ? lenguajeGB.smsContacto4() : desc === '' ? lenguajeGB.smsContacto5() : desc
-correo = official[0][0] == String(contact[0]) ? 'kennethosorio887@gmail.com' : mail === '' ? lenguajeGB.smsContacto6() : mail
-lugar = official[0][0] == String(contact[0]) ? '🇳🇮 Nicaragua' : country === '' ? lenguajeGB.smsContacto7() : country
-enlace = official[0][0] == String(contact[0]) ? 'https://github.com/OsmaldoKr' : md    
-lista.push([number, ofc, nombre, description, official[3][0] == String(contact[0]) ? null : correo, lugar, enlace, bio, official[1][0] == String(contact[0]) ? 'https://youtube.com/channel/UCPkAneZ18bEo-uYCjbr7MpA' : null]) } 
-lista.push([conn.user.jid.split('@')[0], await conn.getName(conn.user.jid), packname, lenguajeGB.smsContacto8(), mail === '' ? 'kennethosorio887@gmail.com' : mail, lenguajeGB.smsContacto7(), md, bioBot, yt, ig, nna])
-await conn.sendContactArray(m.chat, lista, null, { quoted: fkontak })
-/*function handler(m) {
-const data = global.owner.filter(([id, isCreator]) => id && isCreator) 
-this.sendContact(m.chat, data.map(([id, name]) => [id, name]), fkontak, { contextInfo: { externalAdReply: { showAdAttribution: true }}})
-}*/
-} catch (e) {
-reportError(e)
-} 
-break
-    
-case isCommand9:
-try {
-let format = sizeFormatter({
-std: 'JEDEC', // 'SI' (default) | 'IEC' | 'JEDEC'
-decimalPlaces: 2,
-keepTrailingZeroes: false,
-render: (literal, symbol) => `${literal} ${symbol}B`,
-})
-const chats = Object.entries(conn.chats).filter(([id, data]) => id && data.isChats)
-const groupsIn = chats.filter(([id]) => id.endsWith('@g.us')) //groups.filter(v => !v.read_only)
-const used = process.memoryUsage()
-const cpus = _cpus().map(cpu => {
-cpu.total = Object.keys(cpu.times).reduce((last, type) => last + cpu.times[type], 0)
-return cpu
-})
-const cpu = cpus.reduce((last, cpu, _, { length }) => {
-last.total += cpu.total
-last.speed += cpu.speed / length
-last.times.user += cpu.times.user
-last.times.nice += cpu.times.nice
-last.times.sys += cpu.times.sys
-last.times.idle += cpu.times.idle
-last.times.irq += cpu.times.irq
-return last  
-}, {
-speed: 0,
-total: 0,
-times: {
-user: 0,
-nice: 0,
-sys: 0,
-idle: 0,
-irq: 0
-}})
-let old = performance.now()
-let neww = performance.now()
-let speed = neww - old
-let caption = `${htki} *${lenguajeGB.smsVl1()}* ${htka}
-🚀 *${Math.round(neww - old)}* ms
-🚀 *${speed}* ms
-*${htjava} ${lenguajeGB.smsVl2()}
-*🟢 RAM:* ${format(totalmem() - freemem())} / ${format(totalmem())}
-${lenguajeGB.smsVl3()} ${format(freemem())}
-${lenguajeGB.smsVl4()} \`\`\`${os.platform()}\`\`\`
-${lenguajeGB.smsVl5()} _${os.hostname()}_
-${readMore}
-${lenguajeGB.smsVl6()}
-${'```' + Object.keys(used).map((key, _, arr) => `${key.padEnd(Math.max(...arr.map(v => v.length)), ' ')}: ${format(used[key])}`).join('\n') + '```'}
-${cpus[0] ? `*Uso total de la CPU*
-${cpus[0].model.trim()} (${cpu.speed} MHZ)\n${Object.keys(cpu.times).map(type => `- *${(type + '*').padEnd(6)}: ${(100 * cpu.times[type] / cpu.total).toFixed(2)}%`).join('\n')}
-*CPU Core(s) Uso (${cpus.length} Core CPU)*
-${cpus.map((cpu, i) => `${i + 1}. ${cpu.model.trim()} (${cpu.speed} MHZ)\n${Object.keys(cpu.times).map(type => `- *${(type + '*').padEnd(6)}: ${(100 * cpu.times[type] / cpu.total).toFixed(2)}%`).join('\n')}`).join('\n\n')}` : ''}`
-await conn.sendFile(m.chat, sharkImg.getRandom(), 'shark.jpg', caption.trim(), fkontak) 
-} catch (e) {
-reportError(e)
-}   
-break
-    
-case isCommand10:
-if (!text) return m.reply(lenguajeGB.smsReportGB1(usedPrefix, command))
-if (text.length < 8) return m.reply(lenguajeGB.smsReportGB2())
-if (text.length > 1000) return m.reply(lenguajeGB.smsReportGB3())
+  return [
+    `${days}d`,
+    `${String(hours).padStart(2, '0')}h`,
+    `${String(minutes).padStart(2, '0')}m`,
+    `${String(remainingSeconds).padStart(2, '0')}s`
+  ].join(' ')
+}
 
-let urs = m.sender.split('@')[0]
-for (let i = 0; i < global.owner.length; i++) {
-let ownerNumber = global.owner[i][0]
-if (global.owner[i][2] === true) {
-let aa = ownerNumber + '@s.whatsapp.net'
-let teks = lenguajeGB.smsReportGB4(urs, text)
-setTimeout(async function() {
-await conn.reply(aa, m.quoted ? teks + m.quoted.text : teks, null, { mentions: [m.sender] }, { quoted: fkontak })
-}, 3000 * i)
-}}
-await m.reply(lenguajeGB.smsReportGB5())
-break
-}}
+function getRandomImage() {
+  if (Array.isArray(global.sharkImg) && global.sharkImg.length) {
+    return global.sharkImg.getRandom?.() || global.sharkImg[0]
+  }
 
-handler.command = /^(estado|status|estate|state|stado|stats|botstat(us)?|cuenta(s)?oficiales?|sharkig|(cuentas|account)s?s?k|(ig)?shark|(cuentasshark))|shark(bot)?groups?|grupos|groupssk|grupos(ofc|desharkbot|sk)|gruposk|sharkgroups?|group(ofc|sofc)|instalar(shark)?bot|proceso(del)?bot|bot(install|proceso)|installbot|owner|creator|propietario|dueño|dueña|propietaria|dueño|creadora|creador|group(s|list|o(lista)?)|list(a)?(de)?grupo(s)?|grupolista|info(shark|bot)|informaci(ón|on)(shark|bot)|contactos?|contacts?|ping|speed|velocidad|rapidez|velocity|dona(te|si)|report|request|reporte|bugs|bug|reportowner|reportes|reportar$/i
-export default handler
+  return global.imagen1 || null
+}
 
-function clockString(ms) {
-let h = isNaN(ms) ? '--' : Math.floor(ms / 3600000)
-let m = isNaN(ms) ? '--' : Math.floor(ms / 60000) % 60
-let s = isNaN(ms) ? '--' : Math.floor(ms / 1000) % 60
-return [h, m, s].map(v => v.toString().padStart(2, 0)).join(':')}
+function getOwners() {
+  return (global.owner || [])
+    .filter(([number]) => number)
+    .map(([number, name, isDeveloper]) => ({
+      jid: `${String(number).replace(/\D/g, '')}@s.whatsapp.net`,
+      number: String(number).replace(/\D/g, ''),
+      name: name || 'Propietario',
+      isDeveloper: Boolean(isDeveloper)
+    }))
+}
 
-const more = String.fromCharCode(8206)
-const readMore = more.repeat(4001)
+function getSystemInformation() {
+  const memory = process.memoryUsage()
+
+  return {
+    platform: `${os.platform()} ${os.release()}`,
+    hostname: os.hostname(),
+    architecture: os.arch(),
+    totalMemory: formatBytes(os.totalmem()),
+    freeMemory: formatBytes(os.freemem()),
+    usedMemory: formatBytes(os.totalmem() - os.freemem()),
+    processMemory: Object.entries(memory)
+      .map(([key, value]) => `${key}: ${formatBytes(value)}`)
+      .join('\n')
+  }
+}
+
+async function getPackageInfo(dirname) {
+  try {
+    const raw = await readFile(
+      join(dirname, '../package.json'),
+      'utf8'
+    )
+
+    return JSON.parse(raw)
+  } catch {
+    return {}
+  }
+}
+
+async function reportError(m, error, usedPrefix, command) {
+  console.error(`Error en ${command}:`, error)
+
+  await m.react(global.notsent || '❗').catch(() => {})
+
+  return m.reply(
+    [
+      languageText(
+        'smsMalError3',
+        'Ocurrió un error al procesar el comando.'
+      ),
+      '',
+      `Puedes reportarlo con: ${usedPrefix}reporte ${command}`
+    ].join('\n')
+  )
+}
+
+const handler = async (
+  m,
+  {
+    conn,
+    command,
+    usedPrefix,
+    args,
+    text,
+    __dirname,
+    isOwner,
+    isROwner
+  }
+) => {
+  const normalizedCommand = command.toLowerCase()
+
+  const isStatus = /^(estado|status|estate|state|stado|stats|botstatus)$/i.test(
+    normalizedCommand
+  )
+
+  const isOfficialAccounts = /^(cuentasoficiales|sharkig|cuentassk|accountssk|igshark|cuentasshark)$/i.test(
+    normalizedCommand
+  )
+
+  const isOfficialGroups = /^(kumabotgroups|gruposoficiales|gruposk|groupssk|kumabotgroups|grupos)$/i.test(
+    normalizedCommand
+  )
+
+  const isInstall = /^(instalarbot|procesobot|botinstall|installbot)$/i.test(
+    normalizedCommand
+  )
+
+  const isOwnerInfo = /^(owner|creator|propietario|dueño|dueña|propietaria|creadora|creador)$/i.test(
+    normalizedCommand
+  )
+
+  const isGroupList = /^(grouplist|listagrupos|grupolista)$/i.test(
+    normalizedCommand
+  )
+
+  const isBotInfo = /^(infobot|informacionbot)$/i.test(
+    normalizedCommand
+  )
+
+  const isContacts = /^(contacto|contactos|contacts)$/i.test(
+    normalizedCommand
+  )
+
+  const isPing = /^(ping|speed|velocidad|rapidez|velocity)$/i.test(
+    normalizedCommand
+  )
+
+  const isReport = /^(report|request|reporte|bugs|bug|reportowner|reportes|reportar)$/i.test(
+    normalizedCommand
+  )
+
+  try {
+    if (isStatus) {
+      const users = global.db.data.users || {}
+      const chats = global.db.data.chats || {}
+
+      const totalUsers = Object.keys(users).length
+      const registeredUsers = Object.values(users)
+        .filter((user) => user.registered)
+        .length
+
+      const bannedUsers = Object.values(users)
+        .filter((user) => user.banned)
+        .length
+
+      const bannedChats = Object.values(chats)
+        .filter((chat) => chat.isBanned)
+        .length
+
+      const status = [
+        '╭─〔 *ESTADO DE KUMABOT* 〕',
+        `├ Versión: ${global.vs || '1.0.0'}`,
+        `├ Usuarios: ${totalUsers}`,
+        `├ Registrados: ${registeredUsers}/${totalUsers}`,
+        `├ Usuarios prohibidos: ${bannedUsers}`,
+        `├ Grupos bloqueados: ${bannedChats}`,
+        `├ Tiempo activo: ${formatUptime()}`,
+        '╰──────────────'
+      ].join('\n')
+
+      return conn.sendFile(
+        m.chat,
+        getRandomImage(),
+        'kumabot-estado.jpg',
+        status,
+        m
+      )
+    }
+
+    if (isOfficialAccounts) {
+      const accounts = [
+        `GitHub: ${global.md || 'No configurado'}`,
+        `Instagram: ${global.ig || 'No configurado'}`,
+        `YouTube: ${global.yt || 'No configurado'}`,
+        `Contacto: ${global.asistencia || 'No configurado'}`
+      ].join('\n\n')
+
+      return conn.sendFile(
+        m.chat,
+        getRandomImage(),
+        'kumabot-redes.jpg',
+        `🌐 *Cuentas oficiales de KumaBot*\n\n${accounts}`,
+        m
+      )
+    }
+
+    if (isOfficialGroups) {
+      const groupLinks = [
+        global.nna,
+        ...(global.redesMenu || [])
+      ]
+        .filter((link) => /chat\.whatsapp\.com/i.test(link))
+        .filter((link, index, list) => list.indexOf(link) === index)
+
+      if (!groupLinks.length) {
+        return m.reply(
+          'No hay grupos oficiales configurados actualmente.'
+        )
+      }
+
+      return m.reply(
+        `👥 *Grupos oficiales de KumaBot*\n\n${groupLinks
+          .map((link, index) => `${index + 1}. ${link}`)
+          .join('\n')}`
+      )
+    }
+
+    if (isInstall) {
+      const termux = [
+        '*📱 INSTALACIÓN EN TERMUX*',
+        '```bash',
+        'pkg update -y',
+        'pkg install -y git nodejs ffmpeg imagemagick',
+        `git clone ${global.md || 'https://github.com/OsmaldoKr/KumaBot'}`,
+        'cd KumaBot',
+        'npm install',
+        'npm start',
+        '```'
+      ].join('\n')
+
+      const windows = [
+        '*💻 INSTALACIÓN EN WINDOWS*',
+        '1. Instala Node.js, Git, FFmpeg e ImageMagick.',
+        `2. Clona el repositorio: ${global.md || 'No configurado'}`,
+        '3. Ejecuta npm install',
+        '4. Ejecuta npm start'
+      ].join('\n')
+
+      return m.reply(`${termux}\n\n${windows}`)
+    }
+
+    if (isOwnerInfo) {
+      const owners = getOwners()
+
+      const text = [
+        '👑 *Propietarios de KumaBot*',
+        '',
+        ...owners.map(
+          (owner, index) =>
+            `${index + 1}. ${owner.name}\n   wa.me/${owner.number}`
+        )
+
+
+      ].join('\n')
+
+      return conn.sendFile(
+        m.chat,
+        getRandomImage(),
+        'kumabot-owner.jpg',
+        text,
+        m,
+        false,
+        {
+          mentions: owners.map((owner) => owner.jid)
+        }
+      )
+
+
+      if (isGroupList) {
+        if (!isROwner) {
+          await global.dfail('rowner', m, conn)
+          return
+        }
+
+        const groups = Object.values(
+          await conn.groupFetchAllParticipating()
+        )
+
+        const output = [
+          `📋 *Grupos de KumaBot: ${groups.length}*`,
+          '',
+          ...groups.map(
+            (group, index) =>
+              [
+                `${index + 1}. *${group.subject || 'Sin nombre'}*`,
+                `ID: ${group.id}`,
+                `Participantes: ${group.participants?.length || 0}`
+              ].join('\n')
+          )
+        ].join('\n\n')
+
+        return m.reply(output.slice(0, 60000))
+      }
+
+      if (isBotInfo) {
+        const packageInfo = await getPackageInfo(__dirname)
+        const chats = Object.entries(conn.chats || {})
+
+        const groupCount = chats.filter(
+          ([jid]) => jid.endsWith('@g.us')
+        ).length
+
+        const privateCount = chats.filter(
+          ([jid]) =>
+            jid.endsWith('@s.whatsapp.net') &&
+            !jid.includes('status')
+        ).length
+
+        const info = [
+          '╭─〔 *INFORMACIÓN DE KUMABOT* 〕',
+          `├ Nombre: ${global.sk || packageInfo.name || 'KumaBot'}`,
+          `├ Versión: ${global.vs || packageInfo.version || '1.0.0'}`,
+          `├ Prefijo: ${usedPrefix}`,
+          `├ Tiempo activo: ${formatUptime()}`,
+          `├ Chats privados: ${privateCount}`,
+          `├ Grupos: ${groupCount}`,
+          `├ Usuarios: ${Object.keys(global.db.data.users || {}).length}`,
+          '╰──────────────'
+        ].join('\n')
+
+        return conn.sendFile(
+          m.chat,
+          getRandomImage(),
+          'kumabot-info.jpg',
+          info,
+          m
+        )
+      }
+
+      if (isContacts) {
+        const owners = getOwners()
+
+        if (!owners.length) {
+          return m.reply('No hay contactos oficiales configurados.')
+        }
+
+        const contactText = [
+          '📞 *Contactos oficiales*',
+          '',
+          ...owners.map(
+            (owner) => `• ${owner.name}: wa.me/${owner.number}`
+          )
+        ].join('\n')
+
+        return m.reply(contactText)
+      }
+
+      if (isPing) {
+        const start = performance.now()
+        const system = getSystemInformation()
+        const end = performance.now()
+
+        const ping = [
+          '🏓 *KumaBot responde correctamente*',
+          '',
+          `Tiempo de respuesta: ${(end - start).toFixed(2)} ms`,
+          `Sistema: ${system.platform}`,
+          `Arquitectura: ${system.architecture}`,
+          `Equipo: ${system.hostname}`,
+          `RAM usada: ${system.usedMemory}/${system.totalMemory}`,
+          `RAM libre: ${system.freeMemory}`,
+          '',
+          '*Memoria del proceso*',
+          '```',
+          system.processMemory,
+          '```'
+        ].join('\n')
+
+        return conn.sendFile(
+          m.chat,
+          getRandomImage(),
+          'kumabot-ping.jpg',
+          ping,
+          m
+        )
+      }
+
+      if (isReport) {
+        if (!text) {
+          return m.reply(
+            `Uso: ${usedPrefix}${command} Describe el error o sugerencia.`
+          )
+        }
+
+        if (text.length < 8) {
+          return m.reply(
+            'El reporte debe tener al menos 8 caracteres.'
+          )
+        }
+
+        if (text.length > 1000) {
+          return m.reply(
+            'El reporte no puede superar 1000 caracteres.'
+          )
+        }
+
+        const senderNumber = m.sender.split('@')[0]
+        const developers = getOwners()
+          .filter((owner) => owner.isDeveloper)
+
+        if (!developers.length) {
+          return m.reply(
+            'No hay desarrolladores configurados para recibir reportes.'
+          )
+        }
+
+        const report = [
+          '📩 *Nuevo reporte de KumaBot*',
+          `Usuario: @${senderNumber}`,
+          `Chat: ${m.chat}`,
+          '',
+          text
+        ].join('\n')
+
+        for (const developer of developers) {
+          await conn.sendMessage(
+            developer.jid,
+            {
+              text: report,
+              mentions: [m.sender]
+            }
+          ).catch((error) => {
+            console.error(
+              `No se pudo enviar el reporte a ${developer.number}:`,
+              error.message
+            )
+          })
+        }
+
+        return m.reply(
+          '✅ Tu reporte fue enviado a los desarrolladores de KumaBot.'
+        )
+      }
+    }
+
+    handler.command = /^(estado|status|estate|state|stado|stats|botstatus|cuentasoficiales|sharkig|cuentassk|accountssk|igshark|cuentasshark|kumabotgroups|gruposoficiales|gruposk|groupssk|grupos|instalarbot|procesobot|botinstall|installbot|owner|creator|propietario|dueño|dueña|propietaria|creadora|creador|grouplist|listagrupos|grupolista|infobot|informacionbot|contacto|contactos|contacts|ping|speed|velocidad|rapidez|velocity|report|request|reporte|bugs|bug|reportowner|reportes|reportar)$/i
+
+    export default handler
+  } catch (error) {
+    return reportError(m, error, usedPrefix, command)
+  }
+}

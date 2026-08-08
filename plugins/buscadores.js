@@ -1,204 +1,331 @@
-//import { googleIt } from '@bochilteam/scraper'
-import translate from '@vitalets/google-translate-api'
-import googleIt from 'google-it'
-import fetch from 'node-fetch'
+import OpenAI from 'openai'
 import axios from 'axios'
+import googleIt from 'google-it'
 import yts from 'yt-search'
-import cheerio from 'cheerio'
-import gpt from 'api-dylux'
-import fs from 'fs' 
 
-let handler = async (m, { conn, command, usedPrefix, args, text }) => {
-const isCommand1 = /^(googlef?)$/i.test(command)
-const isCommand2 = /(openai|chatgpt|ia|ai)/i.test(command)
-const isCommand3 = /^(bot|simi|simsimi|alexa|bixby|cortana|siri|okgoogle)$/i.test(command)
-const isCommand4 = /^(githubstalk|usuariogithub|usergithub)$/i.test(command)
-const isCommand5 = /^(yt(s|search))$/i.test(command)
+const MAX_RESULTS = 7
+const MAX_AI_TEXT_LENGTH = 3000
 
-let fkontak = { "key": { "participants":"0@s.whatsapp.net", "remoteJid": "status@broadcast", "fromMe": false, "id": "Halo" }, "message": { "contactMessage": { "vcard": `BEGIN:VCARD\nVERSION:3.0\nN:Sy;Bot;;;\nFN:y\nitem1.TEL;waid=${m.sender.split('@')[0]}:${m.sender.split('@')[0]}\nitem1.X-ABLabel:Ponsel\nEND:VCARD` }}, "participant": "0@s.whatsapp.net" }
-async function reportError(e) {
-await m.reply(lenguajeGB['smsMalError3']() + '\n*' + lenguajeGB.smsMensError1() + '*\n*' + usedPrefix + `${lenguajeGB.lenguaje() == 'es' ? 'reporte' : 'report'}` + '* ' + `${lenguajeGB.smsMensError2()} ` + usedPrefix + command)
-console.log(`❗❗ ${lenguajeGB['smsMensError2']()} ${usedPrefix + command} ❗❗`)
-console.log(e)
+function languageText(key, fallback, ...args) {
+  try {
+    return global.lenguajeGB?.[key]?.(...args) || fallback
+  } catch {
+    return fallback
+  }
 }
 
-switch (true) {     
-case isCommand1:
-//const fetch = (await import('node-fetch')).default
-let img = 'https://wpbr.mx/blog/wp-content/uploads/2015/09/Nuevo-logo-de-google.jpg' || sharkMenu.getRandom()
-let url = 'https://google.com/search?q=' + encodeURIComponent(text)
-if (args.length >= 1) {
-text = args.slice(0).join(" ")
-} else if (m.quoted && m.quoted.text) {
-text = m.quoted.text
-} else return conn.reply(m.chat, lenguajeGB.smsMalused3() + `\n*${usedPrefix + command} Qué es Matemáticas?*`, m)
-try {
-let search = await googleIt({ query: text })
-let msg = search.map(({ title, link, snippet}) => {
-return `*• ${title}*\n_${snippet}_\n_${link}_`
-}).join`\n\n`
-await conn.sendFile(m.chat, img, '', url + '\n\n' + msg, m) 
-} catch { 
-try {
-let apiUrl = `https://api.lolhuman.xyz/api/gsearch?apikey=${lolkeysapi}&query=` + encodeURIComponent(text)
-let response = await fetch(apiUrl)
-let data = await response.json() 
-let translatedResults = await Promise.all(data.result.map(async ({ title, link, desc }) => {
-let translatedTitle = await translate(title, { to: lenguajeGB.lenguaje() || 'en', autoCorrect: true })
-let translatedDesc = await translate(desc, { to: lenguajeGB.lenguaje() || 'en', autoCorrect: true })
-return `*• ${translatedTitle.text}*\n_${translatedDesc.text}_\n_${link}_`
-}))
-let msg = translatedResults.join('\n\n')
-await conn.sendFile(m.chat, img, '', url + '\n\n' + msg, m)
-} catch (e) {
-reportError(e)
-}}
-break
-    
-case isCommand2:
-if (args.length >= 1) {
-text = args.slice(0).join(" ")
-} else if (m.quoted && m.quoted.text) {
-text = m.quoted.text
-} else return conn.reply(m.chat, lenguajeGB.smsOpenai1() + `\n*${usedPrefix + command}* ${lenguajeGB.smsOpenai2()}\n\n*${usedPrefix + command}* ${lenguajeGB.smsOpenai3()}` , m)
-await conn.sendPresenceUpdate('composing', m.chat)
-try {
-let syms = `Actuaras como un Bot de WhatsApp el cual fue creado por el OsmaldoKr, tu seras KumaBot`
-let res = await gpt.ChatGpt(text, syms)
-await m.reply(res.text)
-} catch {
-try {   
-let ia2 = await fetch(`https://api.amosayomide05.cf/gpt/?question=${text}&string_id=${m.sender}`) //fetch(`https://api.ibeng.tech/api/info/openai?text=${text}&apikey=tamvan`)
-let resu2 = await ia2.json()
-m.reply(resu2.response.trim())    
-} catch {        
-try {    
-let tioress = await fetch(`https://api.lolhuman.xyz/api/openai-turbo?apikey=${lolkeysapi}&text=${text}`)
-let hasill = await tioress.json()
-m.reply(`${hasill.result}`.trim())   
-} catch (e) {
-reportError(e)
-}}}
-break
-    
-case isCommand3:
-if (!text) return conn.reply(m.chat, lenguajeGB.smsMalused2() + `\n*${usedPrefix + command} ${lenguajeGB.smsCreA()}*` , m) 
-try{
-await conn.sendPresenceUpdate('composing', m.chat)
-let res = await fetch (`https://api.simsimi.net/v2/?text=${text}&lc=${lenguajeGB.lenguaje()}`)  
-let json = await res.json()
-let tes = json.success.replace('simsimi', 'simsimi').replace('Simsimi', 'Simsimi').replace('sim simi', 'sim simi')
-m.reply(`${tes}`) 
-} catch (e) {
-reportError(e)
-}     
-break
-        
-case isCommand4:
-if (!text) return conn.reply(m.chat, lenguajeGB.smsGit1(usedPrefix, command), m)
-await m.reply(lenguajeGB.smsGit2())
-try{
-let err = lenguajeGB.smsGit14()
-let request = await githubstalk(text) 
-let { username, following, followers, type, bio, company, blog, location, email, public_repo, public_gists, profile_pic } = requestindex.js
-let thumb = await profile_pic
-let cont = `*╭•  •  •  •  • G I T H U B •  •  •  •  •╮*\n
-${lenguajeGB.smsGit3()}
-${username || err}
+function cleanText(value = '') {
+  return String(value)
+    .replace(/\s+/g, ' ')
+    .trim()
+}
 
-${lenguajeGB.smsGit4()}
-${bio || err}
+function truncate(value, maxLength = 350) {
+  const text = cleanText(value)
 
-${lenguajeGB.smsGit5()}
-${company || err}
+  return text.length > maxLength
+    ? `${text.slice(0, maxLength - 3)}...`
+    : text
+}
 
-${lenguajeGB.smsGit6()}
-${email || err}
+function getOpenAIClient() {
+  const apiKey = process.env.OPENAI_API_KEY
 
-${lenguajeGB.smsGit7()}
-${blog || err}
+  if (!apiKey) {
+    return null
+  }
 
-${lenguajeGB.smsGit8()}
-${public_repo || err}
+  return new OpenAI({ apiKey })
+}
 
-${lenguajeGB.smsGit9()}
-${public_gists || err}
+async function reportError(m, error, usedPrefix, command) {
+  console.error(`Error en ${command}:`, error)
 
-${lenguajeGB.smsGit10()}
-${followers || err}
+  await m.react(global.notsent || '❗').catch(() => {})
 
-${lenguajeGB.smsGit11()}
-${following || err}
+  return m.reply(
+    [
+      languageText(
+        'smsMalError3',
+        'Ocurrió un error al procesar tu solicitud.'
+      ),
+      '',
+      `Puedes reportarlo con: ${usedPrefix}reporte ${command}`
+    ].join('\n')
+  )
+}
 
-${lenguajeGB.smsGit12()}
-${location || err}
+async function searchGoogle(query) {
+  const results = await googleIt({
+    query,
+    disableConsole: true
+  })
 
-${lenguajeGB.smsGit13()}
-${type || err}`
-await conn.sendFile(m.chat, thumb || sharkMenu.getRandom(), 'githubstalk.jpg', cont, fkontak) 
-} catch (e) {
-reportError(e)}  
-break   
-        
-case isCommand5:
-if (!text) return m.reply(lenguajeGB.smsMalused2() + `*${usedPrefix + command}* SharkLite`)
-try{
-await conn.reply(m.chat, global.wait, m)
-let results = await yts(text)
-let tes = results.all
-let teks = results.all.map(v => {
-switch (v.type) {
-case 'video': return `
-⁖❤️꙰༻ *${lenguajeGB.smsytserh1()}*
-» ${v.title || lenguajeGB.smsGit14()}
+  return results
+    .filter((item) => item.title && item.link)
+    .slice(0, MAX_RESULTS)
+}
 
-⁖🩵꙰༻ *${lenguajeGB.smsytserh2()}*
-» ${v.url || lenguajeGB.smsGit14()}
+async function searchGitHub(username) {
+  const response = await axios.get(
+    `https://api.github.com/users/${encodeURIComponent(username)}`,
+    {
+      headers: {
+        Accept: 'application/vnd.github+json',
+        'User-Agent': 'KumaBot'
+      }
+    }
+  )
 
-⁖💜꙰༻ *${lenguajeGB.smsytserh3()}*
-» ${v.timestamp || lenguajeGB.smsGit14()}
+  return response.data
+}
 
-⁖💚꙰༻ *${lenguajeGB.smsytserh4()}*
-» ${v.ago || lenguajeGB.smsGit14()}
+function formatGoogleResults(query, results) {
+  const lines = [
+    `🔎 *Resultados de Google para:* ${query}`,
+    ''
+  ]
 
-⁖🧡꙰༻ *${lenguajeGB.smsytserh5()}*
-» ${v.views || lenguajeGB.smsGit14()}`.trim()
-}}).filter(v => v).join('\n\n••••••••••••••••••••••••••••••••••••\n\n')
-await conn.sendFile(m.chat, tes[0].thumbnail, 'yts.jpeg', teks, m)
-} catch (e) {
-reportError(e)
-}          
-break
-}}
+  for (const [index, item] of results.entries()) {
+    lines.push(
+      `*${index + 1}. ${cleanText(item.title)}*`,
+      truncate(item.snippet || 'Sin descripción disponible.'),
+      item.link,
+      ''
+    )
+  }
 
-handler.command = /^(googlef?|openai|chatgpt|ia|ai|bot|simi|simsimi|alexa|bixby|cortana|siri|okgoogle|githubstalk|usuariogithub|usergithub|(yt(s|search)))$/i
+  return lines.join('\n')
+}
+
+function formatYouTubeResults(query, results) {
+  const lines = [
+    `▶️ *Resultados de YouTube para:* ${query}`,
+    ''
+  ]
+
+  for (const [index, video] of results.entries()) {
+    lines.push(
+      `*${index + 1}. ${video.title || 'Sin título'}*`,
+      `Duración: ${video.timestamp || 'No disponible'}`,
+      `Vistas: ${new Intl.NumberFormat('es-NI').format(video.views || 0)}`,
+      `Publicado: ${video.ago || 'No disponible'}`,
+      video.url || 'Sin enlace disponible',
+      ''
+    )
+  }
+
+  return lines.join('\n')
+}
+
+function formatGitHubProfile(profile) {
+  const unavailable = 'No disponible'
+
+  return [
+    '╭─〔 *PERFIL DE GITHUB* 〕',
+    `├ Usuario: ${profile.login || unavailable}`,
+    `├ Nombre: ${profile.name || unavailable}`,
+    `├ Biografía: ${profile.bio || unavailable}`,
+    `├ Empresa: ${profile.company || unavailable}`,
+    `├ Ubicación: ${profile.location || unavailable}`,
+    `├ Correo: ${profile.email || unavailable}`,
+    `├ Blog: ${profile.blog || unavailable}`,
+    `├ Repositorios: ${profile.public_repos ?? 0}`,
+    `├ Gists públicos: ${profile.public_gists ?? 0}`,
+    `├ Seguidores: ${profile.followers ?? 0}`,
+    `├ Siguiendo: ${profile.following ?? 0}`,
+    `├ Tipo de cuenta: ${profile.type || unavailable}`,
+    `╰ Enlace: ${profile.html_url || unavailable}`
+  ].join('\n')
+}
+
+const handler = async (
+  m,
+  {
+    conn,
+    command,
+    usedPrefix,
+    args,
+    text
+  }
+) => {
+  const normalizedCommand = command.toLowerCase()
+
+  const isGoogle = /^(googlef?)$/i.test(normalizedCommand)
+  const isOpenAI = /^(openai|chatgpt|ia|ai)$/i.test(normalizedCommand)
+  const isSimSimi = /^(bot|simi|simsimi|alexa|bixby|cortana|siri|okgoogle)$/i.test(
+    normalizedCommand
+  )
+  const isGitHub = /^(githubstalk|usuariogithub|usergithub)$/i.test(
+    normalizedCommand
+  )
+  const isYouTubeSearch = /^(yt|yts|ytsearch)$/i.test(
+    normalizedCommand
+  )
+
+  const query = text || m.quoted?.text || ''
+
+  try {
+    if (isGoogle) {
+      if (!query) {
+        return m.reply(
+          `${languageText('smsMalused3', 'Uso incorrecto:')}\n${usedPrefix}${command} ¿Qué son las matemáticas?`
+        )
+      }
+
+      await m.react(global.waitemot || '⌛')
+
+      const results = await searchGoogle(query)
+
+      if (!results.length) {
+        return m.reply('No encontré resultados para esa búsqueda.')
+      }
+
+      await m.reply(formatGoogleResults(query, results))
+
+      return m.react(global.sent || '✅')
+    }
+
+    if (isOpenAI) {
+      if (!query) {
+        return m.reply(
+          [
+            languageText(
+              'smsOpenai1',
+              'Escribe una pregunta para usar la inteligencia artificial.'
+            ),
+            '',
+            `Ejemplo: ${usedPrefix}${command} Explícame qué es Flutter.`
+          ].join('\n')
+        )
+      }
+
+      if (query.length > MAX_AI_TEXT_LENGTH) {
+        return m.reply(
+          `Tu consulta es demasiado larga. Máximo: ${MAX_AI_TEXT_LENGTH} caracteres.`
+        )
+      }
+
+      const client = getOpenAIClient()
+
+      if (!client) {
+        return m.reply(
+          'La IA no está configurada. Agrega OPENAI_API_KEY como variable de entorno.'
+        )
+      }
+
+      await conn.sendPresenceUpdate('composing', m.chat)
+      await m.react(global.waitemot || '⌛')
+
+      const response = await client.responses.create({
+        model: process.env.OPENAI_MODEL || 'gpt-4.1-mini',
+        instructions: [
+          'Eres KumaBot, un asistente útil dentro de WhatsApp.',
+          'Responde siempre en español claro y natural.',
+          'Da respuestas breves salvo que el usuario solicite detalle.',
+          'No inventes enlaces, fuentes ni datos.'
+        ].join(' '),
+        input: query
+      })
+
+      const answer = cleanText(response.output_text)
+
+      if (!answer) {
+        throw new Error('OpenAI no devolvió texto en la respuesta.')
+      }
+
+      await m.reply(answer)
+
+      return m.react(global.sent || '✅')
+    }
+
+    if (isSimSimi) {
+      if (!query) {
+        return m.reply(
+          `${languageText('smsMalused2', 'Uso incorrecto:')}\n${usedPrefix}${command} Hola, ¿cómo estás?`
+        )
+      }
+
+      await conn.sendPresenceUpdate('composing', m.chat)
+
+      const language = global.lenguajeGB?.lenguaje?.() || 'es'
+      const endpoint = new URL('https://api.simsimi.net/v2/')
+
+      endpoint.searchParams.set('text', query)
+      endpoint.searchParams.set('lc', language)
+
+      const response = await fetch(endpoint)
+      const data = await response.json()
+
+      if (!data.success) {
+        throw new Error('SimSimi no devolvió una respuesta válida.')
+      }
+
+      return m.reply(data.success)
+    }
+
+    if (isGitHub) {
+      if (!query) {
+        return m.reply(
+          `${languageText('smsGit1', 'Escribe un usuario de GitHub.')}\n${usedPrefix}${command} OsmaldoKr`
+        )
+      }
+
+      await m.reply(
+        languageText('smsGit2', 'Buscando perfil de GitHub...')
+      )
+
+      const profile = await searchGitHub(query.replace(/^@/, ''))
+      const profileText = formatGitHubProfile(profile)
+
+      await conn.sendFile(
+        m.chat,
+        profile.avatar_url || global.sharkMenu?.getRandom?.(),
+        'github-perfil.jpg',
+        profileText,
+        m
+      )
+
+      return m.react(global.sent || '✅')
+    }
+
+    if (isYouTubeSearch) {
+      if (!query) {
+        return m.reply(
+          `${languageText('smsMalused2', 'Uso incorrecto:')}\n${usedPrefix}${command} KumaBot`
+        )
+      }
+
+      await m.reply(global.wait || 'Buscando en YouTube...')
+
+      const result = await yts(query)
+
+      const videos = (result.videos || [])
+        .filter((video) => video.url)
+        .slice(0, MAX_RESULTS)
+
+      if (!videos.length) {
+        return m.reply('No se encontraron videos en YouTube.')
+      }
+
+      await conn.sendFile(
+        m.chat,
+        videos[0].thumbnail,
+        'youtube-resultados.jpg',
+        formatYouTubeResults(query, videos),
+        m
+      )
+
+      return m.react(global.sent || '✅')
+    }
+  } catch (error) {
+    return reportError(m, error, usedPrefix, command)
+  }
+}
+
+handler.command = /^(googlef?|openai|chatgpt|ia|ai|bot|simi|simsimi|alexa|bixby|cortana|siri|okgoogle|githubstalk|usuariogithub|usergithub|yt|yts|ytsearch)$/i
+
 handler.register = true
-export default handler 
+handler.limit = 1
 
-async function githubstalk(user) {
-return new Promise((resolve, reject) => {
-axios.get('https://api.github.com/users/'+user)
-.then(({ data }) => {
-let hasil = {
- username: data.login,
- nickname: data.name,
- bio: data.bio,
- id: data.id,
- nodeId: data.node_id,
- profile_pic: data.avatar_url,
- url: data.html_url,
- type: data.type,
- admin: data.site_admin,
- company: data.company,
- blog: data.blog,
- location: data.location,
- email: data.email,
- public_repo: data.public_repos,
- public_gists: data.public_gists,
- followers: data.followers,
- following: data.following,
- ceated_at: data.created_at,
- updated_at: data.updated_at
-}
-resolve(hasil)})})  
-}
+export default handler

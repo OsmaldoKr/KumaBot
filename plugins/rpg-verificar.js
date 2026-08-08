@@ -1,47 +1,106 @@
-import { createHash } from 'crypto'
-let Reg = /\|?(.*)([.|] *?)([0-9]*)$/i
-let handler = async function (m, { conn, text, usedPrefix, command }) {
-function pickRandom(list) {
-return list[Math.floor(Math.random() * list.length)]
+import { createHash } from 'node:crypto'
+
+function getSerial(jid) {
+  return createHash('md5')
+    .update(jid)
+    .digest('hex')
+    .slice(0, 6)
 }
-let tag = `${m.sender.split("@")[0]}`
-let aa = tag + '@s.whatsapp.net'
-let user = global.db.data.users[m.sender]
-if (user.registered === true) return m.reply(lenguajeGB.smsVerify0(usedPrefix) + '*')
-if (!Reg.test(text)) return m.reply(lenguajeGB.smsVerify1(usedPrefix, command))
-let [_, name, splitter, age] = text.match(Reg)
-if (!name) return m.reply(lenguajeGB.smsVerify2())
-if (!age) return m.reply(lenguajeGB.smsVerify3())
-age = parseInt(age)
-if (age > 50) return m.reply(lenguajeGB.smsVerify4())
-if (age < 10) return m.reply(lenguajeGB.smsVerify5())
-if (name.length >= 30) return m.reply(lenguajeGB.smsVerify6())
-user.name = name + 'ͧͧͧͦ🆂🅺🅻'.trim()
-user.age = age
-user.regTime = + new Date
-user.registered = true
-let sn = createHash('md5').update(m.sender).digest('hex').slice(0, 6)	
-let who = m.mentionedJid && m.mentionedJid[0] ? m.mentionedJid[0] : m.quoted ? m.quoted.sender : m.fromMe ? conn.user.jid : m.sender
-let pp = await conn.profilePictureUrl(who, 'image').catch(_ => sharkMenu.getRandom())
-let caption = `${lenguajeGB.smsVerify7()}
 
-*⎔ ${lenguajeGB.smsPerfil1()}* 
-• @${tag}
+function parseRegistration(text = '') {
+  const match = text.trim().match(
+    /^(.+?)\s*[.|,|-]\s*(\d{1,3})$/
+  )
 
-*⎔ ${lenguajeGB.smsPerfil2()}* 
-• ${name}
+  if (!match) return null
 
-*⎔ ${lenguajeGB.smsPerfil3()}*
-• ${age}
-
-*⎔ ${lenguajeGB.smsVerify9()}*
-• 🆂🅺🅻
-
-*⎔ ${lenguajeGB.smsPerfil5()}*
-• \`\`\`${sn}\`\`\``.trim()
-await conn.sendFile(m.chat, sharkImg.getRandom(), 'shark.jpg', caption, m, false, { mentions: [aa] }) 
-await m.reply(lenguajeGB.smsVerify8(usedPrefix)) 
-await m.reply(`${sn}`) 
+  return {
+    name: match[1].trim(),
+    age: Number(match[2])
+  }
 }
-handler.command = /^(verify|verificar|reg(ister)?)$/i
+
+const handler = async (
+  m,
+  {
+    conn,
+    text,
+    usedPrefix,
+    command
+  }
+) => {
+  global.db.data.users[m.sender] ||= {}
+
+  const user = global.db.data.users[m.sender]
+
+  if (user.registered) {
+    return m.reply(
+      `Ya estás registrado(a). Consulta tu perfil con: ${usedPrefix}perfil`
+    )
+  }
+
+  const data = parseRegistration(text)
+
+  if (!data) {
+    return m.reply(
+      [
+        'Formato incorrecto.',
+        '',
+        `Uso: ${usedPrefix}${command} Nombre.Edad`,
+        `Ejemplo: ${usedPrefix}${command} Osmaldo.20`
+      ].join('\n')
+    )
+  }
+
+  const { name, age } = data
+
+  if (name.length < 2) {
+    return m.reply('El nombre debe tener al menos 2 caracteres.')
+  }
+
+  if (name.length > 30) {
+    return m.reply('El nombre no puede superar 30 caracteres.')
+  }
+
+  if (age < 13 || age > 99) {
+    return m.reply(
+      'La edad debe estar entre 13 y 99 años.'
+    )
+  }
+
+  const serial = getSerial(m.sender)
+
+  user.name = name
+  user.age = age
+  user.regTime = Date.now()
+  user.registered = true
+
+  const number = m.sender.split('@')[0]
+
+  const caption = [
+    '✅ *REGISTRO COMPLETADO*',
+    '',
+    `*Usuario:* @${number}`,
+    `*Nombre:* ${name}`,
+    `*Edad:* ${age}`,
+    `*ID de registro:* \`${serial}\``,
+    '',
+    `Consulta tu perfil con: ${usedPrefix}perfil`,
+    `Puedes anularlo con: ${usedPrefix}anulareg ${serial}`
+  ].join('\n')
+
+  await conn.sendMessage(
+    m.chat,
+    {
+      text: caption,
+      mentions: [m.sender]
+    },
+    { quoted: m }
+  )
+
+  return m.reply('🎉 Registro guardado correctamente.')
+}
+
+handler.command = /^(verify|verificar|reg|register|registro)$/i
+
 export default handler

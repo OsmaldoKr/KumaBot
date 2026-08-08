@@ -1,11 +1,16 @@
 window.onload = () => {
-let chat = document.querySelector('div.container-fluid')
-function addMsg(obj) {
-  let html = document.createElement('span')
-  html.className = 'msg'
-  html.innerHTML = obj
-  chat.appendChild(html)
-}
+  const chat = document.querySelector('div.container-fluid')
 
-window.onclick = () => addMsg(12)
+  function addMsg(message) {
+    const html = document.createElement('span')
+
+    html.className = 'msg'
+    html.textContent = message
+
+    chat.appendChild(html)
+  }
+
+  window.onclick = () => {
+    addMsg('Mensaje número 12')
+  }
 }

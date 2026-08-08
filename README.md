@@ -1,119 +1,274 @@
-<a href="https://www.youtube.com/channel/UCPkAneZ18bEo-uYCjbr7MpA">
-<img src="https://img.shields.io/badge/YouTube-FF0000?style=for-the-badge&logo=youtube&logoColor=white" alt="YouTube">
-</a>
-<a href="https://instagram.com/osmaldokr.16">
-<img src="https://img.shields.io/badge/Instagram-E4405F?style=for-the-badge&logo=instagram&logoColor=white">
-</a>
-</div>
+# 👺 KumaBot
 
-### ✅ KUMA_BOT OFICIAL
+Bot de WhatsApp desarrollado por **OsmaldoKr**, basado en Baileys y Node.js.
 
-<a href="http://wa.me/50578000739?text=.menu" target="blank"><img src="https://img.shields.io/badge/1️⃣_𝙎𝙝𝙖𝙧𝙠𝙇𝙞𝙩𝙚-25D366?style=for-the-badge&logo=whatsapp&logoColor=white" />
-</a>
-  
-#### DISPONIBLE EN:
-> - [x] TERMUX, REPLIT, WINDOWS, ZIPPONODES, BOXMINE-HOST
+## Plataformas compatibles
 
+- ✅ Windows
+- ✅ Termux
+- ✅ Replit
+- ✅ VPS / RDP
+- ✅ ZippoNodes
+- ✅ BoxMine Host
 
-[`😛 App Termux`](https://f-droid.org/repo/com.termux_118.apk)
-### 🤨 INSTALACIÓN AUTOMÁTICA - TERMUX
+## Requisitos
+
+Antes de iniciar, necesitas:
+
+- Node.js 20 o superior
+- Git
+- FFmpeg
+- ImageMagick
+- Una cuenta de WhatsApp para vincular mediante QR
+
+Puedes comprobar tu versión de Node.js con:
+
+```bash
+node -v
+```
+
+---
+
+## Instalación en Windows
+
+1. Instala las siguientes herramientas:
+
+   - [Node.js](https://nodejs.org/)
+   - [Git](https://git-scm.com/downloads)
+   - [FFmpeg](https://ffmpeg.org/download.html)
+   - [ImageMagick](https://imagemagick.org/script/download.php)
+
+2. Abre CMD, PowerShell o la terminal de Visual Studio Code.
+
+3. Clona el repositorio:
+
+```bash
+git clone https://github.com/OsmaldoKr/KumaBot.git
+cd KumaBot
+```
+
+4. Instala las dependencias:
+
+```bash
+npm install
+```
+
+5. Inicia el bot:
+
+```bash
+npm start
+```
+
+6. Escanea el código QR desde WhatsApp:
+
+   **WhatsApp → Dispositivos vinculados → Vincular un dispositivo**
+
+---
+
+## Instalación en Termux
+
+Descarga Termux desde F-Droid:
+
+[Descargar Termux](https://f-droid.org/repo/com.termux_118.apk)
+
+Luego ejecuta:
 
 ```bash
 termux-setup-storage
+pkg update -y && pkg upgrade -y
+pkg install -y git nodejs ffmpeg imagemagick
 ```
+
+Clona e instala el bot:
+
 ```bash
-apt update -y && yes | apt upgrade && pkg install -y bash wget && wget -O - https://raw.githubusercontent.com/ElChema-Nc/SharkLite/master/sharklite.sh | bash
-```
-#### EN CASO QUE QUIERA USAR ESTE MÉTODO DEBE DE EDITAR (Previo a una Bifurcación)
-- [`Repositorio`](https://github.com/ElChema-Nc/SharkLite/blob/26d815118042760456a4cb2408654ad5d296e146/sharklite.sh#LL153C54-L153C54)
-- [`Nombre del Bot`](https://github.com/ElChema-Nc/SharkLite/blob/26d815118042760456a4cb2408654ad5d296e146/sharklite.sh#L157)
-- Actualizar: `https://raw.githubusercontent.com/ElChema-Nc/SharkLite/master/sharklite.sh`
-### 👻 INSTALACIÓN MANUAL - TERMUX
-```bash
-termux-setup-storage
-apt update
-apt upgrade
-pkg install -y git nodejs ffmpeg imagemagick yarn
-git clone https://github.com/ElChema-Nc/SharkLite
-cd SharkLite
-yarn install
+git clone https://github.com/OsmaldoKr/KumaBot.git
+cd KumaBot
 npm install
 npm start
 ```
 
-### 👺 TERMUX 24/7 👺
-> Comandos para realizar una ejecución 24/7
-- INICIAR
-> Use estos comandos dentro de la carpeta del SharkLite
-```bash
-termux-wake-lock && npm i -g pm2 && pm2 start index.js && pm2 save && pm2 logs 
-```
-- DETENER PM2
-> Detener todos los procesos del bot
-```bash
-pm2 stop all && pm2 unstartup
-```
-- REANUDAR 
-> Reanudar los procesos, usar dentro de la carpeta SharkLite
-```bash
-pm2 start index.js 
-```
-- VISUALIZAR EL PROCESO
-> Usar dentro de la carpeta SharkLite para ver en tiempo real
-```bash
-pm2 logs 
-```
-- ELIMINAR PROCESOS PM2
-> Eliminar todos los procesos del bot. Para volver a usar PM2 debe volver a usar los comandos de INICIAR
-```bash
-pm2 delete all
-```
-> **Note** Demanda consumo de RAM y CPU, el resultado mejora mientras las especificaciones del dispositivo sean moderadas
+---
 
-### INSTALACIÓN EN REPLIT 🌹
-<a target="_blank" href="https://replit.com/github/ElChema-Nc/SharkLite"><img alt="Run on Replit" src="https://binbashbanana.github.io/deploy-buttons/buttons/remade/replit.svg"></a>
-> **Note** Agregue estos comandos en Shell para empezar la instalación automática por Replit:
-```bash
-npm install -g ffmpeg imagemagick git yarn && npm i && node --no-warnings index.js
-```
-##  INSTALACIÓN PARA WINDOWS/VPS/RDP 😵‍💫
+## Mantener KumaBot activo en Termux con PM2
 
-* Descargar e instala Git [`Aquí`](https://git-scm.com/downloads)
-* Descargar e instala NodeJS [`Aquí`](https://nodejs.org/en/download)
-* Descargar e instala FFmpeg [`Aquí`](https://ffmpeg.org/download.html) (**No olvide agregar FFmpeg a la variable de entorno PATH**)
-* Descargar e instala ImageMagick [`Aquí`](https://imagemagick.org/script/download.php)
+Instala PM2:
+
 ```bash
-git clone https://github.com/ElChema-Nc/SharkLite
-cd SharkLite
-npm install -g yarn
-yarn
-npm install 
+npm install -g pm2
+```
+
+Inicia KumaBot:
+
+```bash
+pm2 start index.js --name KumaBot
+pm2 save
+```
+
+Ver los registros en tiempo real:
+
+```bash
+pm2 logs KumaBot
+```
+
+Reiniciar el bot:
+
+```bash
+pm2 restart KumaBot
+```
+
+Detenerlo:
+
+```bash
+pm2 stop KumaBot
+```
+
+Eliminar el proceso:
+
+```bash
+pm2 delete KumaBot
+```
+
+Ver todos los procesos administrados por PM2:
+
+```bash
+pm2 list
+```
+
+> PM2 consume recursos adicionales. Se recomienda usarlo en dispositivos con memoria RAM suficiente.
+
+---
+
+## Instalación en Replit
+
+1. Crea un Repl de tipo **Node.js**.
+2. Sube o clona el repositorio.
+3. Abre la terminal de Replit.
+4. Ejecuta:
+
+```bash
+npm install
 npm start
 ```
-### Instalación de FFmpeg para Windows 
-* Descarga la siguiente versión de FFmpeg [`Aquí`](https://www.gyan.dev/ffmpeg/builds/ffmpeg-git-full.7z).
-* Extraer FFmpeg con [`7-Zip`](https://www.7-zip.org/download.html)
-* Cambie el nombre de la carpeta extraída a `FFmpeg`.
-* Mover archivos a `C:\` path.
-* Agregar la ruta ejemplo: `C:\ffmpeg\bin` al entorno de variable
-* Ejecute el símbolo del sistema como administrador.
-* Ejecute el siguiente comando:
-```cmd
-setx /m PATH "C:\ffmpeg\bin;%PATH%"
+
+Si Replit requiere herramientas multimedia, instala:
+
+```bash
+npm install -g ffmpeg-static
 ```
-Si tiene éxito, le dará un mensaje como: `SUCCESS: specified value was saved`.
-* Ahora que tiene FFmpeg instalado, verifique que funcionó ejecutando este comando para ver la versión:
-```cmd
-> ffmpeg -version
+
+---
+
+## Instalación en VPS, RDP o hosting Linux
+
+Actualiza el servidor e instala los requisitos:
+
+```bash
+sudo apt update
+sudo apt install -y git nodejs npm ffmpeg imagemagick
 ```
-### Error en usar yarn en PowerShell
-* Si usa la consola PowerShell y recibe este mensaje `No se puede cargar el archivo yarn.ps1 o yarn porque la ejecución de scripts está deshabilitada en este sistema.` al intentar usar `yarn` dentro de la carpeta del Bot puede usar estos comandos para cambiar la Política de ejecución de PowerShell en su sistema:
-> Debe de ejecutar la consola como Administrador
-```cmd
-Get-ExecutionPolicy
+
+Clona el proyecto:
+
+```bash
+git clone https://github.com/OsmaldoKr/KumaBot.git
+cd KumaBot
+npm install
+npm start
+```
+
+Para mantenerlo activo en segundo plano:
+
+```bash
+npm install -g pm2
+pm2 start index.js --name KumaBot
+pm2 save
+```
+
+---
+
+## Configuración de FFmpeg en Windows
+
+1. Descarga una versión de FFmpeg desde:
+
+   [FFmpeg Builds](https://www.gyan.dev/ffmpeg/builds/)
+
+2. Extrae el archivo descargado.
+3. Mueve la carpeta a:
+
+```text
+C:\ffmpeg
+```
+
+4. Agrega esta ruta a las variables de entorno `PATH`:
+
+```text
+C:\ffmpeg\bin
+```
+
+5. Comprueba que quedó instalado:
+
+```bash
+ffmpeg -version
+```
+
+Si muestra información de versión, la instalación fue correcta.
+
+---
+
+## Problema con Yarn en PowerShell
+
+Si PowerShell bloquea Yarn por la política de ejecución, abre PowerShell como administrador y ejecuta:
+
+```powershell
 Set-ExecutionPolicy RemoteSigned
 ```
-> Aparecerá un mensaje de advertencia preguntando si deseas cambiar la Política de ejecución. Confirma con "Y" y presiona Enter. Luego ya puede volver a ejecutar el comando `yarn`
 
-### 👑 CREADOR
-[![OsmaldoKr](https://avatars.githubusercontent.com/u/128516128?v=4)](https://github.com/OsmaldoKr)
+Confirma con `Y` y presiona Enter.
+
+> KumaBot utiliza NPM como gestor principal, por lo que Yarn no es obligatorio.
+
+---
+
+## Comandos disponibles
+
+| Comando | Función |
+|---|---|
+| `npm start` | Inicia el bot |
+| `npm run dev` | Inicia el bot con reinicio automático |
+| `npm test` | Ejecuta `test.js` |
+| `npm run lint` | Revisa el código con ESLint |
+| `pm2 logs KumaBot` | Muestra los registros del bot |
+| `pm2 restart KumaBot` | Reinicia el proceso administrado por PM2 |
+
+---
+
+## Estructura del proyecto
+
+```text
+KumaBot/
+├── index.js          # Iniciador y administrador del proceso
+├── main.js           # Conexión principal con WhatsApp
+├── handler.js        # Gestión de mensajes y eventos
+├── config.js         # Configuración global
+├── plugins/          # Comandos y funciones del bot
+├── lib/              # Utilidades internas
+├── KumaSession/      # Sesión de WhatsApp
+├── package.json      # Dependencias y scripts
+└── README.md         # Documentación
+```
+
+> No compartas ni subas públicamente la carpeta `KumaSession`, ya que contiene las credenciales de tu cuenta vinculada de WhatsApp.
+
+---
+
+## Creador
+
+**OsmaldoKr**
+
+- GitHub: [@OsmaldoKr](https://github.com/OsmaldoKr)
+- Proyecto: [KumaBot](https://github.com/OsmaldoKr/KumaBot)
+
+## Licencia
+
+Este proyecto se distribuye bajo la licencia **GPL-3.0-or-later**.

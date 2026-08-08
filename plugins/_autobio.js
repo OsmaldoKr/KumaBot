@@ -1,24 +1,58 @@
-let handler = m => m
-handler.all = async function (m) {
-let setting = global.db.data.settings[this.user.jid]
-	
-let _uptime = process.uptime() * 1000
-let _muptime
-if (process.send) { process.send('uptime')
-_muptime = await new Promise(resolve => { process.once('message', resolve) 
-setTimeout(resolve, 2000) }) * 1000}
+const handler = (m) => m
 
-let uptime = clockString(_uptime)
-let bio = `${global.packname} ⁝⁝ ✅ ${uptime} ⌛ ⁝⁝ 👑 ${lenguajeGB.lenguaje() == 'es' ? '#estado #menu #serbot #elchema #creador' : '#status #menu #jadibot #owner'} 💻`
-await this.updateProfileStatus(bio).catch(_ => _)
-setting.status = new Date() * 1
+const UPDATE_INTERVAL = 10 * 60 * 1000
+
+handler.all = async function () {
+  const botJid = this.user.jid
+
+  global.db.data.settings[botJid] ||= {}
+
+  const settings = global.db.data.settings[botJid]
+  const now = Date.now()
+
+  // Evita cambiar la biografía con cada mensaje.
+  if (
+    settings.status &&
+    now - settings.status < UPDATE_INTERVAL
+  ) {
+    return
+  }
+
+  const uptime = formatUptime(process.uptime() * 1000)
+
+  const commands = lenguajeGB.lenguaje() === 'es'
+    ? '#estado • #menu • #serbot • #creador'
+    : '#status • #menu • #jadibot • #owner'
+
+  const bio = `${global.packname} ✅ Activo: ${uptime} ⌛ ${commands}`
+
+  try {
+    await this.updateProfileStatus(bio)
+    settings.status = now
+
+    console.log('Biografía de KumaBot actualizada.')
+  } catch (error) {
+    console.error(
+      'No se pudo actualizar la biografía:',
+      error.message
+    )
+  }
 }
+
 export default handler
 
-function clockString(ms) {
-  let d = isNaN(ms) ? '--' : Math.floor(ms / 86400000)
-  let h = isNaN(ms) ? '--' : Math.floor(ms / 3600000) % 24
-  let m = isNaN(ms) ? '--' : Math.floor(ms / 60000) % 60
-  let s = isNaN(ms) ? '--' : Math.floor(ms / 1000) % 60
-  return [d, ' » ', h, ' ・ ', m, ' ・ ', s].map(v => v.toString().padStart(2, 0)).join('') 
-} 
+function formatUptime(milliseconds) {
+  const totalSeconds = Math.floor(milliseconds / 1000)
+
+  const days = Math.floor(totalSeconds / 86400)
+  const hours = Math.floor((totalSeconds % 86400) / 3600)
+  const minutes = Math.floor((totalSeconds % 3600) / 60)
+  const seconds = totalSeconds % 60
+
+  return [
+    `${days}d`,
+    `${String(hours).padStart(2, '0')}h`,
+    `${String(minutes).padStart(2, '0')}m`,
+    `${String(seconds).padStart(2, '0')}s`
+  ].join(' ')
+}

@@ -1,49 +1,132 @@
-import express from 'express';
-import {createServer} from 'http';
-import path from 'path';
-import {Socket} from 'socket.io';
-import {toBuffer} from 'qrcode';
-import fetch from 'node-fetch';
+import express from 'express'
+import { createServer } from 'node:http'
+import { toBuffer } from 'qrcode'
+import fetch from 'node-fetch'
 
-function connect(conn, PORT) {
-  const app = global.app = express();
-  console.log(app);
-  const server = global.server = createServer(app);
-  let _qr = 'QR invalido, probablemente ya hayas escaneado el QR.';
+function connect(conn, port) {
+  const app = express()
+  const server = createServer(app)
 
-  conn.ev.on('connection.update', function appQR({qr}) {
-    if (qr) _qr = qr;
-  });
+  global.app = app
+  global.server = server
 
-  app.use(async (req, res) => {
-    res.setHeader('content-type', 'image/png');
-    res.end(await toBuffer(_qr));
-  });
+  let currentQr = null
+  let connected = false
 
-  server.listen(PORT, () => {
-    console.log('App listened on port', PORT);
-    if (opts['keepalive']) keepAlive();
-  });
+  conn.ev.on('connection.update', ({ connection, qr }) => {
+    if (qr) {
+      currentQr = qr
+      connected = false
+      console.log('Nuevo código QR generado.')
+    }
+
+    if (connection === 'open') {
+      connected = true
+      currentQr = null
+    }
+
+    if (connection === 'close') {
+      connected = false
+    }
+  })
+
+  app.get('/health', (_, res) => {
+    res.status(200).json({
+      status: 'online',
+      whatsapp: connected ? 'connected' : 'disconnected',
+      qrAvailable: Boolean(currentQr)
+    })
+  })
+
+  app.get('/', async (req, res) => {
+    const qrToken = process.env.QR_TOKEN
+
+    if (qrToken && req.query.token !== qrToken) {
+      return res.status(403).json({
+        error: 'Acceso no autorizado.'
+      })
+    }
+
+    if (connected) {
+      return res.status(200).json({
+        message: 'WhatsApp ya está conectado.'
+      })
+    }
+
+    if (!currentQr) {
+      return res.status(503).json({
+        message: 'El código QR todavía no está disponible. Recarga en unos segundos.'
+      })
+    }
+
+    try {
+      const image = await toBuffer(currentQr, {
+        type: 'png',
+        width: 360,
+        margin: 2,
+        errorCorrectionLevel: 'M'
+      })
+
+      res.setHeader('Content-Type', 'image/png')
+      res.setHeader('Cache-Control', 'no-store')
+      res.end(image)
+    } catch (error) {
+      console.error('No se pudo generar el QR:', error)
+      res.status(500).json({
+        error: 'No se pudo generar el código QR.'
+      })
+    }
+  })
+
+  server.listen(port, () => {
+    console.log(`Servidor web iniciado en el puerto ${port}`)
+    console.log(`Estado del bot: http://localhost:${port}/health`)
+
+    if (global.opts?.keepalive) {
+      keepAlive()
+    }
+  })
+
+  server.on('error', (error) => {
+    console.error('Error en el servidor web:', error.message)
+  })
 }
 
 function pipeEmit(event, event2, prefix = '') {
-  const old = event.emit;
-  event.emit = function(event, ...args) {
-    old.emit(event, ...args);
-    event2.emit(prefix + event, ...args);
-  };
+  const oldEmit = event.emit
+
+  event.emit = function (eventName, ...args) {
+    oldEmit.call(event, eventName, ...args)
+    event2.emit(`${prefix}${eventName}`, ...args)
+    return true
+  }
+
   return {
     unpipeEmit() {
-      event.emit = old;
-    }};
+      event.emit = oldEmit
+    }
+  }
 }
 
 function keepAlive() {
-  const url = `https://${process.env.REPL_SLUG}.${process.env.REPL_OWNER}.repl.co`;
-  if (/(\/\/|\.)undefined\./.test(url)) return;
+  const url =
+    process.env.REPLIT_DEV_DOMAIN
+      ? `https://${process.env.REPLIT_DEV_DOMAIN}`
+      : process.env.REPL_SLUG && process.env.REPL_OWNER
+        ? `https://${process.env.REPL_SLUG}.${process.env.REPL_OWNER}.repl.co`
+        : null
+
+  if (!url) {
+    console.warn('Keep-alive omitido: no se detectó una URL pública.')
+    return
+  }
+
   setInterval(() => {
-    fetch(url).catch(console.error);
-  }, 5 * 1000 * 60);
+    fetch(url).catch((error) => {
+      console.error('Error en keep-alive:', error.message)
+    })
+  }, 5 * 60 * 1000)
 }
 
-export default connect;
+export default connect
+export { pipeEmit }

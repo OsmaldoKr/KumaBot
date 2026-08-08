@@ -1,9 +1,38 @@
 {
-  "name": "KumaBot", 
-  "description": "El Mejor Bot De WhatsApp 2023",
-  "repository": "https://github.com/ElChema-Nc/SharkLite",
+  "name": "KumaBot",
+  "description": "Bot de WhatsApp desarrollado por OsmaldoKr.",
+  "repository": "https://github.com/OsmaldoKr/KumaBot",
   "logo": "https://i.ibb.co/JRB2H3s/Menu1.jpg",
-  "keywords": ["java", "bot", "whatsapp-bot", "whatsapp-automation"],
+
+  "keywords": [
+    "nodejs",
+    "whatsapp",
+    "whatsapp-bot",
+    "baileys",
+    "kumabot"
+  ],
+
+  "env": {
+    "OPENAI_API_KEY": {
+      "description": "Clave secreta de OpenAI para las funciones de IA.",
+      "required": true
+    },
+    "OPENAI_ORGANIZATION_ID": {
+      "description": "ID de organización de OpenAI, si tu cuenta lo utiliza.",
+      "required": false
+    },
+    "OWNER_NUMBER": {
+      "description": "Número del propietario con código de país y sin símbolo +.",
+      "value": "",
+      "required": true
+    },
+    "BOT_NAME": {
+      "description": "Nombre visible del bot.",
+      "value": "KumaBot",
+      "required": true
+    }
+  },
+
   "buildpacks": [
     {
       "url": "heroku/nodejs"
@@ -13,6 +42,6 @@
     },
     {
       "url": "https://github.com/bogini/heroku-buildpack-graphicsmagick"
-    }    
- ]
+    }
+  ]
 }

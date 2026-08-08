@@ -1,109 +1,154 @@
-/**
- * @type {import('@whiskeysockets/baileys')}
- */
 const {
   proto,
   generateWAMessage,
-  areJidsSameUser,
-  decryptPollVote,
-} = (await import('@whiskeysockets/baileys')).default;
- 
-export async function all(m, chatUpdate) {
-  /* if (m.message.pollUpdateMessage) {
-    console.log(m.message.pollUpdateMessage)
-    console.log(m.message.pollUpdateMessage.pollCreationMessageKey)
-    let authcode = "eed1zxI49cxiovBTUFLIEWi1shD9HgIOghONuqPDGTk="
-    let xds = decryptPollVote({
-      encPayload: m.message.pollUpdateMessage.vote.encPayload,
-      encIv: m.message.pollUpdateMessage.vote.encIv,
-    }, {
-      pollCreatorJid: m.message.pollUpdateMessage.pollCreationMessageKey.participant,
-      pollMsgId: m.message.pollUpdateMessage.pollCreationMessageKey.id,
-      pollEncKey: authcode, //Uint8Array.from(authcode.split('').map(letter => letter.charCodeAt(0))),
-      voterJid: m.sender,
-    })
-    console.log(xds)
-}*/
-  if (m.isBaileys) {
-    return;
+  areJidsSameUser
+} = (await import('@whiskeysockets/baileys')).default
+
+function escapeRegex(value) {
+  return String(value).replace(/[|\\{}()[\]^$+*?.-]/g, '\\$&')
+}
+
+function matchesPluginCommand(plugin, command) {
+  if (plugin.command instanceof RegExp) {
+    return plugin.command.test(command)
   }
-  if (!m.message) {
-    return;
+
+  if (Array.isArray(plugin.command)) {
+    return plugin.command.some((item) =>
+      item instanceof RegExp
+        ? item.test(command)
+        : item === command
+    )
   }
-  if (!(m.message.buttonsResponseMessage || m.message.templateButtonReplyMessage || m.message.listResponseMessage)) {
-    return;
+
+  return typeof plugin.command === 'string' &&
+    plugin.command === command
+}
+
+export async function all(m, { chatUpdate }) {
+  if (m.isBaileys || !m.message) return
+
+  const buttonResponse = m.message.buttonsResponseMessage
+  const templateResponse = m.message.templateButtonReplyMessage
+  const listResponse = m.message.listResponseMessage
+
+  if (!buttonResponse && !templateResponse && !listResponse) {
+    return
   }
-  const id = m.message.buttonsResponseMessage?.selectedButtonId || m.message.templateButtonReplyMessage?.selectedId || m.message.listResponseMessage?.singleSelectReply?.selectedRowId;
-  const text = m.message.buttonsResponseMessage?.selectedDisplayText || m.message.templateButtonReplyMessage?.selectedDisplayText || m.message.listResponseMessage?.title;
-  let isIdMessage = false; let usedPrefix;
-  for (const name in global.plugins) {
-    const plugin = global.plugins[name];
-    if (!plugin) {
-      continue;
+
+  const selectedId =
+    buttonResponse?.selectedButtonId ||
+    templateResponse?.selectedId ||
+    listResponse?.singleSelectReply?.selectedRowId
+
+  const selectedText =
+    buttonResponse?.selectedDisplayText ||
+    templateResponse?.selectedDisplayText ||
+    listResponse?.title ||
+    ''
+
+  if (!selectedId) return
+
+  let isCommand = false
+
+  for (const name in global.plugins || {}) {
+    const plugin = global.plugins[name]
+
+    if (
+      !plugin ||
+      plugin.disabled ||
+      typeof plugin !== 'function' ||
+      !plugin.command
+    ) {
+      continue
     }
-    if (plugin.disabled) {
-      continue;
+
+    if (!global.opts?.restrict && plugin.tags?.includes('admin')) {
+      continue
     }
-    if (!opts['restrict']) {
-      if (plugin.tags && plugin.tags.includes('admin')) {
-        continue;
+
+    const prefix = plugin.customPrefix || this.prefix || global.prefix
+
+    const prefixes =
+      prefix instanceof RegExp
+        ? [prefix]
+        : Array.isArray(prefix)
+          ? prefix
+          : [prefix]
+
+    for (const item of prefixes) {
+      const regex =
+        item instanceof RegExp
+          ? item
+          : new RegExp(`^${escapeRegex(item)}`)
+
+      const match = regex.exec(selectedId)
+
+      if (!match) continue
+
+      const usedPrefix = match[0]
+      const command = selectedId
+        .slice(usedPrefix.length)
+        .trim()
+        .split(/\s+/)[0]
+        ?.toLowerCase()
+
+      if (
+        command &&
+        matchesPluginCommand(plugin, command)
+      ) {
+        isCommand = true
+        break
       }
     }
-    if (typeof plugin !== 'function') {
-      continue;
-    }
-    if (!plugin.command) {
-      continue;
-    }
-    const str2Regex = (str) => str.replace(/[|\\{}()[\]^$+*?.]/g, '\\$&');
-    const _prefix = plugin.customPrefix ? plugin.customPrefix : this.prefix ? this.prefix : global.prefix;
-    const match = (_prefix instanceof RegExp ? // RegExp Mode?
-            [[_prefix.exec(id), _prefix]] :
-            Array.isArray(_prefix) ? // Array?
-                _prefix.map((p) => {
-                  const re = p instanceof RegExp ? // RegExp in Array?
-                        p :
-                        new RegExp(str2Regex(p));
-                  return [re.exec(id), re];
-                }) :
-                typeof _prefix === 'string' ? // String?
-                    [[new RegExp(str2Regex(_prefix)).exec(id), new RegExp(str2Regex(_prefix))]] :
-                    [[[], new RegExp]]
-    ).find((p) => p[1]);
-    if ((usedPrefix = (match[0] || '')[0])) {
-      const noPrefix = id.replace(usedPrefix, '');
-      let [command] = noPrefix.trim().split` `.filter((v) => v);
-      command = (command || '').toLowerCase();
-      const isId = plugin.command instanceof RegExp ? // RegExp Mode?
-                plugin.command.test(command) :
-                Array.isArray(plugin.command) ? // Array?
-                    plugin.command.some((cmd) => cmd instanceof RegExp ? // RegExp in Array?
-                        cmd.test(command) :
-                        cmd === command,
-                    ) :
-                    typeof plugin.command === 'string' ? // String?
-                        plugin.command === command :
-                        false;
-      if (!isId) {
-        continue;
+
+    if (isCommand) break
+  }
+
+  const responseText = isCommand
+    ? selectedId
+    : selectedText || selectedId
+
+  try {
+    const generatedMessage = await generateWAMessage(
+      m.chat,
+      {
+        text: responseText,
+        mentions: m.mentionedJid || []
+      },
+      {
+        userJid: this.user.id,
+        quoted: m.quoted?.fakeObj
       }
-      isIdMessage = true;
+    )
+
+    generatedMessage.key.fromMe = areJidsSameUser(
+      m.sender,
+      this.user.id
+    )
+
+    generatedMessage.key.id = m.key.id
+    generatedMessage.pushName = m.name
+
+    if (m.isGroup) {
+      generatedMessage.key.participant = m.sender
+      generatedMessage.participant = m.sender
     }
+
+    const messageUpdate = {
+      ...chatUpdate,
+      messages: [
+        proto.WebMessageInfo
+          .fromObject(generatedMessage)
+      ],
+      type: 'append'
+    }
+
+    this.ev.emit('messages.upsert', messageUpdate)
+  } catch (error) {
+    console.error(
+      'No se pudo procesar la respuesta del botón:',
+      error.message
+    )
   }
-  const messages = await generateWAMessage(m.chat, {text: isIdMessage ? id : text, mentions: m.mentionedJid}, {
-    userJid: this.user.id,
-    quoted: m.quoted && m.quoted.fakeObj,
-  });
-  messages.key.fromMe = areJidsSameUser(m.sender, this.user.id);
-  messages.key.id = m.key.id;
-  messages.pushName = m.name;
-  if (m.isGroup) {
-    messages.key.participant = messages.participant = m.sender;
-  }
-  const msg = {
-    ...chatUpdate,
-    messages: [proto.WebMessageInfo.fromObject(messages)].map((v) => (v.conn = this, v)),
-    type: 'append',
-  };
-  this.ev.emit('messages.upsert', msg);
 }

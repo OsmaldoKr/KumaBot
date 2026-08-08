@@ -3,41 +3,148 @@ import uploadFile from '../lib/uploadFile.js'
 import uploadImage from '../lib/uploadImage.js'
 import { webp2png } from '../lib/webp2mp4.js'
 
-let handler = async (m, { conn, args, usedPrefix, command, text }) => {
-let stiker = false
-let q = m.quoted ? m.quoted : m
-let mime = (q.msg || q).mimetype || q.mediaType || ''
+const MAX_VIDEO_SECONDS = 10
 
-if (!/webp|image|video/g.test(mime) && !text) return m.reply(lenguajeGB.smsSticker1(usedPrefix, command))
-if (/video/g.test(mime)) if ((q.msg || q).seconds > 10) return m.reply(lenguajeGB.smsSticker2())
+function isUrl(value = '') {
+  try {
+    const url = new URL(value)
 
-if (/webp|image|video/g.test(mime)) {
-let img = await q.download?.()
-let out
-stiker = await sticker(img, false, global.packname, global.author)
-  
-if (!stiker) {
-if (/webp/g.test(mime)) out = await webp2png(img)
-else if (/image/g.test(mime)) out = await uploadImage(img)
-else if (/video/g.test(mime)) out = await uploadFile(img)
-if (typeof out !== 'string') out = await uploadImage(img)
-stiker = await sticker(false, out, global.packname, global.author)
-  
-if (!stiker) errorMessage = lenguajeGB['smsMensError2']()
-}} else if (args[0]) {
-if (isUrl(args[0])) stiker = await sticker(false, args[0], global.packname, global.author)
-else return m.reply(lenguajeGB.smsSticker3(usedPrefix, command))}
+    return ['http:', 'https:'].includes(url.protocol)
+  } catch {
+    return false
+  }
+}
 
-if (stiker) {
-conn.sendFile(m.chat, stiker, 'sticker.webp', '', null, true, { contextInfo: { 'forwardingScore': 200, 'isForwarded': false, externalAdReply:{ showAdAttribution: false, title: packname, body: '• STICKER •', mediaType: 2, sourceUrl: redesMenu.getRandom(), thumbnail: sharkImg.getRandom()}}})
-} else {
-await m.reply(lenguajeGB['smsMalError3']() + '\n*' + lenguajeGB.smsMensError1() + '*\n*' + usedPrefix + `${lenguajeGB.lenguaje() == 'es' ? 'reporte' : 'report'}` + '* ' + `${lenguajeGB.smsMensError2()} ` + usedPrefix + command)
-console.log(`❗❗ ${lenguajeGB['smsMensError2']()} ${usedPrefix + command} ❗❗`)
-console.log(stiker)
-}}
+async function makeStickerFromMedia(media, mime) {
+  let result = await sticker(
+    media,
+    false,
+    global.packname,
+    global.author
+  )
 
-handler.command = /^(s(tickers?)?(image|video|gif|img)?)$/i
+  if (result) return result
+
+  let uploadUrl
+
+  if (/webp/i.test(mime)) {
+    const image = await webp2png(media)
+    uploadUrl = await uploadImage(image)
+  } else if (/image/i.test(mime)) {
+    uploadUrl = await uploadImage(media)
+  } else {
+    uploadUrl = await uploadFile(media)
+  }
+
+  return sticker(
+    false,
+    uploadUrl,
+    global.packname,
+    global.author
+  )
+}
+
+const handler = async (
+  m,
+  {
+    conn,
+    args,
+    usedPrefix,
+    command,
+    text
+  }
+) => {
+  const quoted = m.quoted || m
+  const mime =
+    quoted.mimetype ||
+    quoted.mediaType ||
+    quoted.msg?.mimetype ||
+    ''
+
+  const url = args[0] || text
+
+  if (!/webp|image|video/i.test(mime) && !url) {
+    return m.reply(
+      [
+        'Responde a una imagen, video o sticker.',
+        '',
+        `También puedes usar: ${usedPrefix}${command} https://ejemplo.com/imagen.jpg`
+      ].join('\n')
+    )
+  }
+
+  if (/video/i.test(mime)) {
+    const duration = Number(
+      quoted.seconds ||
+      quoted.msg?.seconds ||
+      0
+    )
+
+    if (duration > MAX_VIDEO_SECONDS) {
+      return m.reply(
+        `El video no debe durar más de ${MAX_VIDEO_SECONDS} segundos.`
+      )
+    }
+  }
+
+  try {
+    await m.react(global.waitemot || '⌛')
+
+    let stickerBuffer
+
+    if (/webp|image|video/i.test(mime)) {
+      const media = await quoted.download()
+
+      if (!media) {
+        throw new Error('No se pudo descargar el archivo multimedia.')
+      }
+
+      stickerBuffer = await makeStickerFromMedia(media, mime)
+    } else {
+      if (!isUrl(url)) {
+        return m.reply(
+          'El enlace proporcionado no es válido.'
+        )
+      }
+
+      stickerBuffer = await sticker(
+        false,
+        url,
+        global.packname,
+        global.author
+      )
+    }
+
+    if (!stickerBuffer) {
+      throw new Error('No se pudo generar el sticker.')
+    }
+
+    await conn.sendFile(
+      m.chat,
+      stickerBuffer,
+      'kumabot-sticker.webp',
+      '',
+      m,
+      true,
+      {
+        asSticker: true
+      }
+    )
+
+    return m.react(global.sent || '✅')
+  } catch (error) {
+    console.error('Error al crear sticker:', error)
+
+    return m.reply(
+      [
+        'No se pudo crear el sticker.',
+        '',
+        `Si el error continúa, repórtalo con: ${usedPrefix}reporte ${command}`
+      ].join('\n')
+    )
+  }
+}
+
+handler.command = /^(s|sticker|stickers|stickerimage|stickervideo|stickergif|stickerimg)$/i
+
 export default handler
-
-const isUrl = (text) => {
-return text.match(new RegExp(/https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&/=]*)(jpe?g|gif|png)/, 'gi'))}

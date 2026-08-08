@@ -1,18 +1,24 @@
-let downloadContentFromMessage = (await import(global.baileys)).default
+export async function before(m) {
+  if (!m.isGroup) return false
 
-export async function before(m, { isAdmin, isBotAdmin }) {
-let chat = db.data.chats[m.chat]
-if (/^[.~#/\$,](read)?viewonce/.test(m.text)) return
-if (!chat.antiver || chat.isBanned) return
-if (m.mtype == 'viewOnceMessageV2') {
-let msg = m.message.viewOnceMessageV2.message
-let type = Object.keys(msg)[0]
-let media = await downloadContentFromMessage(msg[type], type == 'imageMessage' ? 'image' : 'video')
-let buffer = Buffer.from([])
-for await (const chunk of media) {
-buffer = Buffer.concat([buffer, chunk])}
-if (/video/.test(type)) {
-return this.sendFile(m.chat, buffer, 'error.mp4', `${msg[type].caption}` + lenguajeGB.smsAntiView1(), m)
-} else if (/image/.test(type)) {
-return this.sendFile(m.chat, buffer, 'error.jpg', `${msg[type].caption}` + lenguajeGB.smsAntiView2(), m)
-}}}
+  const chat = global.db.data.chats[m.chat] || {}
+
+  if (!chat.antiver || chat.isBanned) return false
+
+  const isViewOnce =
+    m.mtype === 'viewOnceMessage' ||
+    m.mtype === 'viewOnceMessageV2' ||
+    m.mtype === 'viewOnceMessageV2Extension'
+
+  if (!isViewOnce) return false
+
+  await this.sendMessage(
+    m.chat,
+    {
+      text: '⚠️ Se detectó un mensaje configurado para verse una sola vez. KumaBot respeta la privacidad del remitente y no guarda ni reenvía ese contenido.'
+    },
+    { quoted: m }
+  )
+
+  return false
+}

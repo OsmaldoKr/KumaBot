@@ -1,178 +1,118 @@
-#!/data/data/com.termux/files/usr/bin/bash 
-# Interpretación determinada para la ejecución     
-COMANDOS = "pkg install git -y\npkg install nodejs -y\npkg install ffmpeg -y\npkg install imagemagick -y\npkg install -y yarn\ngit clone https://github.com/ElChema-Nc/SharkLite\ncd SharkLite\nyarn install\nnpm install\nnpm start"
+#!/data/data/com.termux/files/usr/bin/bash
 
-echo -e "\e[35m
-─█▀▀█ ───░█ ░█─░█ ░█▀▀▀█ ▀▀█▀▀ ░█▀▀▀ 　 ░█─── ─█▀▀█ 　 ░█▀▀█ ─█▀▀█ ░█▄─░█ ▀▀█▀▀ ─█▀▀█ ░█─── ░█─── ─█▀▀█ 
-░█▄▄█ ─▄─░█ ░█─░█ ─▀▀▀▄▄ ─░█── ░█▀▀▀ 　 ░█─── ░█▄▄█ 　 ░█▄▄█ ░█▄▄█ ░█░█░█ ─░█── ░█▄▄█ ░█─── ░█─── ░█▄▄█ 
-░█─░█ ░█▄▄█ ─▀▄▄▀ ░█▄▄▄█ ─░█── ░█▄▄▄ 　 ░█▄▄█ ░█─░█ 　 ░█─── ░█─░█ ░█──▀█ ─░█── ░█─░█ ░█▄▄█ ░█▄▄█ ░█─░█\n\e[0m" 
+set -Eeuo pipefail
 
-echo -e "\033[01;93mPreparando instalación...\n\033[0m"
-echo -e "\033[01;32m\033[01mInstalando dependencias!!\n\033[0m" 
-echo -e "\e[36m
-█ █▄░█ █▀ ▀█▀ ▄▀█ █░░ █░░   █▀▀ █ ▀█▀
-█ █░▀█ ▄█ ░█░ █▀█ █▄▄ █▄▄   █▄█ █ ░█░\n\e[0m"
+REPO_URL="https://github.com/OsmaldoKr/KumaBot.git"
+APP_DIR="KumaBot"
 
-if command -v git >/dev/null 2>&1; then
-echo -e "\033[01;33mGit ya estaba instalado anteriormente.\033[0m"
-else
-if pkg install git -y 2>&1 >/dev/null | grep -E -i -q '(command not found|unable to locate package|E: Could not get lock|debconf: delaying package configuration|Package not found|Failed to fetch|404 Not Found|Hash sum mismatch|503 Service Unavailable|504 Gateway Timeout|408 Request Timeout|Connection timed out|Temporary failure resolving)'; then
-error=$(pkg install git -y 2>&1 >/dev/null)
-echo -e "\033[0;31mError: $error\033[0m" 
-echo -e "\033[0;34mNo se pudo instalar Git. Verifique su conexión a Internet e inténtelo de nuevo. Si el error continúa, instale de forma manual!!\033[0m" 
-echo -e "\033[01;33m$COMANDOS\033[0m"
-exit 1
-else
-echo -e "\033[01;32m\033[01mGit se ha instalado correctamente.\n\033[0m" 
-fi
-fi
- 
-echo -e "\e[35m
-█ █▄░█ █▀ ▀█▀ ▄▀█ █░░ █░░   █▄░█ █▀█ █▀▄ █▀▀ ░ ░░█ █▀
-█ █░▀█ ▄█ ░█░ █▀█ █▄▄ █▄▄   █░▀█ █▄█ █▄▀ ██▄ ▄ █▄█ ▄█\n\e[0m"
-
-if command -v node >/dev/null 2>&1; then
-echo -e "\033[01;33mNodejs ya estaba instalado anteriormente.\033[0m"
-else
-if pkg install nodejs -y 2>&1 >/dev/null | grep -E -i -q '(command not found|unable to locate package|E: Could not get lock|debconf: delaying package configuration|Package not found|Failed to fetch|404 Not Found|Hash sum mismatch|503 Service Unavailable|504 Gateway Timeout|408 Request Timeout|Connection timed out|Temporary failure resolving)'; then
-error=$(pkg install nodejs -y 2>&1 >/dev/null)
-echo -e "\033[0;31mError: $error\033[0m" 
-echo -e "\033[0;34mNo se pudo instalar Node.js. Verifique su conexión a Internet e inténtelo de nuevo. Si el error continúa, instale de forma manual!!\033[0m" 
-echo -e "\033[01;33m$COMANDOS\033[0m"
-exit 1
-else
-echo -e "\033[01;32m\033[01mNode.js se ha instalado correctamente.\n\033[0m" 
-fi
-fi
-
-echo -e "\e[36m
-█ █▄░█ █▀ ▀█▀ ▄▀█ █░░ █░░   █▀▀ █▀▀ █▀▄▀█ █▀█ █▀▀ █▀▀
-█ █░▀█ ▄█ ░█░ █▀█ █▄▄ █▄▄   █▀░ █▀░ █░▀░█ █▀▀ ██▄ █▄█\n\e[0m"
-
-if command -v ffmpeg >/dev/null 2>&1; then
-echo -e "\033[01;33mFfmpeg ya estaba instalado anteriormente.\033[0m"
-else
-if pkg install ffmpeg -y 2>&1 >/dev/null | grep -E -i -q '(command not found|unable to locate package|E: Could not get lock|debconf: delaying package configuration|Package not found|Failed to fetch|404 Not Found|Hash sum mismatch|503 Service Unavailable|504 Gateway Timeout|408 Request Timeout|Connection timed out|Temporary failure resolving)'; then
-error=$(pkg install ffmpeg -y 2>&1 >/dev/null)
-echo -e "\033[0;31mError: $error\033[0m" 
-echo -e "\033[0;34mNo se pudo instalar FFmpeg. Verifique su conexión a Internet e inténtelo de nuevo. Si el error continúa, instale de forma manual!!\033[0m" 
-echo -e "\033[01;33m$COMANDOS\033[0m"
-exit 1
-else
-echo -e "\033[01;32m\033[01mFFmpeg se ha instalado correctamente.\n\033[0m" 
-fi
-fi
-
-echo -e "\e[35m
-█ █▄░█ █▀ ▀█▀ ▄▀█ █░░ █░░   █ █▀▄▀█ ▄▀█ █▀▀ █▀▀ █▀▄▀█ ▄▀█ █▀▀ █ █▀▀ █▄▀
-█ █░▀█ ▄█ ░█░ █▀█ █▄▄ █▄▄   █ █░▀░█ █▀█ █▄█ ██▄ █░▀░█ █▀█ █▄█ █ █▄▄ █░█\n\e[0m"
-
-if command -v convert >/dev/null 2>&1; then
-echo -e "\033[01;33mImagemagick ya estaba instalado anteriormente.\033[0m"
-else
-if pkg install imagemagick -y 2>&1 >/dev/null | grep -E -i -q '(command not found|unable to locate package|E: Could not get lock|debconf: delaying package configuration|Package not found|Failed to fetch|404 Not Found|Hash sum mismatch|503 Service Unavailable|504 Gateway Timeout|408 Request Timeout|Connection timed out|Temporary failure resolving)'; then
-error=$(pkg install imagemagick -y 2>&1 >/dev/null)
-echo -e "\033[0;31mError: $error\033[0m" 
-echo -e "\033[0;34mNo se pudo instalar ImageMagick. Verifique su conexión a Internet e inténtelo de nuevo. Si el error continúa, instale de forma manual!!\033[0m" 
-echo -e "\033[01;33m$COMANDOS\033[0m"
-exit 1
-else
-echo -e "\033[01;32m\033[01mImageMagick se ha instalado correctamente.\n\033[0m" 
-fi
-fi
-
-echo -e "\e[36m
-█ █▄░█ █▀ ▀█▀ ▄▀█ █░░ █░░   █▄█ ▄▀█ █▀█ █▄░█
-█ █░▀█ ▄█ ░█░ █▀█ █▄▄ █▄▄   ░█░ █▀█ █▀▄ █░▀█\n\e[0m"
-
-if command -v yarn >/dev/null 2>&1; then
-echo -e "\033[01;33mYarn ya estaba instalado anteriormente.\033[0m"
-else
-if npm install -g yarn 2>&1 >/dev/null | grep -E -i -q '(command not found|unable to locate package|E: Could not get lock|debconf: delaying package configuration|Package not found|Failed to fetch|404 Not Found|Hash sum mismatch|503 Service Unavailable|504 Gateway Timeout|408 Request Timeout|Connection timed out|Temporary failure resolving)'; then
-error=$(npm install -g yarn 2>&1 >/dev/null)
-echo -e "\033[0;31mError: $error\033[0m" 
-echo -e "\033[0;34mNo se pudo instalar Yarn. Verifique su conexión a Internet e inténtelo de nuevo. Si el error continúa, instale de forma manual!!\033[0m" 
-echo -e "\033[01;33m$COMANDOS\033[0m"
-exit 1
-else
-echo -e "\033[01;32m\033[01mYarn se ha instalado correctamente.\n\033[0m" 
-fi
-fi
-
-echo -e "\e[36m
-▀▀█▀▀ ▒█▀▀▀█ ▒█▀▀▄ ▒█▀▀▀█ 　 ▒█▀▀█ ▒█▀▀▀█ ▒█▀▀█ ▒█▀▀█ ▒█▀▀▀ ▒█▀▀█ ▀▀█▀▀ ▒█▀▀▀█ 
-░▒█░░ ▒█░░▒█ ▒█░▒█ ▒█░░▒█ 　 ▒█░░░ ▒█░░▒█ ▒█▄▄▀ ▒█▄▄▀ ▒█▀▀▀ ▒█░░░ ░▒█░░ ▒█░░▒█ 
-░▒█░░ ▒█▄▄▄█ ▒█▄▄▀ ▒█▄▄▄█ 　 ▒█▄▄█ ▒█▄▄▄█ ▒█░▒█ ▒█░▒█ ▒█▄▄▄ ▒█▄▄█ ░▒█░░ ▒█▄▄▄█\n\e[0m"
-echo -e "\033[01;32m\033[01m\nTodas las dependencias se han instalado correctamente.\n\033[0m" 
-
-echo -e "\e[35m
-██╗░░██╗░░██╗░░  ██╗███╗░░██╗░██████╗████████╗░█████╗░██╗░░░░░██╗░░░░░
-╚██╗░╚██╗░╚██╗░  ██║████╗░██║██╔════╝╚══██╔══╝██╔══██╗██║░░░░░██║░░░░░
-░╚██╗░╚██╗░╚██╗  ██║██╔██╗██║╚█████╗░░░░██║░░░███████║██║░░░░░██║░░░░░
-░██╔╝░██╔╝░██╔╝  ██║██║╚████║░╚═══██╗░░░██║░░░██╔══██║██║░░░░░██║░░░░░
-██╔╝░██╔╝░██╔╝░  ██║██║░╚███║██████╔╝░░░██║░░░██║░░██║███████╗███████╗
-╚═╝░░╚═╝░░╚═╝░░  ╚═╝╚═╝░░╚══╝╚═════╝░░░░╚═╝░░░╚═╝░░╚═╝╚══════╝╚══════╝\n\e[0m"
-
-echo -e "\033[1;35m"
-git clone https://github.com/ElChema-Nc/SharkLite.git
-echo -e "\033[01;32m\033[01mLa clonación se ha descargado e instalado correctamente.\n\033[0m"
-
-echo -e "\033[01;32m\033[01mCambiando al directorio del repositorio!!\n\033[0m" 
-cd SharkLite
-
-echo -e "\e[36m
-█░█ █▀█ █▀▄ ▄▀█ ▀█▀ █▀▀   █▄█ ▄▀█ █▀█ █▄░█
-█▄█ █▀▀ █▄▀ █▀█ ░█░ ██▄   ░█░ █▀█ █▀▄ █░▀█\n\e[0m"
-
-echo -e "\033[0;34mSe actualizará yarn automáticamente. Esto puede tomar tiempo, Espere por favor..\n\033[0m"
-if yarn install 2>&1 >/dev/null | grep -E -i -q '(command not found|unable to locate package|E: Could not get lock|debconf: delaying package configuration|Package not found|Failed to fetch|404 Not Found|Hash sum mismatch|503 Service Unavailable|504 Gateway Timeout|408 Request Timeout|Connection timed out|Temporary failure resolving)'; then
-error=$(yarn install 2>&1 >/dev/null)
-echo -e "\033[0;31mError: $error\033[0m" 
-echo -e "\033[0;34mNo se pudo instalar yarn. Verifique su conexión a Internet e inténtelo de nuevo. Si el error continúa, instale de forma manual!!\033[0m" 
-else
-echo -e "\033[01;32m\033[01mYarn se ha actualizado correctamente.\n\033[0m" 
-fi
-
-echo -e "\e[35m
-█ █▄░█ █▀ ▀█▀ ▄▀█ █░░ █░░   █▄░█ █▀█ █▀▄▀█
-█ █░▀█ ▄█ ░█░ █▀█ █▄▄ █▄▄   █░▀█ █▀▀ █░▀░█\n\e[0m"
-
-echo -e "\033[0;34mSe instalará NPM automáticamente. Espere un momento por favor.\n\033[0m"
-if npm install 2>&1 >/dev/null | grep -E -i -q '(command not found|unable to locate package|E: Could not get lock|debconf: delaying package configuration|Package not found|Failed to fetch|404 Not Found|Hash sum mismatch|503 Service Unavailable|504 Gateway Timeout|408 Request Timeout|Connection timed out|Temporary failure resolving)'; then
-error=$(npm install 2>&1 >/dev/null)
-echo -e "\033[0;31mError: $error\033[0m" 
-echo -e "\033[0;34mNo se pudo instalar NPM. Verifique su conexión a Internet e inténtelo de nuevo. Si el error continúa, instale de forma manual!!\033[0m" 
-else
-echo -e "\033[01;32m\033[01mNPM se ha instalado correctamente..\n\033[0m" 
-fi
+COLOR_RESET="\033[0m"
+COLOR_RED="\033[1;31m"
+COLOR_GREEN="\033[1;32m"
+COLOR_YELLOW="\033[1;33m"
+COLOR_BLUE="\033[1;34m"
+COLOR_MAGENTA="\033[1;35m"
+COLOR_CYAN="\033[1;36m"
 
 clear
-echo -e "\e[36m
-░█▀▀█ ░█▀▀█ ─█▀▀█ ░█▀▀█ ▀█▀ ─█▀▀█ ░█▀▀▀█ 　 ░█▀▀█ ░█▀▀▀█ ░█▀▀█ 　 ░█▀▀▀█ ░█─░█ 
-░█─▄▄ ░█▄▄▀ ░█▄▄█ ░█─── ░█─ ░█▄▄█ ─▀▀▀▄▄ 　 ░█▄▄█ ░█──░█ ░█▄▄▀ 　 ─▀▀▀▄▄ ░█─░█ 
-░█▄▄█ ░█─░█ ░█─░█ ░█▄▄█ ▄█▄ ░█─░█ ░█▄▄▄█ 　 ░█─── ░█▄▄▄█ ░█─░█ 　 ░█▄▄▄█ ─▀▄▄▀ 
 
-░█▀▀█ ░█▀▀█ ░█▀▀▀ ░█▀▀▀ ░█▀▀▀ ░█▀▀█ ░█▀▀▀ ░█▄─░█ ░█▀▀█ ▀█▀ ─█▀▀█ 
-░█▄▄█ ░█▄▄▀ ░█▀▀▀ ░█▀▀▀ ░█▀▀▀ ░█▄▄▀ ░█▀▀▀ ░█░█░█ ░█─── ░█─ ░█▄▄█ 
-░█─── ░█─░█ ░█▄▄▄ ░█─── ░█▄▄▄ ░█─░█ ░█▄▄▄ ░█──▀█ ░█▄▄█ ▄█▄ ░█─░█\n\e[0m"
+echo -e "${COLOR_MAGENTA}"
+echo "╔══════════════════════════════════════════════╗"
+echo "║                  👺 KUMABOT                  ║"
+echo "║        Instalador oficial para Termux         ║"
+echo "╚══════════════════════════════════════════════╝"
+echo -e "${COLOR_RESET}"
 
-echo -e "\e[31m
-_░▒███████
-░██▓▒░░▒▓██
-██▓▒░__░▒▓██___██████
-██▓▒░____░▓███▓__░▒▓██
-██▓▒░___░▓██▓_____░▒▓██
-██▓▒░_______________░▒▓██
-_██▓▒░______________░▒▓██
-__██▓▒░____________░▒▓██
-___██▓▒░__________░▒▓██
-____██▓▒░________░▒▓██
-_____██▓▒░_____░▒▓██
-______██▓▒░__░▒▓██
-_______█▓▒░░▒▓██
-_________░▒▓██
-_______░▒▓██
-_____░▒▓██\n\e[0m"
-    
-echo -e "\033[01;32m\033[01mIniciando el SharkLite!!\n\033[0m"
+echo -e "${COLOR_CYAN}Preparando la instalación...${COLOR_RESET}"
+sleep 1
+
+if [[ ! -d "/data/data/com.termux" ]]; then
+  echo -e "${COLOR_YELLOW}Advertencia: este script fue diseñado para Termux.${COLOR_RESET}"
+fi
+
+instalar_paquete() {
+  local paquete="$1"
+  local comando_verificacion="${2:-$1}"
+
+  if command -v "$comando_verificacion" >/dev/null 2>&1; then
+    echo -e "${COLOR_YELLOW}✓ ${paquete} ya está instalado.${COLOR_RESET}"
+    return
+  fi
+
+  echo -e "${COLOR_CYAN}Instalando ${paquete}...${COLOR_RESET}"
+
+  if pkg install -y "$paquete"; then
+    echo -e "${COLOR_GREEN}✓ ${paquete} instalado correctamente.${COLOR_RESET}"
+  else
+    echo -e "${COLOR_RED}✗ No se pudo instalar ${paquete}.${COLOR_RESET}"
+    echo -e "${COLOR_YELLOW}Verifica tu conexión a Internet y vuelve a intentarlo.${COLOR_RESET}"
+    exit 1
+  fi
+}
+
+echo -e "\n${COLOR_MAGENTA}Actualizando repositorios de Termux...${COLOR_RESET}"
+
+if ! pkg update -y; then
+  echo -e "${COLOR_RED}No se pudieron actualizar los repositorios.${COLOR_RESET}"
+  exit 1
+fi
+
+echo -e "\n${COLOR_CYAN}Instalando herramientas necesarias...${COLOR_RESET}"
+
+instalar_paquete "git"
+instalar_paquete "nodejs" "node"
+instalar_paquete "ffmpeg"
+instalar_paquete "imagemagick" "convert"
+
+echo -e "\n${COLOR_MAGENTA}Verificando el proyecto...${COLOR_RESET}"
+
+if [[ -d "$APP_DIR/.git" ]]; then
+  echo -e "${COLOR_YELLOW}El proyecto ya existe. Actualizando archivos...${COLOR_RESET}"
+
+  cd "$APP_DIR"
+
+  if ! git pull; then
+    echo -e "${COLOR_RED}No se pudo actualizar el repositorio.${COLOR_RESET}"
+    exit 1
+  fi
+else
+  if [[ -d "$APP_DIR" ]]; then
+    echo -e "${COLOR_RED}La carpeta '${APP_DIR}' ya existe, pero no es un repositorio Git.${COLOR_RESET}"
+    echo -e "${COLOR_YELLOW}Renómbrala o elimínala antes de ejecutar nuevamente el instalador.${COLOR_RESET}"
+    exit 1
+  fi
+
+  echo -e "${COLOR_CYAN}Descargando KumaBot...${COLOR_RESET}"
+
+  if ! git clone "$REPO_URL" "$APP_DIR"; then
+    echo -e "${COLOR_RED}No se pudo clonar el repositorio.${COLOR_RESET}"
+    echo -e "${COLOR_YELLOW}Revisa que la URL configurada sea correcta:${COLOR_RESET}"
+    echo "$REPO_URL"
+    exit 1
+  fi
+
+  cd "$APP_DIR"
+fi
+
+echo -e "\n${COLOR_CYAN}Instalando dependencias de Node.js...${COLOR_RESET}"
+
+if [[ -f "package-lock.json" ]]; then
+  npm ci
+else
+  npm install
+fi
+
+echo -e "\n${COLOR_GREEN}"
+echo "╔══════════════════════════════════════════════╗"
+echo "║       ✓ INSTALACIÓN COMPLETADA CON ÉXITO      ║"
+echo "╚══════════════════════════════════════════════╝"
+echo -e "${COLOR_RESET}"
+
+echo -e "${COLOR_YELLOW}Versiones detectadas:${COLOR_RESET}"
+echo -e "Node.js: $(node -v)"
+echo -e "NPM:     $(npm -v)"
+echo -e "FFmpeg:  $(ffmpeg -version 2>/dev/null | head -n 1 || echo 'No detectado')"
+
+echo -e "\n${COLOR_CYAN}Iniciando KumaBot...${COLOR_RESET}"
+echo -e "${COLOR_YELLOW}Escanea el código QR desde WhatsApp cuando aparezca.${COLOR_RESET}\n"
+
 npm start

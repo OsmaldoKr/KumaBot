@@ -1,30 +1,69 @@
 const {
   proto,
   generateWAMessage,
-  areJidsSameUser,
-} = (await import('@whiskeysockets/baileys')).default;
+  areJidsSameUser
+} = (await import('@whiskeysockets/baileys')).default
 
-export async function all(m, chatUpdate) {
-  if (m.isBaileys) return;
-  if (!m.message) return;
-  if (!m.msg.fileSha256) return;
-  if (!(Buffer.from(m.msg.fileSha256).toString('base64') in global.db.data.sticker)) return;
+export async function all(m, { chatUpdate }) {
+  if (m.isBaileys || !m.message || !m.msg?.fileSha256) {
+    return
+  }
 
-  const hash = global.db.data.sticker[Buffer.from(m.msg.fileSha256).toString('base64')];
-  const {text, mentionedJid} = hash;
-  const messages = await generateWAMessage(m.chat, {text: text, mentions: mentionedJid}, {
-    userJid: this.user.id,
-    quoted: m.quoted && m.quoted.fakeObj,
-  });
-  messages.key.fromMe = areJidsSameUser(m.sender, this.user.id);
-  messages.key.id = m.key.id; 
-  messages.pushName = m.pushName;
-  if (m.isGroup) messages.participant = m.sender;
-  const msg = {
-    ...chatUpdate,
-    messages: [proto.WebMessageInfo.fromObject(messages)],
-    type: 'append',
-  };
-  this.ev.emit('messages.upsert', msg);
+  const stickerDatabase = global.db.data.sticker || {}
+
+  const stickerHash = Buffer
+    .from(m.msg.fileSha256)
+    .toString('base64')
+
+  const stickerData = stickerDatabase[stickerHash]
+
+  if (!stickerData) return
+
+  const {
+    text,
+    mentionedJid = []
+  } = stickerData
+
+  if (!text) return
+
+  try {
+    const generatedMessage = await generateWAMessage(
+      m.chat,
+      {
+        text,
+        mentions: mentionedJid
+      },
+      {
+        userJid: this.user.id,
+        quoted: m.quoted?.fakeObj
+      }
+    )
+
+    generatedMessage.key.fromMe = areJidsSameUser(
+      m.sender,
+      this.user.id
+    )
+
+    generatedMessage.key.id = m.key.id
+    generatedMessage.pushName = m.pushName
+
+    if (m.isGroup) {
+      generatedMessage.participant = m.sender
+    }
+
+    const messageUpdate = {
+      ...chatUpdate,
+      messages: [
+        proto.WebMessageInfo.fromObject(generatedMessage)
+      ],
+      type: 'append'
+    }
+
+    this.ev.emit('messages.upsert', messageUpdate)
+  } catch (error) {
+    console.error(
+      'Error al ejecutar el comando del sticker:',
+      error.message
+    )
+  }
 }
- 
