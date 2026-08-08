@@ -198,7 +198,7 @@ global.authFile = 'KumaSession'
 const { state, saveCreds } = await useMultiFileAuthState(global.authFile)
 const { version } = await fetchLatestBaileysVersion()
 
-const msgRetryCounterMap = new MessageRetryMap()
+const msgRetryCounterMap = new Map()
 
 let conn
 let handler
